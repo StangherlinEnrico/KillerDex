@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- App -->
+  <data name="AppName" xml:space="preserve">
+    <value>KillerDex</value>
+  </data>
+  
+  <!-- Killers -->
+  <data name="Killers_Title" xml:space="preserve">
+    <value>Killer</value>
+  </data>
+  <data name="Killers_Count" xml:space="preserve">
+    <value>{0} killer</value>
+  </data>
+  <data name="Killers_PanelNew" xml:space="preserve">
+    <value>Nuovo Killer</value>
+  </data>
+  <data name="Killers_PanelEdit" xml:space="preserve">
+    <value>Modifica Killer</value>
+  </data>
+  <data name="Killers_ValidationAlias" xml:space="preserve">
+    <value>Inserisci l'alias del killer!</value>
+  </data>
+  <data name="Killers_ConfirmDelete" xml:space="preserve">
+    <value>Vuoi eliminare {0}?</value>
+  </data>
+  
+  <!-- Maps -->
+  <data name="Maps_Title" xml:space="preserve">
+    <value>Mappe</value>
+  </data>
+  <data name="Maps_Count" xml:space="preserve">
+    <value>{0} mappe</value>
+  </data>
+  <data name="Maps_PanelNew" xml:space="preserve">
+    <value>Nuova Mappa</value>
+  </data>
+  <data name="Maps_PanelEdit" xml:space="preserve">
+    <value>Modifica Mappa</value>
+  </data>
+  <data name="Maps_ValidationName" xml:space="preserve">
+    <value>Inserisci il nome della mappa!</value>
+  </data>
+  <data name="Maps_ConfirmDelete" xml:space="preserve">
+    <value>Vuoi eliminare {0}?</value>
+  </data>
+  
+  <!-- Allies -->
+  <data name="Allies_Title" xml:space="preserve">
+    <value>Alleati</value>
+  </data>
+  <data name="Allies_Count" xml:space="preserve">
+    <value>{0} alleati</value>
+  </data>
+  <data name="Allies_PanelNew" xml:space="preserve">
+    <value>Nuovo Alleato</value>
+  </data>
+  <data name="Allies_PanelEdit" xml:space="preserve">
+    <value>Modifica Alleato</value>
+  </data>
+  <data name="Allies_ValidationName" xml:space="preserve">
+    <value>Inserisci il nome dell'alleato!</value>
+  </data>
+  <data name="Allies_ConfirmDelete" xml:space="preserve">
+    <value>Vuoi eliminare {0}?</value>
+  </data>
+  
+  <!-- Common Buttons -->
+  <data name="Button_Add" xml:space="preserve">
+    <value>➕ Aggiungi</value>
+  </data>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>✏️ Modifica</value>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>🗑️ Elimina</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  
+  <!-- Common Labels -->
+  <data name="Label_Alias" xml:space="preserve">
+    <value>Alias</value>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  
+  <!-- Common Dialogs -->
+  <data name="Dialog_Warning" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
+  <data name="Dialog_Success" xml:space="preserve">
+    <value>Successo</value>
+  </data>
+  <data name="Dialog_ConfirmDelete" xml:space="preserve">
+    <value>Conferma eliminazione</value>
+  </data>
+  
+  <!-- Menu -->
+  <data name="Menu_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>Esci</value>
+  </data>
+  <data name="Menu_Manage" xml:space="preserve">
+    <value>Gestione</value>
+  </data>
+  <data name="Menu_Killers" xml:space="preserve">
+    <value>Killer</value>
+  </data>
+  <data name="Menu_Maps" xml:space="preserve">
+    <value>Mappe</value>
+  </data>
+  <data name="Menu_Allies" xml:space="preserve">
+    <value>Alleati</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="Menu_Italian" xml:space="preserve">
+    <value>🇮🇹 Italiano</value>
+  </data>
+  <data name="Menu_English" xml:space="preserve">
+    <value>🇬🇧 English</value>
+  </data>
+  
+  <!-- Home / MainForm -->
+  <data name="Home_Stats" xml:space="preserve">
+    <value>Statistiche Generali</value>
+  </data>
+  <data name="Home_TotalMatches" xml:space="preserve">
+    <value>Partite Totali:</value>
+  </data>
+  <data name="Home_Wins" xml:space="preserve">
+    <value>Vittorie:</value>
+  </data>
+  <data name="Home_Losses" xml:space="preserve">
+    <value>Sconfitte:</value>
+  </data>
+  <data name="Home_WinRate" xml:space="preserve">
+    <value>Win Rate:</value>
+  </data>
+  <data name="Home_RecentMatches" xml:space="preserve">
+    <value>Ultime 5 Partite</value>
+  </data>
+  <data name="Home_AddMatch" xml:space="preserve">
+    <value>+ Aggiungi Nuova Partita</value>
+  </data>
+  <data name="Home_NoMatches" xml:space="preserve">
+    <value>Nessuna partita registrata</value>
+  </data>
+  <data name="Home_Survivors" xml:space="preserve">
+    <value>sopravvissuti</value>
+  </data>
+  <data name="Home_Defeat" xml:space="preserve">
+    <value>Sconfitta</value>
+  </data>
+  
+  <!-- Match / AddMatch -->
+  <data name="Match_Title" xml:space="preserve">
+    <value>Nuova Partita</value>
+  </data>
+  <data name="Match_Date" xml:space="preserve">
+    <value>Data:</value>
+  </data>
+  <data name="Match_Allies" xml:space="preserve">
+    <value>Alleati:</value>
+  </data>
+  <data name="Match_AlliesHint" xml:space="preserve">
+    <value>(Max 3 selezionabili)</value>
+  </data>
+  <data name="Match_AlliesMax" xml:space="preserve">
+    <value>Puoi selezionare al massimo 3 alleati!</value>
+  </data>
+  <data name="Match_Map" xml:space="preserve">
+    <value>Mappa:</value>
+  </data>
+  <data name="Match_Killer" xml:space="preserve">
+    <value>Killer:</value>
+  </data>
+  <data name="Match_FirstHook" xml:space="preserve">
+    <value>Primo gancio:</value>
+  </data>
+  <data name="Match_Generators" xml:space="preserve">
+    <value>Generatori completati:</value>
+  </data>
+  <data name="Match_Survivors" xml:space="preserve">
+    <value>Sopravvissuti:</value>
+  </data>
+  <data name="Match_Notes" xml:space="preserve">
+    <value>Memo:</value>
+  </data>
+  <data name="Match_Save" xml:space="preserve">
+    <value>Salva Partita</value>
+  </data>
+  <data name="Match_Myself" xml:space="preserve">
+    <value>Me stesso</value>
+  </data>
+  <data name="Match_Filler" xml:space="preserve">
+    <value>Filler</value>
+  </data>
+  <data name="Match_ValidationMap" xml:space="preserve">
+    <value>Seleziona una mappa!</value>
+  </data>
+  <data name="Match_ValidationKiller" xml:space="preserve">
+    <value>Seleziona un killer!</value>
+  </data>
+  <data name="Match_Saved" xml:space="preserve">
+    <value>Partita salvata!</value>
+  </data>
+  
+  <!-- Language Change -->
+  <data name="Language_RestartRequired" xml:space="preserve">
+    <value>Riavvia l'applicazione per applicare la lingua.</value>
+  </data>
+  <data name="Language_Title" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  
+</root>
