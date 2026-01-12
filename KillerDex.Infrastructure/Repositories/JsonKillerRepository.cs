@@ -1,20 +1,21 @@
-﻿using KillerDex.Core.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using KillerDex.Core.Interfaces;
+using KillerDex.Core.Models;
 
 namespace KillerDex.Infrastructure.Repositories
 {
-    public class JsonKillerRepository
+    public class JsonKillerRepository : IKillerRepository
     {
         private readonly string _filePath;
         private List<Killer> _killers;
 
         public JsonKillerRepository()
         {
-            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "allies.json");
+            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "killers.json");
             LoadKillers();
         }
 
@@ -45,12 +46,12 @@ namespace KillerDex.Infrastructure.Repositories
 
         public List<Killer> GetAll()
         {
-            return _killers.ToList();
+            return _killers.OrderBy(k => k.Alias).ToList();
         }
 
         public Killer GetById(Guid id)
         {
-            return _killers.FirstOrDefault(a => a.Id == id);
+            return _killers.FirstOrDefault(k => k.Id == id);
         }
 
         public void Add(Killer killer)
@@ -84,8 +85,8 @@ namespace KillerDex.Infrastructure.Repositories
             if (string.IsNullOrWhiteSpace(alias))
                 return false;
 
-            return _killers.Any(a =>
-                string.Equals(a.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
+            return _killers.Any(k =>
+                string.Equals(k.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
         public bool ExistsByAliasExcludingId(string alias, Guid excludeId)
@@ -93,9 +94,9 @@ namespace KillerDex.Infrastructure.Repositories
             if (string.IsNullOrWhiteSpace(alias))
                 return false;
 
-            return _killers.Any(a =>
-                a.Id != excludeId &&
-                string.Equals(a.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
+            return _killers.Any(k =>
+                k.Id != excludeId &&
+                string.Equals(k.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using KillerDex.Core.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using KillerDex.Core.Interfaces;
+using KillerDex.Core.Models;
 
 namespace KillerDex.Infrastructure.Repositories
 {
-    public class JsonMatchRepository
+    public class JsonMatchRepository : IMatchRepository
     {
         private readonly string _filePath;
         private List<Match> _matches;
@@ -15,6 +16,12 @@ namespace KillerDex.Infrastructure.Repositories
         public JsonMatchRepository()
         {
             _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "matches.json");
+            LoadMatches();
+        }
+
+        public JsonMatchRepository(string filePath)
+        {
+            _filePath = filePath;
             LoadMatches();
         }
 
@@ -92,12 +99,14 @@ namespace KillerDex.Infrastructure.Repositories
 
         public int GetWinsCount()
         {
-            return _matches.Count(m => m.Survivors > 0);
+            // IsWin è true se Survivors ha almeno un elemento
+            return _matches.Count(m => m.IsWin);
         }
 
         public int GetLossesCount()
         {
-            return _matches.Count(m => m.Survivors == 0);
+            // Loss è quando nessuno è sopravvissuto
+            return _matches.Count(m => !m.IsWin);
         }
     }
 }

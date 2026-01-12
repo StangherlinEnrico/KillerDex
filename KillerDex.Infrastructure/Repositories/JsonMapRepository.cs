@@ -1,13 +1,14 @@
-﻿using KillerDex.Core.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using KillerDex.Core.Interfaces;
+using KillerDex.Core.Models;
 
 namespace KillerDex.Infrastructure.Repositories
 {
-    public class JsonMapRepository
+    public class JsonMapRepository : IMapRepository
     {
         private readonly string _filePath;
         private List<Map> _maps;
@@ -15,6 +16,12 @@ namespace KillerDex.Infrastructure.Repositories
         public JsonMapRepository()
         {
             _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "maps.json");
+            LoadMaps();
+        }
+
+        public JsonMapRepository(string filePath)
+        {
+            _filePath = filePath;
             LoadMaps();
         }
 
@@ -71,6 +78,25 @@ namespace KillerDex.Infrastructure.Repositories
                 _maps.Remove(map);
                 SaveMaps();
             }
+        }
+
+        public bool ExistsByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            return _maps.Any(m =>
+                string.Equals(m.Name?.Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool ExistsByNameExcludingId(string name, Guid excludeId)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            return _maps.Any(m =>
+                m.Id != excludeId &&
+                string.Equals(m.Name?.Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }

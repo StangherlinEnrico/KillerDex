@@ -49,7 +49,16 @@
     <Compile Include="Repositories\JsonKillerRepository.cs" />
     <Compile Include="Repositories\JsonMapRepository.cs" />
     <Compile Include="Repositories\JsonMatchRepository.cs" />
+    <Compile Include="Resources\InfrastructureMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InfrastructureMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AllyService.cs" />
+    <Compile Include="Services\KillerService.cs" />
     <Compile Include="Services\LanguageService.cs" />
+    <Compile Include="Services\MapService.cs" />
+    <Compile Include="Services\MatchService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KillerDex.Core\KillerDex.Core.csproj">
@@ -57,8 +66,13 @@
       <Name>KillerDex.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\InfrastructureMessages.it.resx" />
+    <EmbeddedResource Include="Resources\InfrastructureMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InfrastructureMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
