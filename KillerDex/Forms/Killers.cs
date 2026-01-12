@@ -1,22 +1,46 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using KillerDex.Models;
-using KillerDex.Services;
+using KillerDex.Core.Models;
+using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
 
 namespace KillerDex
 {
     public partial class Killers : Form
     {
-        private KillerService _service;
+        private readonly KillerService _service;
         private Killer _selectedKiller;
         private bool _isAddMode = false;
+
+        // Dead by Daylight color palette
+        private static class DbdColors
+        {
+            public static readonly Color Background = Color.FromArgb(20, 20, 25);
+            public static readonly Color HeaderBackground = Color.FromArgb(15, 15, 20);
+            public static readonly Color CardBackground = Color.FromArgb(30, 30, 38);
+            public static readonly Color CardBackgroundAlt = Color.FromArgb(25, 25, 32);
+            public static readonly Color CardSelected = Color.FromArgb(140, 20, 20);
+            public static readonly Color CardHover = Color.FromArgb(40, 40, 50);
+            public static readonly Color AccentRed = Color.FromArgb(180, 30, 30);
+            public static readonly Color AccentRedDark = Color.FromArgb(140, 20, 20);
+            public static readonly Color TextPrimary = Color.FromArgb(220, 220, 220);
+            public static readonly Color TextSecondary = Color.FromArgb(140, 140, 140);
+            public static readonly Color TextAccent = Color.FromArgb(140, 50, 50);
+            public static readonly Color Border = Color.FromArgb(70, 70, 80);
+        }
 
         public Killers()
         {
             InitializeComponent();
             _service = new KillerService();
+
+            // Enable double buffering for smoother rendering
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                     ControlStyles.AllPaintingInWmPaint |
+                     ControlStyles.UserPaint, true);
+
             ApplyLocalization();
             LoadKillersList();
             ShowEditPanel(false);
@@ -52,7 +76,9 @@ namespace KillerDex
         private void ShowEditPanel(bool show)
         {
             pnlEdit.Visible = show;
+            lstKillers.Visible = !show;
             btnAdd.Visible = !show;
+            pnlActions.Visible = !show;
         }
 
         private void ShowActionButtons(bool show)
@@ -87,35 +113,72 @@ namespace KillerDex
             if (e.Index < 0) return;
 
             Killer killer = (Killer)lstKillers.Items[e.Index];
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            Rectangle bounds = e.Bounds;
+            bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+            // Background
             Color backColor;
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            if (isSelected)
             {
-                backColor = Color.FromArgb(108, 92, 231);
+                backColor = DbdColors.CardSelected;
             }
             else
             {
-                backColor = e.Index % 2 == 0
-                    ? Color.FromArgb(45, 45, 55)
-                    : Color.FromArgb(55, 55, 65);
+                backColor = e.Index % 2 == 0 ? DbdColors.CardBackground : DbdColors.CardBackgroundAlt;
             }
 
-            e.Graphics.FillRectangle(new SolidBrush(backColor), e.Bounds);
-
-            string text = killer.Alias;
-            Font font = new Font("Segoe UI", 11F, FontStyle.Regular);
-            Color textColor = Color.FromArgb(240, 240, 240);
-
-            StringFormat sf = new StringFormat();
-            sf.LineAlignment = StringAlignment.Center;
-
-            Rectangle textBounds = new Rectangle(e.Bounds.X + 15, e.Bounds.Y, e.Bounds.Width - 15, e.Bounds.Height);
-            e.Graphics.DrawString(text, font, new SolidBrush(textColor), textBounds, sf);
-
-            using (Pen pen = new Pen(Color.FromArgb(70, 70, 80)))
+            using (SolidBrush brush = new SolidBrush(backColor))
             {
-                e.Graphics.DrawLine(pen, e.Bounds.Left, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+                g.FillRectangle(brush, bounds);
             }
+
+            // Left accent bar for selected item
+            if (isSelected)
+            {
+                Rectangle accentRect = new Rectangle(bounds.X, bounds.Y, 4, bounds.Height);
+                using (SolidBrush accentBrush = new SolidBrush(DbdColors.AccentRed))
+                {
+                    g.FillRectangle(accentBrush, accentRect);
+                }
+            }
+
+            // Killer icon placeholder (skull emoji or custom icon)
+            string icon = "💀";
+            Font iconFont = new Font("Segoe UI Emoji", 16F);
+            SizeF iconSize = g.MeasureString(icon, iconFont);
+            float iconX = bounds.X + 20;
+            float iconY = bounds.Y + (bounds.Height - iconSize.Height) / 2;
+
+            using (SolidBrush iconBrush = new SolidBrush(isSelected ? Color.White : DbdColors.AccentRed))
+            {
+                g.DrawString(icon, iconFont, iconBrush, iconX, iconY);
+            }
+
+            // Killer name
+            string text = killer.Alias;
+            Font textFont = new Font("Segoe UI", 12F, FontStyle.Regular);
+            Color textColor = isSelected ? Color.White : DbdColors.TextPrimary;
+
+            float textX = iconX + iconSize.Width + 15;
+            float textY = bounds.Y + (bounds.Height - textFont.GetHeight()) / 2;
+
+            using (SolidBrush textBrush = new SolidBrush(textColor))
+            {
+                g.DrawString(text, textFont, textBrush, textX, textY);
+            }
+
+            // Bottom separator line
+            using (Pen pen = new Pen(Color.FromArgb(40, 40, 50), 1))
+            {
+                g.DrawLine(pen, bounds.Left + 20, bounds.Bottom - 1, bounds.Right - 20, bounds.Bottom - 1);
+            }
+
+            // Dispose fonts
+            iconFont.Dispose();
+            textFont.Dispose();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -149,7 +212,7 @@ namespace KillerDex
                 string.Format(Strings.Killers_ConfirmDelete, _selectedKiller.Alias),
                 Strings.Dialog_ConfirmDelete,
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+                MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
@@ -163,8 +226,12 @@ namespace KillerDex
         {
             if (string.IsNullOrWhiteSpace(txtAlias.Text))
             {
-                MessageBox.Show(Strings.Killers_ValidationAlias, Strings.Dialog_Warning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    Strings.Killers_ValidationAlias,
+                    Strings.Dialog_Warning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                txtAlias.Focus();
                 return;
             }
 
@@ -174,12 +241,32 @@ namespace KillerDex
                 {
                     Alias = txtAlias.Text.Trim()
                 };
-                _service.Add(killer);
+
+                var validationResult = _service.Add(killer);
+                if (!validationResult.IsValid)
+                {
+                    MessageBox.Show(
+                        validationResult.GetErrorsAsString(),
+                        Strings.Dialog_Warning,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
             }
             else
             {
                 _selectedKiller.Alias = txtAlias.Text.Trim();
-                _service.Update(_selectedKiller);
+
+                var validationResult = _service.Update(_selectedKiller);
+                if (!validationResult.IsValid)
+                {
+                    MessageBox.Show(
+                        validationResult.GetErrorsAsString(),
+                        Strings.Dialog_Warning,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
             LoadKillersList();
@@ -190,6 +277,7 @@ namespace KillerDex
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ShowEditPanel(false);
+            ClearSelection();
         }
     }
 }
