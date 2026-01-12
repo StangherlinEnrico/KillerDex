@@ -1,22 +1,20 @@
-﻿using System;
+﻿using KillerDex.Core.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.Script.Serialization;
-using KillerDex.Models;
 
-namespace KillerDex.Services
+namespace KillerDex.Infrastructure.Repositories
 {
-    public class MatchService
+    public class JsonMatchRepository
     {
         private readonly string _filePath;
         private List<Match> _matches;
-        private readonly JavaScriptSerializer _serializer;
 
-        public MatchService()
+        public JsonMatchRepository()
         {
             _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "matches.json");
-            _serializer = new JavaScriptSerializer();
             LoadMatches();
         }
 
@@ -25,7 +23,7 @@ namespace KillerDex.Services
             if (File.Exists(_filePath))
             {
                 string json = File.ReadAllText(_filePath);
-                _matches = _serializer.Deserialize<List<Match>>(json) ?? new List<Match>();
+                _matches = JsonConvert.DeserializeObject<List<Match>>(json) ?? new List<Match>();
             }
             else
             {
@@ -35,7 +33,7 @@ namespace KillerDex.Services
 
         private void SaveMatches()
         {
-            string json = _serializer.Serialize(_matches);
+            string json = JsonConvert.SerializeObject(_matches, Formatting.Indented);
             File.WriteAllText(_filePath, json);
         }
 

@@ -1,20 +1,26 @@
-﻿using KillerDex.Models;
+﻿using KillerDex.Core.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
-namespace KillerDex.Services
+namespace KillerDex.Infrastructure.Repositories
 {
-    public class KillerService
+    public class JsonKillerRepository
     {
         private readonly string _filePath;
         private List<Killer> _killers;
 
-        public KillerService()
+        public JsonKillerRepository()
         {
-            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "killers.json");
+            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "allies.json");
+            LoadKillers();
+        }
+
+        public JsonKillerRepository(string filePath)
+        {
+            _filePath = filePath;
             LoadKillers();
         }
 
@@ -44,7 +50,7 @@ namespace KillerDex.Services
 
         public Killer GetById(Guid id)
         {
-            return _killers.FirstOrDefault(k => k.Id == id);
+            return _killers.FirstOrDefault(a => a.Id == id);
         }
 
         public void Add(Killer killer)
@@ -71,6 +77,25 @@ namespace KillerDex.Services
                 _killers.Remove(killer);
                 SaveKillers();
             }
+        }
+
+        public bool ExistsByAlias(string alias)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+                return false;
+
+            return _killers.Any(a =>
+                string.Equals(a.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool ExistsByAliasExcludingId(string alias, Guid excludeId)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+                return false;
+
+            return _killers.Any(a =>
+                a.Id != excludeId &&
+                string.Equals(a.Alias?.Trim(), alias.Trim(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }

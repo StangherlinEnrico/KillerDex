@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.Script.Serialization;
-using KillerDex.Models;
+using Newtonsoft.Json;
+using KillerDex.Core.Interfaces;
+using KillerDex.Core.Models;
 
-namespace KillerDex.Services
+namespace KillerDex.Infrastructure.Repositories
 {
-    public class AllyService
+    public class JsonAllyRepository : IAllyRepository
     {
         private readonly string _filePath;
         private List<Ally> _allies;
-        private readonly JavaScriptSerializer _serializer;
 
-        public AllyService()
+        public JsonAllyRepository()
         {
             _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "allies.json");
-            _serializer = new JavaScriptSerializer();
+            LoadAllies();
+        }
+
+        public JsonAllyRepository(string filePath)
+        {
+            _filePath = filePath;
             LoadAllies();
         }
 
@@ -25,7 +30,7 @@ namespace KillerDex.Services
             if (File.Exists(_filePath))
             {
                 string json = File.ReadAllText(_filePath);
-                _allies = _serializer.Deserialize<List<Ally>>(json) ?? new List<Ally>();
+                _allies = JsonConvert.DeserializeObject<List<Ally>>(json) ?? new List<Ally>();
             }
             else
             {
@@ -35,7 +40,7 @@ namespace KillerDex.Services
 
         private void SaveAllies()
         {
-            string json = _serializer.Serialize(_allies);
+            string json = JsonConvert.SerializeObject(_allies, Formatting.Indented);
             File.WriteAllText(_filePath, json);
         }
 
@@ -73,6 +78,25 @@ namespace KillerDex.Services
                 _allies.Remove(ally);
                 SaveAllies();
             }
+        }
+
+        public bool ExistsByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            return _allies.Any(a =>
+                string.Equals(a.Name?.Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool ExistsByNameExcludingId(string name, Guid excludeId)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            return _allies.Any(a =>
+                a.Id != excludeId &&
+                string.Equals(a.Name?.Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace KillerDex.Models
+namespace KillerDex.Core.Models
 {
-    public class Map
+    public class Killer
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Alias { get; set; }
         public DateTime DateAdded { get; set; }
 
-        public Map()
+        public Killer()
         {
             Id = Guid.NewGuid();
             DateAdded = DateTime.Now;
@@ -16,7 +16,7 @@ namespace KillerDex.Models
 
         public override string ToString()
         {
-            return Name;
+            return Alias;
         }
     }
 }

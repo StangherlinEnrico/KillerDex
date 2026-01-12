@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Ally Validation -->
+  <data name="Ally_NameRequired" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="Ally_NameDuplicate" xml:space="preserve">
+    <value>An ally with this name already exists.</value>
+  </data>
+  
+  <!-- Killer Validation -->
+  <data name="Killer_AliasRequired" xml:space="preserve">
+    <value>Alias is required.</value>
+  </data>
+  <data name="Killer_AliasDuplicate" xml:space="preserve">
+    <value>A killer with this alias already exists.</value>
+  </data>
+  
+  <!-- Map Validation -->
+  <data name="Map_NameRequired" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="Map_NameDuplicate" xml:space="preserve">
+    <value>A map with this name already exists.</value>
+  </data>
+  
+  <!-- Match Validation -->
+  <data name="Match_MapRequired" xml:space="preserve">
+    <value>Map is required.</value>
+  </data>
+  <data name="Match_KillerRequired" xml:space="preserve">
+    <value>Killer is required.</value>
+  </data>
+  <data name="Match_GeneratorsInvalid" xml:space="preserve">
+    <value>Generators completed must be between 0 and 5.</value>
+  </data>
+  <data name="Match_AlliesMaxExceeded" xml:space="preserve">
+    <value>You can select up to 3 allies.</value>
+  </data>
+  <data name="Match_FirstHookRequired" xml:space="preserve">
+    <value>First hook is required.</value>
+  </data>
+  <data name="Match_SurvivorsMaxExceeded" xml:space="preserve">
+    <value>You can enter up to 4 survivors.</value>
+  </data>
+  
+</root>

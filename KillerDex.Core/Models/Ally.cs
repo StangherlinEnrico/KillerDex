@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KillerDex.Models
+namespace KillerDex.Core.Models
 {
     public class Ally
     {

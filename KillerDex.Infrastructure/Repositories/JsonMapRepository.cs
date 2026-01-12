@@ -1,22 +1,20 @@
-﻿using System;
+﻿using KillerDex.Core.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.Script.Serialization;
-using KillerDex.Models;
 
-namespace KillerDex.Services
+namespace KillerDex.Infrastructure.Repositories
 {
-    public class MapService
+    public class JsonMapRepository
     {
         private readonly string _filePath;
         private List<Map> _maps;
-        private readonly JavaScriptSerializer _serializer;
 
-        public MapService()
+        public JsonMapRepository()
         {
             _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "maps.json");
-            _serializer = new JavaScriptSerializer();
             LoadMaps();
         }
 
@@ -25,7 +23,7 @@ namespace KillerDex.Services
             if (File.Exists(_filePath))
             {
                 string json = File.ReadAllText(_filePath);
-                _maps = _serializer.Deserialize<List<Map>>(json) ?? new List<Map>();
+                _maps = JsonConvert.DeserializeObject<List<Map>>(json) ?? new List<Map>();
             }
             else
             {
@@ -35,7 +33,7 @@ namespace KillerDex.Services
 
         private void SaveMaps()
         {
-            string json = _serializer.Serialize(_maps);
+            string json = JsonConvert.SerializeObject(_maps, Formatting.Indented);
             File.WriteAllText(_filePath, json);
         }
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using System.Web.Script.Serialization;
 
 namespace KillerDex.Services
 {
@@ -15,7 +15,6 @@ namespace KillerDex.Services
     {
         private static readonly string _settingsPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "settings.json");
-        private static readonly JavaScriptSerializer _serializer = new JavaScriptSerializer();
 
         public static string CurrentLanguage { get; private set; } = "en";
 
@@ -32,7 +31,7 @@ namespace KillerDex.Services
                 try
                 {
                     string json = File.ReadAllText(_settingsPath);
-                    var settings = _serializer.Deserialize<LanguageSettings>(json);
+                    var settings = JsonConvert.DeserializeObject<LanguageSettings>(json);
                     if (settings != null && !string.IsNullOrEmpty(settings.Language))
                     {
                         CurrentLanguage = settings.Language;
@@ -45,7 +44,7 @@ namespace KillerDex.Services
         private static void SaveSettings()
         {
             var settings = new LanguageSettings { Language = CurrentLanguage };
-            string json = _serializer.Serialize(settings);
+            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(_settingsPath, json);
         }
 
