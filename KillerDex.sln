@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36811.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.WinForms", "KillerDex\KillerDex.WinForms.csproj", "{E016760A-73EE-4782-8579-C8A7CB5BEBDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.WinForms", "KillerDex.WinForms\KillerDex.WinForms.csproj", "{E016760A-73EE-4782-8579-C8A7CB5BEBDF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.Core", "KillerDex.Core\KillerDex.Core.csproj", "{0F4CA289-7160-4BE5-A141-E275F7DCD66B}"
 EndProject

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
+using KillerDex.Controls;
 
 namespace KillerDex
 {
@@ -296,135 +297,6 @@ namespace KillerDex
         {
             MessageBox.Show(message, Strings.Dialog_Success,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-    }
-
-    /// <summary>
-    /// Custom selector button with Dead by Daylight styling
-    /// </summary>
-    public class DbdSelectorButton : Control
-    {
-        private bool _isSelected;
-        private bool _isHovered;
-
-        public int Value { get; set; }
-        public string Icon { get; set; } = "";
-        public bool UseGreenWhenSelected { get; set; } = false;
-
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
-            {
-                _isSelected = value;
-                Invalidate();
-            }
-        }
-
-        // Colors
-        private static readonly Color ColorDefault = Color.FromArgb(45, 45, 55);
-        private static readonly Color ColorHover = Color.FromArgb(60, 60, 70);
-        private static readonly Color ColorSelectedRed = Color.FromArgb(140, 20, 20);
-        private static readonly Color ColorSelectedGreen = Color.FromArgb(30, 130, 60);
-        private static readonly Color ColorBorder = Color.FromArgb(80, 80, 90);
-        private static readonly Color ColorBorderSelected = Color.FromArgb(180, 30, 30);
-        private static readonly Color ColorBorderSelectedGreen = Color.FromArgb(50, 180, 80);
-        private static readonly Color ColorText = Color.FromArgb(220, 220, 220);
-
-        public DbdSelectorButton()
-        {
-            SetStyle(ControlStyles.AllPaintingInWmPaint |
-                     ControlStyles.UserPaint |
-                     ControlStyles.OptimizedDoubleBuffer |
-                     ControlStyles.ResizeRedraw, true);
-
-            Cursor = Cursors.Hand;
-            Size = new Size(50, 40);
-        }
-
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            _isHovered = true;
-            Invalidate();
-            base.OnMouseEnter(e);
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            _isHovered = false;
-            Invalidate();
-            base.OnMouseLeave(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
-            Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
-
-            // Determine colors
-            Color backColor;
-            Color borderColor;
-
-            if (_isSelected)
-            {
-                backColor = UseGreenWhenSelected ? ColorSelectedGreen : ColorSelectedRed;
-                borderColor = UseGreenWhenSelected ? ColorBorderSelectedGreen : ColorBorderSelected;
-            }
-            else if (_isHovered)
-            {
-                backColor = ColorHover;
-                borderColor = ColorBorder;
-            }
-            else
-            {
-                backColor = ColorDefault;
-                borderColor = ColorBorder;
-            }
-
-            // Draw background with rounded corners
-            using (GraphicsPath path = CreateRoundedRectangle(rect, 6))
-            {
-                using (SolidBrush brush = new SolidBrush(backColor))
-                {
-                    g.FillPath(brush, path);
-                }
-
-                using (Pen pen = new Pen(borderColor, 1))
-                {
-                    g.DrawPath(pen, path);
-                }
-            }
-
-            // Draw icon and text
-            string displayText = string.IsNullOrEmpty(Icon) ? Text : $"{Icon} {Text}";
-
-            using (Font font = new Font("Segoe UI", 10F, _isSelected ? FontStyle.Bold : FontStyle.Regular))
-            using (SolidBrush textBrush = new SolidBrush(ColorText))
-            {
-                StringFormat sf = new StringFormat
-                {
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Center
-                };
-
-                g.DrawString(displayText, font, textBrush, rect, sf);
-            }
-        }
-
-        private GraphicsPath CreateRoundedRectangle(Rectangle rect, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            int diameter = radius * 2;
-
-            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
-            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
-            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
-            path.CloseFigure();
-
-            return path;
         }
     }
 }

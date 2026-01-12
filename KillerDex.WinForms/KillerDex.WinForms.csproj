@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DbdSelectorButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\AddMatch.cs">
       <SubType>Form</SubType>
     </Compile>
