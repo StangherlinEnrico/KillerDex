@@ -72,8 +72,8 @@ namespace KillerDex.Infrastructure.Repositories
             {
                 existing.Date = match.Date;
                 existing.AllyIds = match.AllyIds;
-                existing.MapId = match.MapId;
-                existing.KillerId = match.KillerId;
+                existing.Map = match.Map;
+                existing.Killer = match.Killer;
                 existing.FirstHook = match.FirstHook;
                 existing.GeneratorsCompleted = match.GeneratorsCompleted;
                 existing.Survivors = match.Survivors;

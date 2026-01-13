@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KillerDex.Core.Enums;
 
 namespace KillerDex.Core.Models
 {
@@ -8,8 +9,8 @@ namespace KillerDex.Core.Models
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public List<Guid> AllyIds { get; set; }
-        public Guid MapId { get; set; }
-        public Guid KillerId { get; set; }
+        public MapType Map { get; set; }
+        public KillerType Killer { get; set; }
         public string FirstHook { get; set; }
         public int GeneratorsCompleted { get; set; }
         public List<string> Survivors { get; set; }

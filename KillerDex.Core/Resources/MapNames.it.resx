@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Autohaven Wreckers -->
+  <data name="AzarovsRestingPlace" xml:space="preserve">
+    <value>Luogo di Riposo di Azarov</value>
+  </data>
+  <data name="BloodLodge" xml:space="preserve">
+    <value>Rifugio Insanguinato</value>
+  </data>
+  <data name="GasHeaven" xml:space="preserve">
+    <value>Paradiso del Gas</value>
+  </data>
+  <data name="WrackersYard" xml:space="preserve">
+    <value>Deposito dei Rottami</value>
+  </data>
+  <data name="WretchedShop" xml:space="preserve">
+    <value>Negozio Maledetto</value>
+  </data>
+
+  <!-- Backwater Swamp -->
+  <data name="ThePaleRose" xml:space="preserve">
+    <value>La Rosa Pallida</value>
+  </data>
+  <data name="GrimPantry" xml:space="preserve">
+    <value>Dispensa Lugubre</value>
+  </data>
+
+  <!-- Coldwind Farm -->
+  <data name="FracturedCowshed" xml:space="preserve">
+    <value>Stalla Fratturata</value>
+  </data>
+  <data name="TheThompsonHouse" xml:space="preserve">
+    <value>Casa Thompson</value>
+  </data>
+  <data name="TormentCreek" xml:space="preserve">
+    <value>Torrente del Tormento</value>
+  </data>
+  <data name="RottenFields" xml:space="preserve">
+    <value>Campi Marci</value>
+  </data>
+  <data name="RancidAbattoir" xml:space="preserve">
+    <value>Mattatoio Rancido</value>
+  </data>
+
+  <!-- Crotus Prenn Asylum -->
+  <data name="DisturbedWard" xml:space="preserve">
+    <value>Reparto Disturbato</value>
+  </data>
+  <data name="FatherCampbellsChapel" xml:space="preserve">
+    <value>Cappella di Padre Campbell</value>
+  </data>
+
+  <!-- Haddonfield -->
+  <data name="LampkinLane" xml:space="preserve">
+    <value>Lampkin Lane</value>
+  </data>
+
+  <!-- Lery's Memorial Institute -->
+  <data name="TreatmentTheatre" xml:space="preserve">
+    <value>Teatro di Trattamento</value>
+  </data>
+
+  <!-- MacMillan Estate -->
+  <data name="CoalTower" xml:space="preserve">
+    <value>Torre del Carbone</value>
+  </data>
+  <data name="GroaningStorehouse" xml:space="preserve">
+    <value>Magazzino Gemebondo</value>
+  </data>
+  <data name="IronworksOfMisery" xml:space="preserve">
+    <value>Ferriera della Miseria</value>
+  </data>
+  <data name="ShelterWoods" xml:space="preserve">
+    <value>Bosco Rifugio</value>
+  </data>
+  <data name="SuffocationPit" xml:space="preserve">
+    <value>Fossa del Soffocamento</value>
+  </data>
+
+  <!-- Red Forest -->
+  <data name="MothersDwelling" xml:space="preserve">
+    <value>Dimora della Madre</value>
+  </data>
+  <data name="TempleOfPurgation" xml:space="preserve">
+    <value>Tempio della Purificazione</value>
+  </data>
+
+  <!-- Springwood -->
+  <data name="BadhamPreschool" xml:space="preserve">
+    <value>Asilo Badham</value>
+  </data>
+
+  <!-- Gideon Meat Plant -->
+  <data name="TheGame" xml:space="preserve">
+    <value>Il Gioco</value>
+  </data>
+
+  <!-- Yamaoka Estate -->
+  <data name="FamilyResidence" xml:space="preserve">
+    <value>Residenza di Famiglia</value>
+  </data>
+  <data name="SanctumOfWrath" xml:space="preserve">
+    <value>Santuario dell'Ira</value>
+  </data>
+
+  <!-- Ormond -->
+  <data name="MountOrmondResort" xml:space="preserve">
+    <value>Resort Monte Ormond</value>
+  </data>
+
+  <!-- Grave of Glenvale -->
+  <data name="DeadDawgSaloon" xml:space="preserve">
+    <value>Saloon Dead Dawg</value>
+  </data>
+
+  <!-- Silent Hill -->
+  <data name="MidwichElementarySchool" xml:space="preserve">
+    <value>Scuola Elementare Midwich</value>
+  </data>
+
+  <!-- Raccoon City -->
+  <data name="RaccoonCityPoliceStation" xml:space="preserve">
+    <value>Stazione di Polizia di Raccoon City</value>
+  </data>
+
+  <!-- Eyrie of Crows -->
+  <data name="EyrieOfCrows" xml:space="preserve">
+    <value>Nido dei Corvi</value>
+  </data>
+
+  <!-- Garden of Joy -->
+  <data name="GardenOfJoy" xml:space="preserve">
+    <value>Giardino della Gioia</value>
+  </data>
+
+  <!-- Shattered Square -->
+  <data name="ShatteredSquare" xml:space="preserve">
+    <value>Piazza Distrutta</value>
+  </data>
+
+  <!-- Toba Landing -->
+  <data name="TobaLanding" xml:space="preserve">
+    <value>Approdo Toba</value>
+  </data>
+
+  <!-- Nostromo Wreckage -->
+  <data name="NostromoWreckage" xml:space="preserve">
+    <value>Relitto del Nostromo</value>
+  </data>
+
+  <!-- Greenville Square -->
+  <data name="GreenvilleSquareShoppingCentre" xml:space="preserve">
+    <value>Centro Commerciale Greenville Square</value>
+  </data>
+
+  <!-- Forgotten Ruins -->
+  <data name="ForgottenRuins" xml:space="preserve">
+    <value>Rovine Dimenticate</value>
+  </data>
+
+  <!-- Borgo -->
+  <data name="Borgo" xml:space="preserve">
+    <value>Borgo</value>
+  </data>
+
+  <!-- Dvarka Deepwood -->
+  <data name="DvarkaDeepwood" xml:space="preserve">
+    <value>Foresta Profonda di Dvarka</value>
+  </data>
+
+</root>

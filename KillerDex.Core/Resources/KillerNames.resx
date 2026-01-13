@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Trapper" xml:space="preserve">
+    <value>The Trapper</value>
+  </data>
+  <data name="Wraith" xml:space="preserve">
+    <value>The Wraith</value>
+  </data>
+  <data name="Hillbilly" xml:space="preserve">
+    <value>The Hillbilly</value>
+  </data>
+  <data name="Nurse" xml:space="preserve">
+    <value>The Nurse</value>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>The Shape</value>
+  </data>
+  <data name="Hag" xml:space="preserve">
+    <value>The Hag</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>The Doctor</value>
+  </data>
+  <data name="Huntress" xml:space="preserve">
+    <value>The Huntress</value>
+  </data>
+  <data name="Cannibal" xml:space="preserve">
+    <value>The Cannibal</value>
+  </data>
+  <data name="Nightmare" xml:space="preserve">
+    <value>The Nightmare</value>
+  </data>
+  <data name="Pig" xml:space="preserve">
+    <value>The Pig</value>
+  </data>
+  <data name="Clown" xml:space="preserve">
+    <value>The Clown</value>
+  </data>
+  <data name="Spirit" xml:space="preserve">
+    <value>The Spirit</value>
+  </data>
+  <data name="Legion" xml:space="preserve">
+    <value>The Legion</value>
+  </data>
+  <data name="Plague" xml:space="preserve">
+    <value>The Plague</value>
+  </data>
+  <data name="GhostFace" xml:space="preserve">
+    <value>The Ghost Face</value>
+  </data>
+  <data name="Demogorgon" xml:space="preserve">
+    <value>The Demogorgon</value>
+  </data>
+  <data name="Oni" xml:space="preserve">
+    <value>The Oni</value>
+  </data>
+  <data name="Deathslinger" xml:space="preserve">
+    <value>The Deathslinger</value>
+  </data>
+  <data name="Executioner" xml:space="preserve">
+    <value>The Executioner</value>
+  </data>
+  <data name="Blight" xml:space="preserve">
+    <value>The Blight</value>
+  </data>
+  <data name="Twins" xml:space="preserve">
+    <value>The Twins</value>
+  </data>
+  <data name="Trickster" xml:space="preserve">
+    <value>The Trickster</value>
+  </data>
+  <data name="Nemesis" xml:space="preserve">
+    <value>The Nemesis</value>
+  </data>
+  <data name="Cenobite" xml:space="preserve">
+    <value>The Cenobite</value>
+  </data>
+  <data name="Artist" xml:space="preserve">
+    <value>The Artist</value>
+  </data>
+  <data name="Onryo" xml:space="preserve">
+    <value>The Onryo</value>
+  </data>
+  <data name="Dredge" xml:space="preserve">
+    <value>The Dredge</value>
+  </data>
+  <data name="Mastermind" xml:space="preserve">
+    <value>The Mastermind</value>
+  </data>
+  <data name="Knight" xml:space="preserve">
+    <value>The Knight</value>
+  </data>
+  <data name="SkullMerchant" xml:space="preserve">
+    <value>The Skull Merchant</value>
+  </data>
+  <data name="Singularity" xml:space="preserve">
+    <value>The Singularity</value>
+  </data>
+  <data name="Xenomorph" xml:space="preserve">
+    <value>The Xenomorph</value>
+  </data>
+  <data name="GoodGuy" xml:space="preserve">
+    <value>The Good Guy</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>The Unknown</value>
+  </data>
+  <data name="Lich" xml:space="preserve">
+    <value>The Lich</value>
+  </data>
+  <data name="DarkLord" xml:space="preserve">
+    <value>The Dark Lord</value>
+  </data>
+  <data name="Houndmaster" xml:space="preserve">
+    <value>The Houndmaster</value>
+  </data>
+
+</root>

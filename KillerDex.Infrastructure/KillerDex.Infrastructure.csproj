@@ -46,8 +46,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\JsonAllyRepository.cs" />
-    <Compile Include="Repositories\JsonKillerRepository.cs" />
-    <Compile Include="Repositories\JsonMapRepository.cs" />
     <Compile Include="Repositories\JsonMatchRepository.cs" />
     <Compile Include="Resources\InfrastructureMessages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -55,9 +53,7 @@
       <DependentUpon>InfrastructureMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\AllyService.cs" />
-    <Compile Include="Services\KillerService.cs" />
     <Compile Include="Services\LanguageService.cs" />
-    <Compile Include="Services\MapService.cs" />
     <Compile Include="Services\MatchService.cs" />
   </ItemGroup>
   <ItemGroup>

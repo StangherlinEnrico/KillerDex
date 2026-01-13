@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using KillerDex.Core.Enums;
+using KillerDex.Core.Extensions;
 using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
@@ -14,8 +16,6 @@ namespace KillerDex
     public partial class AddMatch : Form
     {
         private readonly AllyService _allyService;
-        private readonly MapService _mapService;
-        private readonly KillerService _killerService;
         private readonly MatchService _matchService;
 
         // Custom selector buttons
@@ -50,8 +50,6 @@ namespace KillerDex
             InitializeComponent();
 
             _allyService = new AllyService();
-            _mapService = new MapService();
-            _killerService = new KillerService();
             _matchService = new MatchService();
 
             // Enable double buffering
@@ -141,17 +139,27 @@ namespace KillerDex
 
             // Load maps
             cmbMap.DataSource = null;
-            var maps = _mapService.GetAll();
+            var maps = Enum.GetValues(typeof(MapType))
+                .Cast<MapType>()
+                .Select(k => new { Value = k, Display = k.GetDisplayName() })
+                .OrderBy(k => k.Display)
+                .ToList();
             cmbMap.DataSource = maps;
-            cmbMap.DisplayMember = "Name";
-            cmbMap.SelectedIndex = maps.Count > 0 ? -1 : -1;
+            cmbMap.DisplayMember = "Display";
+            cmbMap.ValueMember = "Value";
+            cmbMap.SelectedIndex = -1;
 
-            // Load killers
+            // Load killers from enum
             cmbKiller.DataSource = null;
-            var killers = _killerService.GetAll();
+            var killers = Enum.GetValues(typeof(KillerType))
+                .Cast<KillerType>()
+                .Select(k => new { Value = k, Display = k.GetDisplayName() })
+                .OrderBy(k => k.Display)
+                .ToList();
             cmbKiller.DataSource = killers;
-            cmbKiller.DisplayMember = "Alias";
-            cmbKiller.SelectedIndex = killers.Count > 0 ? -1 : -1;
+            cmbKiller.DisplayMember = "Display";
+            cmbKiller.ValueMember = "Value";
+            cmbKiller.SelectedIndex = -1;
 
             // Set current date
             dtpDate.Value = DateTime.Now;
@@ -253,8 +261,8 @@ namespace KillerDex
             var match = new Match
             {
                 Date = dtpDate.Value,
-                MapId = ((Map)cmbMap.SelectedItem).Id,
-                KillerId = ((Killer)cmbKiller.SelectedItem).Id,
+                Map = (MapType)cmbMap.SelectedValue,
+                Killer = (KillerType)cmbKiller.SelectedValue,
                 FirstHook = cmbFirstHook.SelectedItem?.ToString() ?? Strings.Match_Myself,
                 GeneratorsCompleted = _selectedGenerators,
                 Notes = txtNotes.Text.Trim(),

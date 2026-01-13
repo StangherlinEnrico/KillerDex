@@ -41,27 +41,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\KillerType.cs" />
+    <Compile Include="Enums\MapType.cs" />
+    <Compile Include="Extensions\KillerTypeExtensions.cs" />
+    <Compile Include="Extensions\MapTypeExtensions.cs" />
     <Compile Include="Interfaces\IAllyRepository.cs" />
-    <Compile Include="Interfaces\IKillerRepository.cs" />
-    <Compile Include="Interfaces\IMapRepository.cs" />
     <Compile Include="Interfaces\IMatchRepository.cs" />
     <Compile Include="Models\Ally.cs" />
-    <Compile Include="Models\Killer.cs" />
-    <Compile Include="Models\Map.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\KillerNames.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KillerNames.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\MapNames.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapNames.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ValidationMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ValidationMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Validators\AllyValidator.cs" />
-    <Compile Include="Validators\KillerValidator.cs" />
-    <Compile Include="Validators\MapValidator.cs" />
     <Compile Include="Validators\MatchValidator.cs" />
     <Compile Include="Validators\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\KillerNames.it.resx" />
+    <EmbeddedResource Include="Resources\KillerNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KillerNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\MapNames.it.resx" />
+    <EmbeddedResource Include="Resources\MapNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MapNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ValidationMessages.it.resx" />
     <EmbeddedResource Include="Resources\ValidationMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>

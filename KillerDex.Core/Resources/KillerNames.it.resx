@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,166 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppName" xml:space="preserve">
-    <value>KillerDex</value>
+  <data name="Trapper" xml:space="preserve">
+    <value>Il Cacciatore</value>
   </data>
-  <data name="Allies_Title" xml:space="preserve">
-    <value>Allies</value>
+  <data name="Wraith" xml:space="preserve">
+    <value>Lo Spettro</value>
   </data>
-  <data name="Allies_Count" xml:space="preserve">
-    <value>{0} allies</value>
+  <data name="Hillbilly" xml:space="preserve">
+    <value>Il Mandriano</value>
   </data>
-  <data name="Allies_PanelNew" xml:space="preserve">
-    <value>New Ally</value>
+  <data name="Nurse" xml:space="preserve">
+    <value>L'Infermiera</value>
   </data>
-  <data name="Allies_PanelEdit" xml:space="preserve">
-    <value>Edit Ally</value>
+  <data name="Shape" xml:space="preserve">
+    <value>L'Ombra</value>
   </data>
-  <data name="Allies_ValidationName" xml:space="preserve">
-    <value>Enter the ally name!</value>
+  <data name="Hag" xml:space="preserve">
+    <value>La Strega</value>
   </data>
-  <data name="Allies_ConfirmDelete" xml:space="preserve">
-    <value>Do you want to delete {0}?</value>
+  <data name="Doctor" xml:space="preserve">
+    <value>Il Dottore</value>
   </data>
-  <data name="Button_Add" xml:space="preserve">
-    <value>➕ Add</value>
+  <data name="Huntress" xml:space="preserve">
+    <value>La Cacciatrice</value>
   </data>
-  <data name="Button_Edit" xml:space="preserve">
-    <value>✏️ Edit</value>
+  <data name="Cannibal" xml:space="preserve">
+    <value>Il Cannibale</value>
   </data>
-  <data name="Button_Delete" xml:space="preserve">
-    <value>🗑️ Delete</value>
+  <data name="Nightmare" xml:space="preserve">
+    <value>L'Incubo</value>
   </data>
-  <data name="Button_Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="Pig" xml:space="preserve">
+    <value>Il Maiale</value>
   </data>
-  <data name="Button_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="Clown" xml:space="preserve">
+    <value>Il Clown</value>
   </data>
-  <data name="Label_Alias" xml:space="preserve">
-    <value>Alias</value>
+  <data name="Spirit" xml:space="preserve">
+    <value>Lo Spirito</value>
   </data>
-  <data name="Label_Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="Legion" xml:space="preserve">
+    <value>La Legione</value>
   </data>
-  <data name="Dialog_Warning" xml:space="preserve">
-    <value>Warning</value>
+  <data name="Plague" xml:space="preserve">
+    <value>La Malattia</value>
   </data>
-  <data name="Dialog_Success" xml:space="preserve">
-    <value>Success</value>
+  <data name="GhostFace" xml:space="preserve">
+    <value>Ghost Face</value>
   </data>
-  <data name="Dialog_ConfirmDelete" xml:space="preserve">
-    <value>Confirm deletion</value>
+  <data name="Demogorgon" xml:space="preserve">
+    <value>Il Demogorgone</value>
   </data>
-  <data name="Menu_File" xml:space="preserve">
-    <value>File</value>
+  <data name="Oni" xml:space="preserve">
+    <value>L'Oni</value>
   </data>
-  <data name="Menu_Exit" xml:space="preserve">
-    <value>Exit</value>
+  <data name="Deathslinger" xml:space="preserve">
+    <value>L'Araldo di Morte</value>
   </data>
-  <data name="Menu_Manage" xml:space="preserve">
-    <value>Manage</value>
+  <data name="Executioner" xml:space="preserve">
+    <value>Il Boia</value>
   </data>
-  <data name="Menu_Maps" xml:space="preserve">
-    <value>Maps</value>
+  <data name="Blight" xml:space="preserve">
+    <value>La Piaga</value>
   </data>
-  <data name="Menu_Allies" xml:space="preserve">
-    <value>Allies</value>
+  <data name="Twins" xml:space="preserve">
+    <value>I Gemelli</value>
   </data>
-  <data name="Menu_Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="Trickster" xml:space="preserve">
+    <value>L'Ingannatore</value>
   </data>
-  <data name="Menu_Italian" xml:space="preserve">
-    <value>🇮🇹 Italiano</value>
+  <data name="Nemesis" xml:space="preserve">
+    <value>Il Nemesis</value>
   </data>
-  <data name="Menu_English" xml:space="preserve">
-    <value>🇬🇧 English</value>
+  <data name="Cenobite" xml:space="preserve">
+    <value>Il Cenobita</value>
   </data>
-  <data name="Home_Stats" xml:space="preserve">
-    <value>General Statistics</value>
+  <data name="Artist" xml:space="preserve">
+    <value>L'Artista</value>
   </data>
-  <data name="Home_TotalMatches" xml:space="preserve">
-    <value>Total Matches:</value>
+  <data name="Onryo" xml:space="preserve">
+    <value>L'Onryo</value>
   </data>
-  <data name="Home_Wins" xml:space="preserve">
-    <value>Wins:</value>
+  <data name="Dredge" xml:space="preserve">
+    <value>La Draga</value>
   </data>
-  <data name="Home_Losses" xml:space="preserve">
-    <value>Losses:</value>
+  <data name="Mastermind" xml:space="preserve">
+    <value>Il Mastermind</value>
   </data>
-  <data name="Home_WinRate" xml:space="preserve">
-    <value>Win Rate:</value>
+  <data name="Knight" xml:space="preserve">
+    <value>Il Cavaliere</value>
   </data>
-  <data name="Home_RecentMatches" xml:space="preserve">
-    <value>Last 5 Matches</value>
+  <data name="SkullMerchant" xml:space="preserve">
+    <value>La Mercante di Teschi</value>
   </data>
-  <data name="Home_AddMatch" xml:space="preserve">
-    <value>+ Add New Match</value>
+  <data name="Singularity" xml:space="preserve">
+    <value>La Singolarità</value>
   </data>
-  <data name="Home_NoMatches" xml:space="preserve">
-    <value>No matches recorded</value>
+  <data name="Xenomorph" xml:space="preserve">
+    <value>Lo Xenomorfo</value>
   </data>
-  <data name="Home_Survivors" xml:space="preserve">
-    <value>survivors</value>
+  <data name="GoodGuy" xml:space="preserve">
+    <value>Good Guy</value>
   </data>
-  <data name="Home_Defeat" xml:space="preserve">
-    <value>Defeat</value>
+  <data name="Unknown" xml:space="preserve">
+    <value>L'Ignoto</value>
   </data>
-  <data name="Match_Title" xml:space="preserve">
-    <value>New Match</value>
+  <data name="Lich" xml:space="preserve">
+    <value>Il Lich</value>
   </data>
-  <data name="Match_Date" xml:space="preserve">
-    <value>Date:</value>
+  <data name="DarkLord" xml:space="preserve">
+    <value>Il Signore Oscuro</value>
   </data>
-  <data name="Match_Allies" xml:space="preserve">
-    <value>Allies:</value>
-  </data>
-  <data name="Match_AlliesHint" xml:space="preserve">
-    <value>(Max 3 selectable)</value>
-  </data>
-  <data name="Match_AlliesMax" xml:space="preserve">
-    <value>You can select up to 3 allies!</value>
-  </data>
-  <data name="Match_Map" xml:space="preserve">
-    <value>Map:</value>
-  </data>
-  <data name="Match_Killer" xml:space="preserve">
-    <value>Killer:</value>
-  </data>
-  <data name="Match_FirstHook" xml:space="preserve">
-    <value>First hook:</value>
-  </data>
-  <data name="Match_Generators" xml:space="preserve">
-    <value>Generators completed:</value>
-  </data>
-  <data name="Match_Survivors" xml:space="preserve">
-    <value>Survivors:</value>
-  </data>
-  <data name="Match_Notes" xml:space="preserve">
-    <value>Notes:</value>
-  </data>
-  <data name="Match_Save" xml:space="preserve">
-    <value>Save Match</value>
-  </data>
-  <data name="Match_Myself" xml:space="preserve">
-    <value>Myself</value>
-  </data>
-  <data name="Match_Filler" xml:space="preserve">
-    <value>Filler</value>
-  </data>
-  <data name="Match_ValidationMap" xml:space="preserve">
-    <value>Select a map!</value>
-  </data>
-  <data name="Match_ValidationKiller" xml:space="preserve">
-    <value>Select a killer!</value>
-  </data>
-  <data name="Match_Saved" xml:space="preserve">
-    <value>Match saved!</value>
-  </data>
-  <data name="Language_RestartRequired" xml:space="preserve">
-    <value>Restart the application to apply the language.</value>
-  </data>
-  <data name="Language_Title" xml:space="preserve">
-    <value>Language</value>
+  <data name="Houndmaster" xml:space="preserve">
+    <value>La Signora dei Segugi</value>
   </data>
 </root>

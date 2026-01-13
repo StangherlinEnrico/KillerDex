@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using KillerDex.Core.Extensions;
 using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
@@ -12,8 +13,6 @@ namespace KillerDex
     public partial class MainForm : Form
     {
         private readonly MatchService _matchService;
-        private readonly KillerService _killerService;
-        private readonly MapService _mapService;
 
         // Dead by Daylight color palette
         private static class DbdColors
@@ -39,8 +38,6 @@ namespace KillerDex
             InitializeComponent();
 
             _matchService = new MatchService();
-            _killerService = new KillerService();
-            _mapService = new MapService();
 
             // Enable double buffering
             SetStyle(ControlStyles.OptimizedDoubleBuffer |
@@ -62,8 +59,6 @@ namespace KillerDex
             fileMenu.Text = Strings.Menu_File;
             exitMenuItem.Text = Strings.Menu_Exit;
             manageMenu.Text = Strings.Menu_Manage;
-            killersMenuItem.Text = $"💀 {Strings.Menu_Killers}";
-            mapsMenuItem.Text = $"🗺️ {Strings.Menu_Maps}";
             alliesMenuItem.Text = $"👤 {Strings.Menu_Allies}";
             languageMenu.Text = Strings.Menu_Language;
             italianMenuItem.Text = Strings.Menu_Italian;
@@ -213,11 +208,8 @@ namespace KillerDex
 
         private Panel CreateMatchCard(Match match, int yPosition)
         {
-            var killer = _killerService.GetById(match.KillerId);
-            var map = _mapService.GetById(match.MapId);
-
-            string killerName = killer?.Alias ?? GetLocalizedUnknown();
-            string mapName = map?.Name ?? GetLocalizedUnknownMap();
+            string killerName = match.Killer.GetDisplayName();
+            string mapName = match.Map.GetDisplayName();
             bool isWin = match.IsWin;
             int survivorCount = match.SurvivorsCount;
 
@@ -302,11 +294,6 @@ namespace KillerDex
             return card;
         }
 
-        private string GetLocalizedUnknown()
-        {
-            return LanguageService.IsItalian ? "Sconosciuto" : "Unknown";
-        }
-
         private string GetLocalizedUnknownMap()
         {
             return LanguageService.IsItalian ? "Sconosciuta" : "Unknown";
@@ -334,22 +321,6 @@ namespace KillerDex
                 {
                     LoadDashboard();
                 }
-            }
-        }
-
-        private void killersMenuItem_Click(object sender, EventArgs e)
-        {
-            using (Killers form = new Killers())
-            {
-                form.ShowDialog();
-            }
-        }
-
-        private void mapsMenuItem_Click(object sender, EventArgs e)
-        {
-            using (Maps form = new Maps())
-            {
-                form.ShowDialog();
             }
         }
 

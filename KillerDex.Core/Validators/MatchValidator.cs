@@ -32,17 +32,9 @@ namespace KillerDex.Core.Validators
 
         private void ValidateMatch(Match match, ValidationResult result)
         {
-            // Map is required
-            if (match.MapId == Guid.Empty)
-            {
-                result.AddError(ValidationMessages.Match_MapRequired);
-            }
+            // Note: Map validation removed - now uses enum MapType which always has a valid value
 
-            // Killer is required
-            if (match.KillerId == Guid.Empty)
-            {
-                result.AddError(ValidationMessages.Match_KillerRequired);
-            }
+            // Note: Killer validation removed - now uses enum KillerType which always has a valid value
 
             // First hook is required
             if (string.IsNullOrWhiteSpace(match.FirstHook))

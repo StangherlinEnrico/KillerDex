@@ -1,5 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -58,53 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  <!-- App -->
   <data name="AppName" xml:space="preserve">
     <value>KillerDex</value>
   </data>
-  
-  <!-- Killers -->
-  <data name="Killers_Title" xml:space="preserve">
-    <value>Killer</value>
-  </data>
-  <data name="Killers_Count" xml:space="preserve">
-    <value>{0} killer</value>
-  </data>
-  <data name="Killers_PanelNew" xml:space="preserve">
-    <value>Nuovo Killer</value>
-  </data>
-  <data name="Killers_PanelEdit" xml:space="preserve">
-    <value>Modifica Killer</value>
-  </data>
-  <data name="Killers_ValidationAlias" xml:space="preserve">
-    <value>Inserisci l'alias del killer!</value>
-  </data>
-  <data name="Killers_ConfirmDelete" xml:space="preserve">
-    <value>Vuoi eliminare {0}?</value>
-  </data>
-  
-  <!-- Maps -->
-  <data name="Maps_Title" xml:space="preserve">
-    <value>Mappe</value>
-  </data>
-  <data name="Maps_Count" xml:space="preserve">
-    <value>{0} mappe</value>
-  </data>
-  <data name="Maps_PanelNew" xml:space="preserve">
-    <value>Nuova Mappa</value>
-  </data>
-  <data name="Maps_PanelEdit" xml:space="preserve">
-    <value>Modifica Mappa</value>
-  </data>
-  <data name="Maps_ValidationName" xml:space="preserve">
-    <value>Inserisci il nome della mappa!</value>
-  </data>
-  <data name="Maps_ConfirmDelete" xml:space="preserve">
-    <value>Vuoi eliminare {0}?</value>
-  </data>
-  
-  <!-- Allies -->
   <data name="Allies_Title" xml:space="preserve">
     <value>Alleati</value>
   </data>
@@ -123,8 +138,6 @@
   <data name="Allies_ConfirmDelete" xml:space="preserve">
     <value>Vuoi eliminare {0}?</value>
   </data>
-  
-  <!-- Common Buttons -->
   <data name="Button_Add" xml:space="preserve">
     <value>➕ Aggiungi</value>
   </data>
@@ -140,16 +153,12 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
-  
-  <!-- Common Labels -->
   <data name="Label_Alias" xml:space="preserve">
     <value>Alias</value>
   </data>
   <data name="Label_Name" xml:space="preserve">
     <value>Nome</value>
   </data>
-  
-  <!-- Common Dialogs -->
   <data name="Dialog_Warning" xml:space="preserve">
     <value>Attenzione</value>
   </data>
@@ -159,8 +168,6 @@
   <data name="Dialog_ConfirmDelete" xml:space="preserve">
     <value>Conferma eliminazione</value>
   </data>
-  
-  <!-- Menu -->
   <data name="Menu_File" xml:space="preserve">
     <value>File</value>
   </data>
@@ -169,9 +176,6 @@
   </data>
   <data name="Menu_Manage" xml:space="preserve">
     <value>Gestione</value>
-  </data>
-  <data name="Menu_Killers" xml:space="preserve">
-    <value>Killer</value>
   </data>
   <data name="Menu_Maps" xml:space="preserve">
     <value>Mappe</value>
@@ -188,8 +192,6 @@
   <data name="Menu_English" xml:space="preserve">
     <value>🇬🇧 English</value>
   </data>
-  
-  <!-- Home / MainForm -->
   <data name="Home_Stats" xml:space="preserve">
     <value>Statistiche Generali</value>
   </data>
@@ -220,8 +222,6 @@
   <data name="Home_Defeat" xml:space="preserve">
     <value>Sconfitta</value>
   </data>
-  
-  <!-- Match / AddMatch -->
   <data name="Match_Title" xml:space="preserve">
     <value>Nuova Partita</value>
   </data>
@@ -273,13 +273,10 @@
   <data name="Match_Saved" xml:space="preserve">
     <value>Partita salvata!</value>
   </data>
-  
-  <!-- Language Change -->
   <data name="Language_RestartRequired" xml:space="preserve">
     <value>Riavvia l'applicazione per applicare la lingua.</value>
   </data>
   <data name="Language_Title" xml:space="preserve">
     <value>Lingua</value>
   </data>
-  
 </root>

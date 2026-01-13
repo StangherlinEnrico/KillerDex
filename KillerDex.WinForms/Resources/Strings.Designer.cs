@@ -286,60 +286,6 @@ namespace KillerDex.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete {0}?.
-        /// </summary>
-        public static string Killers_ConfirmDelete {
-            get {
-                return ResourceManager.GetString("Killers_ConfirmDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} killers.
-        /// </summary>
-        public static string Killers_Count {
-            get {
-                return ResourceManager.GetString("Killers_Count", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Killer.
-        /// </summary>
-        public static string Killers_PanelEdit {
-            get {
-                return ResourceManager.GetString("Killers_PanelEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Killer.
-        /// </summary>
-        public static string Killers_PanelNew {
-            get {
-                return ResourceManager.GetString("Killers_PanelNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Killers.
-        /// </summary>
-        public static string Killers_Title {
-            get {
-                return ResourceManager.GetString("Killers_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the killer alias!.
-        /// </summary>
-        public static string Killers_ValidationAlias {
-            get {
-                return ResourceManager.GetString("Killers_ValidationAlias", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Alias.
         /// </summary>
         public static string Label_Alias {
@@ -372,60 +318,6 @@ namespace KillerDex.Resources {
         public static string Language_Title {
             get {
                 return ResourceManager.GetString("Language_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete {0}?.
-        /// </summary>
-        public static string Maps_ConfirmDelete {
-            get {
-                return ResourceManager.GetString("Maps_ConfirmDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} maps.
-        /// </summary>
-        public static string Maps_Count {
-            get {
-                return ResourceManager.GetString("Maps_Count", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Map.
-        /// </summary>
-        public static string Maps_PanelEdit {
-            get {
-                return ResourceManager.GetString("Maps_PanelEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Map.
-        /// </summary>
-        public static string Maps_PanelNew {
-            get {
-                return ResourceManager.GetString("Maps_PanelNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Maps.
-        /// </summary>
-        public static string Maps_Title {
-            get {
-                return ResourceManager.GetString("Maps_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the map name!.
-        /// </summary>
-        public static string Maps_ValidationName {
-            get {
-                return ResourceManager.GetString("Maps_ValidationName", resourceCulture);
             }
         }
         
@@ -624,15 +516,6 @@ namespace KillerDex.Resources {
         public static string Menu_Italian {
             get {
                 return ResourceManager.GetString("Menu_Italian", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Killers.
-        /// </summary>
-        public static string Menu_Killers {
-            get {
-                return ResourceManager.GetString("Menu_Killers", resourceCulture);
             }
         }
         
