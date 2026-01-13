@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.Core", "KillerDex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.Infrastructure", "KillerDex.Infrastructure\KillerDex.Infrastructure.csproj", "{D2933AA6-154E-4AD1-A51C-2BCB0BF9EEC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillerDex.Tests", "KillerDex.Tests\KillerDex.Tests.csproj", "{38186592-568D-49B2-A90E-3FD9F1F66648}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{D2933AA6-154E-4AD1-A51C-2BCB0BF9EEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2933AA6-154E-4AD1-A51C-2BCB0BF9EEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2933AA6-154E-4AD1-A51C-2BCB0BF9EEC1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38186592-568D-49B2-A90E-3FD9F1F66648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38186592-568D-49B2-A90E-3FD9F1F66648}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38186592-568D-49B2-A90E-3FD9F1F66648}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38186592-568D-49B2-A90E-3FD9F1F66648}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
