@@ -1,14 +1,13 @@
-﻿namespace KillerDex
+﻿using KillerDex.Controls;
+
+namespace KillerDex
 {
     partial class AddMatch
     {
         private System.ComponentModel.IContainer components = null;
 
         // Header
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Panel pnlAccent;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblSubtitle;
+        private DbdFormHeader formHeader;
 
         // Main content
         private System.Windows.Forms.Panel pnlContent;
@@ -16,11 +15,11 @@
         // Left column
         private System.Windows.Forms.Panel pnlLeftColumn;
         private System.Windows.Forms.Label lblDate;
-        private System.Windows.Forms.DateTimePicker dtpDate;
+        private DbdDatePicker dtpDate;
         private System.Windows.Forms.Label lblMap;
-        private System.Windows.Forms.ComboBox cmbMap;
+        private DbdComboBox cmbMap;
         private System.Windows.Forms.Label lblKiller;
-        private System.Windows.Forms.ComboBox cmbKiller;
+        private DbdComboBox cmbKiller;
         private System.Windows.Forms.Label lblAllies;
         private System.Windows.Forms.Label lblAlliesHint;
         private System.Windows.Forms.CheckedListBox chkAllies;
@@ -28,7 +27,7 @@
         // Right column
         private System.Windows.Forms.Panel pnlRightColumn;
         private System.Windows.Forms.Label lblFirstHook;
-        private System.Windows.Forms.ComboBox cmbFirstHook;
+        private DbdComboBox cmbFirstHook;
         private System.Windows.Forms.Label lblGenerators;
         private System.Windows.Forms.Panel pnlGenerators;
         private System.Windows.Forms.Label lblSurvivors;
@@ -50,24 +49,21 @@
 
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.pnlAccent = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblSubtitle = new System.Windows.Forms.Label();
+            this.formHeader = new DbdFormHeader();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlLeftColumn = new System.Windows.Forms.Panel();
             this.lblDate = new System.Windows.Forms.Label();
-            this.dtpDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpDate = new DbdDatePicker();
             this.lblMap = new System.Windows.Forms.Label();
-            this.cmbMap = new System.Windows.Forms.ComboBox();
+            this.cmbMap = new DbdComboBox();
             this.lblKiller = new System.Windows.Forms.Label();
-            this.cmbKiller = new System.Windows.Forms.ComboBox();
+            this.cmbKiller = new DbdComboBox();
             this.lblAllies = new System.Windows.Forms.Label();
             this.lblAlliesHint = new System.Windows.Forms.Label();
             this.chkAllies = new System.Windows.Forms.CheckedListBox();
             this.pnlRightColumn = new System.Windows.Forms.Panel();
             this.lblFirstHook = new System.Windows.Forms.Label();
-            this.cmbFirstHook = new System.Windows.Forms.ComboBox();
+            this.cmbFirstHook = new DbdComboBox();
             this.lblGenerators = new System.Windows.Forms.Label();
             this.pnlGenerators = new System.Windows.Forms.Panel();
             this.lblSurvivors = new System.Windows.Forms.Label();
@@ -77,54 +73,21 @@
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
             this.pnlContent.SuspendLayout();
             this.pnlLeftColumn.SuspendLayout();
             this.pnlRightColumn.SuspendLayout();
             this.pnlFooter.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlHeader
-            // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(20)))));
-            this.pnlHeader.Controls.Add(this.pnlAccent);
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Controls.Add(this.lblSubtitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(700, 80);
-            this.pnlHeader.TabIndex = 0;
-            // 
-            // pnlAccent
-            // 
-            this.pnlAccent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlAccent.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlAccent.Location = new System.Drawing.Point(0, 77);
-            this.pnlAccent.Name = "pnlAccent";
-            this.pnlAccent.Size = new System.Drawing.Size(700, 3);
-            this.pnlAccent.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblTitle.Location = new System.Drawing.Point(25, 15);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(172, 37);
-            this.lblTitle.Text = "New Match";
-            // 
-            // lblSubtitle
-            // 
-            this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(28, 52);
-            this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(180, 15);
-            this.lblSubtitle.Text = "Record your Dead by Daylight match";
-            // 
+            //
+            // formHeader
+            //
+            this.formHeader.Location = new System.Drawing.Point(0, 0);
+            this.formHeader.Name = "formHeader";
+            this.formHeader.TabIndex = 0;
+            this.formHeader.Title = "New Match";
+            this.formHeader.TitleFontSize = 20F;
+            this.formHeader.Subtitle = "Record your Dead by Daylight match";
+            //
             // pnlContent
             // 
             this.pnlContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
@@ -165,14 +128,11 @@
             this.lblDate.Text = "Date";
             // 
             // dtpDate
-            // 
-            this.dtpDate.CalendarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.dtpDate.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.dtpDate.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            //
+            this.dtpDate.CustomFormat = "dd/MM/yyyy";
             this.dtpDate.Location = new System.Drawing.Point(0, 22);
             this.dtpDate.Name = "dtpDate";
-            this.dtpDate.Size = new System.Drawing.Size(310, 27);
+            this.dtpDate.Size = new System.Drawing.Size(310, 32);
             this.dtpDate.TabIndex = 0;
             // 
             // lblMap
@@ -184,18 +144,12 @@
             this.lblMap.Name = "lblMap";
             this.lblMap.Size = new System.Drawing.Size(37, 19);
             this.lblMap.Text = "Map";
-            // 
+            //
             // cmbMap
-            // 
-            this.cmbMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.cmbMap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbMap.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.cmbMap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.cmbMap.FormattingEnabled = true;
+            //
             this.cmbMap.Location = new System.Drawing.Point(0, 82);
             this.cmbMap.Name = "cmbMap";
-            this.cmbMap.Size = new System.Drawing.Size(310, 28);
+            this.cmbMap.Size = new System.Drawing.Size(310, 32);
             this.cmbMap.TabIndex = 1;
             // 
             // lblKiller
@@ -207,18 +161,12 @@
             this.lblKiller.Name = "lblKiller";
             this.lblKiller.Size = new System.Drawing.Size(43, 19);
             this.lblKiller.Text = "Killer";
-            // 
+            //
             // cmbKiller
-            // 
-            this.cmbKiller.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.cmbKiller.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbKiller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbKiller.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.cmbKiller.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.cmbKiller.FormattingEnabled = true;
+            //
             this.cmbKiller.Location = new System.Drawing.Point(0, 142);
             this.cmbKiller.Name = "cmbKiller";
-            this.cmbKiller.Size = new System.Drawing.Size(310, 28);
+            this.cmbKiller.Size = new System.Drawing.Size(310, 32);
             this.cmbKiller.TabIndex = 2;
             // 
             // lblAllies
@@ -280,18 +228,12 @@
             this.lblFirstHook.Name = "lblFirstHook";
             this.lblFirstHook.Size = new System.Drawing.Size(76, 19);
             this.lblFirstHook.Text = "First Hook";
-            // 
+            //
             // cmbFirstHook
-            // 
-            this.cmbFirstHook.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.cmbFirstHook.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFirstHook.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbFirstHook.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.cmbFirstHook.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.cmbFirstHook.FormattingEnabled = true;
+            //
             this.cmbFirstHook.Location = new System.Drawing.Point(0, 22);
             this.cmbFirstHook.Name = "cmbFirstHook";
-            this.cmbFirstHook.Size = new System.Drawing.Size(310, 28);
+            this.cmbFirstHook.Size = new System.Drawing.Size(310, 32);
             this.cmbFirstHook.TabIndex = 4;
             // 
             // lblGenerators
@@ -410,15 +352,13 @@
             this.ClientSize = new System.Drawing.Size(700, 540);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlFooter);
-            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.formHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddMatch";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "KillerDex - New Match";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
             this.pnlContent.ResumeLayout(false);
             this.pnlLeftColumn.ResumeLayout(false);
             this.pnlLeftColumn.PerformLayout();

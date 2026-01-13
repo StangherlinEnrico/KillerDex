@@ -22,7 +22,7 @@ namespace KillerDex.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Strings {
+    internal class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace KillerDex.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KillerDex.Resources.Strings", typeof(Strings).Assembly);
@@ -51,7 +51,7 @@ namespace KillerDex.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Do you want to delete {0}?.
         /// </summary>
-        public static string Allies_ConfirmDelete {
+        internal static string Allies_ConfirmDelete {
             get {
                 return ResourceManager.GetString("Allies_ConfirmDelete", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} allies.
         /// </summary>
-        public static string Allies_Count {
+        internal static string Allies_Count {
             get {
                 return ResourceManager.GetString("Allies_Count", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Edit Ally.
         /// </summary>
-        public static string Allies_PanelEdit {
+        internal static string Allies_PanelEdit {
             get {
                 return ResourceManager.GetString("Allies_PanelEdit", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to New Ally.
         /// </summary>
-        public static string Allies_PanelNew {
+        internal static string Allies_PanelNew {
             get {
                 return ResourceManager.GetString("Allies_PanelNew", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Allies.
         /// </summary>
-        public static string Allies_Title {
+        internal static string Allies_Title {
             get {
                 return ResourceManager.GetString("Allies_Title", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter the ally name!.
         /// </summary>
-        public static string Allies_ValidationName {
+        internal static string Allies_ValidationName {
             get {
                 return ResourceManager.GetString("Allies_ValidationName", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to KillerDex.
         /// </summary>
-        public static string AppName {
+        internal static string AppName {
             get {
                 return ResourceManager.GetString("AppName", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to ➕ Add.
         /// </summary>
-        public static string Button_Add {
+        internal static string Button_Add {
             get {
                 return ResourceManager.GetString("Button_Add", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        public static string Button_Cancel {
+        internal static string Button_Cancel {
             get {
                 return ResourceManager.GetString("Button_Cancel", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🗑️ Delete.
         /// </summary>
-        public static string Button_Delete {
+        internal static string Button_Delete {
             get {
                 return ResourceManager.GetString("Button_Delete", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to ✏️ Edit.
         /// </summary>
-        public static string Button_Edit {
+        internal static string Button_Edit {
             get {
                 return ResourceManager.GetString("Button_Edit", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        public static string Button_Save {
+        internal static string Button_Save {
             get {
                 return ResourceManager.GetString("Button_Save", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Confirm deletion.
         /// </summary>
-        public static string Dialog_ConfirmDelete {
+        internal static string Dialog_ConfirmDelete {
             get {
                 return ResourceManager.GetString("Dialog_ConfirmDelete", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
-        public static string Dialog_Success {
+        internal static string Dialog_Success {
             get {
                 return ResourceManager.GetString("Dialog_Success", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
-        public static string Dialog_Warning {
+        internal static string Dialog_Warning {
             get {
                 return ResourceManager.GetString("Dialog_Warning", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to + Add New Match.
         /// </summary>
-        public static string Home_AddMatch {
+        internal static string Home_AddMatch {
             get {
                 return ResourceManager.GetString("Home_AddMatch", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Defeat.
         /// </summary>
-        public static string Home_Defeat {
+        internal static string Home_Defeat {
             get {
                 return ResourceManager.GetString("Home_Defeat", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Losses:.
         /// </summary>
-        public static string Home_Losses {
+        internal static string Home_Losses {
             get {
                 return ResourceManager.GetString("Home_Losses", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No matches recorded.
         /// </summary>
-        public static string Home_NoMatches {
+        internal static string Home_NoMatches {
             get {
                 return ResourceManager.GetString("Home_NoMatches", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Last 5 Matches.
         /// </summary>
-        public static string Home_RecentMatches {
+        internal static string Home_RecentMatches {
             get {
                 return ResourceManager.GetString("Home_RecentMatches", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to General Statistics.
         /// </summary>
-        public static string Home_Stats {
+        internal static string Home_Stats {
             get {
                 return ResourceManager.GetString("Home_Stats", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to survivors.
         /// </summary>
-        public static string Home_Survivors {
+        internal static string Home_Survivors {
             get {
                 return ResourceManager.GetString("Home_Survivors", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Total Matches:.
         /// </summary>
-        public static string Home_TotalMatches {
+        internal static string Home_TotalMatches {
             get {
                 return ResourceManager.GetString("Home_TotalMatches", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Win Rate:.
         /// </summary>
-        public static string Home_WinRate {
+        internal static string Home_WinRate {
             get {
                 return ResourceManager.GetString("Home_WinRate", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Wins:.
         /// </summary>
-        public static string Home_Wins {
+        internal static string Home_Wins {
             get {
                 return ResourceManager.GetString("Home_Wins", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Alias.
         /// </summary>
-        public static string Label_Alias {
+        internal static string Label_Alias {
             get {
                 return ResourceManager.GetString("Label_Alias", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string Label_Name {
+        internal static string Label_Name {
             get {
                 return ResourceManager.GetString("Label_Name", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Restart the application to apply the language..
         /// </summary>
-        public static string Language_RestartRequired {
+        internal static string Language_RestartRequired {
             get {
                 return ResourceManager.GetString("Language_RestartRequired", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
-        public static string Language_Title {
+        internal static string Language_Title {
             get {
                 return ResourceManager.GetString("Language_Title", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Allies:.
         /// </summary>
-        public static string Match_Allies {
+        internal static string Match_Allies {
             get {
                 return ResourceManager.GetString("Match_Allies", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to (Max 3 selectable).
         /// </summary>
-        public static string Match_AlliesHint {
+        internal static string Match_AlliesHint {
             get {
                 return ResourceManager.GetString("Match_AlliesHint", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You can select up to 3 allies!.
         /// </summary>
-        public static string Match_AlliesMax {
+        internal static string Match_AlliesMax {
             get {
                 return ResourceManager.GetString("Match_AlliesMax", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Date:.
         /// </summary>
-        public static string Match_Date {
+        internal static string Match_Date {
             get {
                 return ResourceManager.GetString("Match_Date", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Filler.
         /// </summary>
-        public static string Match_Filler {
+        internal static string Match_Filler {
             get {
                 return ResourceManager.GetString("Match_Filler", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to First hook:.
         /// </summary>
-        public static string Match_FirstHook {
+        internal static string Match_FirstHook {
             get {
                 return ResourceManager.GetString("Match_FirstHook", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Generators completed:.
         /// </summary>
-        public static string Match_Generators {
+        internal static string Match_Generators {
             get {
                 return ResourceManager.GetString("Match_Generators", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Killer:.
         /// </summary>
-        public static string Match_Killer {
+        internal static string Match_Killer {
             get {
                 return ResourceManager.GetString("Match_Killer", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Map:.
         /// </summary>
-        public static string Match_Map {
+        internal static string Match_Map {
             get {
                 return ResourceManager.GetString("Match_Map", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Myself.
         /// </summary>
-        public static string Match_Myself {
+        internal static string Match_Myself {
             get {
                 return ResourceManager.GetString("Match_Myself", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Notes:.
         /// </summary>
-        public static string Match_Notes {
+        internal static string Match_Notes {
             get {
                 return ResourceManager.GetString("Match_Notes", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Save Match.
         /// </summary>
-        public static string Match_Save {
+        internal static string Match_Save {
             get {
                 return ResourceManager.GetString("Match_Save", resourceCulture);
             }
@@ -432,16 +432,25 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Match saved!.
         /// </summary>
-        public static string Match_Saved {
+        internal static string Match_Saved {
             get {
                 return ResourceManager.GetString("Match_Saved", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record your Dead by Daylight match.
+        /// </summary>
+        internal static string Match_Subtitle {
+            get {
+                return ResourceManager.GetString("Match_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Survivors:.
         /// </summary>
-        public static string Match_Survivors {
+        internal static string Match_Survivors {
             get {
                 return ResourceManager.GetString("Match_Survivors", resourceCulture);
             }
@@ -450,7 +459,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to New Match.
         /// </summary>
-        public static string Match_Title {
+        internal static string Match_Title {
             get {
                 return ResourceManager.GetString("Match_Title", resourceCulture);
             }
@@ -459,7 +468,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select a killer!.
         /// </summary>
-        public static string Match_ValidationKiller {
+        internal static string Match_ValidationKiller {
             get {
                 return ResourceManager.GetString("Match_ValidationKiller", resourceCulture);
             }
@@ -468,7 +477,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select a map!.
         /// </summary>
-        public static string Match_ValidationMap {
+        internal static string Match_ValidationMap {
             get {
                 return ResourceManager.GetString("Match_ValidationMap", resourceCulture);
             }
@@ -477,7 +486,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Allies.
         /// </summary>
-        public static string Menu_Allies {
+        internal static string Menu_Allies {
             get {
                 return ResourceManager.GetString("Menu_Allies", resourceCulture);
             }
@@ -486,7 +495,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🇬🇧 English.
         /// </summary>
-        public static string Menu_English {
+        internal static string Menu_English {
             get {
                 return ResourceManager.GetString("Menu_English", resourceCulture);
             }
@@ -495,7 +504,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
-        public static string Menu_Exit {
+        internal static string Menu_Exit {
             get {
                 return ResourceManager.GetString("Menu_Exit", resourceCulture);
             }
@@ -504,7 +513,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
-        public static string Menu_File {
+        internal static string Menu_File {
             get {
                 return ResourceManager.GetString("Menu_File", resourceCulture);
             }
@@ -513,7 +522,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🇮🇹 Italiano.
         /// </summary>
-        public static string Menu_Italian {
+        internal static string Menu_Italian {
             get {
                 return ResourceManager.GetString("Menu_Italian", resourceCulture);
             }
@@ -522,7 +531,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
-        public static string Menu_Language {
+        internal static string Menu_Language {
             get {
                 return ResourceManager.GetString("Menu_Language", resourceCulture);
             }
@@ -531,7 +540,7 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Manage.
         /// </summary>
-        public static string Menu_Manage {
+        internal static string Menu_Manage {
             get {
                 return ResourceManager.GetString("Menu_Manage", resourceCulture);
             }
@@ -540,9 +549,18 @@ namespace KillerDex.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Maps.
         /// </summary>
-        public static string Menu_Maps {
+        internal static string Menu_Maps {
             get {
                 return ResourceManager.GetString("Menu_Maps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No results.
+        /// </summary>
+        internal static string Search_NoResults {
+            get {
+                return ResourceManager.GetString("Search_NoResults", resourceCulture);
             }
         }
     }

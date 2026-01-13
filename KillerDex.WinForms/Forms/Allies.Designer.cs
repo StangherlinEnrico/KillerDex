@@ -1,11 +1,11 @@
-﻿namespace KillerDex
+﻿using KillerDex.Controls;
+
+namespace KillerDex
 {
     partial class Allies
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblCount;
+        private DbdFormHeader formHeader;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.ListBox lstAllies;
         private System.Windows.Forms.Panel pnlActions;
@@ -17,7 +17,6 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Panel pnlAccent;
         private System.Windows.Forms.Panel pnlEditAccent;
 
         protected override void Dispose(bool disposing)
@@ -29,10 +28,7 @@
 
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.pnlAccent = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblCount = new System.Windows.Forms.Label();
+            this.formHeader = new DbdFormHeader();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lstAllies = new System.Windows.Forms.ListBox();
             this.pnlActions = new System.Windows.Forms.Panel();
@@ -45,56 +41,23 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
             this.pnlActions.SuspendLayout();
             this.pnlEdit.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlHeader
-            // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(20)))));
-            this.pnlHeader.Controls.Add(this.pnlAccent);
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Controls.Add(this.lblCount);
-            this.pnlHeader.Controls.Add(this.btnAdd);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(450, 70);
-            this.pnlHeader.TabIndex = 0;
-            // 
-            // pnlAccent
-            // 
-            this.pnlAccent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlAccent.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlAccent.Location = new System.Drawing.Point(0, 67);
-            this.pnlAccent.Name = "pnlAccent";
-            this.pnlAccent.Size = new System.Drawing.Size(450, 3);
-            this.pnlAccent.TabIndex = 3;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblTitle.Location = new System.Drawing.Point(20, 18);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(68, 32);
-            this.lblTitle.Text = "Allies";
-            // 
-            // lblCount
-            // 
-            this.lblCount.AutoSize = true;
-            this.lblCount.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblCount.Location = new System.Drawing.Point(23, 50);
-            this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(47, 15);
-            this.lblCount.Text = "0 allies";
-            // 
+            //
+            // formHeader
+            //
+            this.formHeader.Location = new System.Drawing.Point(0, 0);
+            this.formHeader.Name = "formHeader";
+            this.formHeader.TabIndex = 0;
+            this.formHeader.Title = "Allies";
+            this.formHeader.TitleFontSize = 18F;
+            this.formHeader.Subtitle = "0 allies";
+            this.formHeader.ActionsPanel.Controls.Add(this.btnAdd);
+            //
             // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            //
+            this.btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
@@ -104,14 +67,14 @@
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
-            this.btnAdd.Location = new System.Drawing.Point(320, 20);
+            this.btnAdd.Location = new System.Drawing.Point(20, 15);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(110, 35);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "➕ Add";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
+            //
             // lstAllies
             // 
             this.lstAllies.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -292,15 +255,13 @@
             this.Controls.Add(this.pnlEdit);
             this.Controls.Add(this.lstAllies);
             this.Controls.Add(this.pnlActions);
-            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.formHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(466, 469);
             this.Name = "Allies";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KillerDex - Allies";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
             this.pnlActions.ResumeLayout(false);
             this.pnlEdit.ResumeLayout(false);
             this.pnlEdit.PerformLayout();

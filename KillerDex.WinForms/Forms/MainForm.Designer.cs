@@ -1,4 +1,6 @@
-﻿namespace KillerDex
+﻿using KillerDex.Controls;
+
+namespace KillerDex
 {
     partial class MainForm
     {
@@ -15,10 +17,7 @@
         private System.Windows.Forms.ToolStripMenuItem englishMenuItem;
 
         // Header
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Panel pnlHeaderAccent;
-        private System.Windows.Forms.Label lblAppTitle;
-        private System.Windows.Forms.Label lblAppSubtitle;
+        private DbdFormHeader formHeader;
 
         // Stats cards
         private System.Windows.Forms.Panel pnlStats;
@@ -54,10 +53,7 @@
             this.languageMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.italianMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.pnlHeaderAccent = new System.Windows.Forms.Panel();
-            this.lblAppTitle = new System.Windows.Forms.Label();
-            this.lblAppSubtitle = new System.Windows.Forms.Label();
+            this.formHeader = new DbdFormHeader();
             this.pnlStats = new System.Windows.Forms.Panel();
             this.pnlStatTotal = new System.Windows.Forms.Panel();
             this.pnlStatWins = new System.Windows.Forms.Panel();
@@ -70,7 +66,6 @@
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.btnAddMatch = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
-            this.pnlHeader.SuspendLayout();
             this.pnlStats.SuspendLayout();
             this.pnlRecentMatches.SuspendLayout();
             this.pnlFooter.SuspendLayout();
@@ -155,50 +150,16 @@
             this.englishMenuItem.Size = new System.Drawing.Size(124, 22);
             this.englishMenuItem.Text = "🇬🇧 English";
             this.englishMenuItem.Click += new System.EventHandler(this.englishMenuItem_Click);
-            // 
-            // pnlHeader
-            // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(20)))));
-            this.pnlHeader.Controls.Add(this.pnlHeaderAccent);
-            this.pnlHeader.Controls.Add(this.lblAppTitle);
-            this.pnlHeader.Controls.Add(this.lblAppSubtitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 27);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(750, 90);
-            this.pnlHeader.TabIndex = 1;
-            // 
-            // pnlHeaderAccent
-            // 
-            this.pnlHeaderAccent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlHeaderAccent.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlHeaderAccent.Location = new System.Drawing.Point(0, 87);
-            this.pnlHeaderAccent.Name = "pnlHeaderAccent";
-            this.pnlHeaderAccent.Size = new System.Drawing.Size(750, 3);
-            this.pnlHeaderAccent.TabIndex = 0;
-            // 
-            // lblAppTitle
-            // 
-            this.lblAppTitle.AutoSize = true;
-            this.lblAppTitle.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
-            this.lblAppTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblAppTitle.Location = new System.Drawing.Point(25, 18);
-            this.lblAppTitle.Name = "lblAppTitle";
-            this.lblAppTitle.Size = new System.Drawing.Size(157, 45);
-            this.lblAppTitle.TabIndex = 1;
-            this.lblAppTitle.Text = "KillerDex";
-            // 
-            // lblAppSubtitle
-            // 
-            this.lblAppSubtitle.AutoSize = true;
-            this.lblAppSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblAppSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblAppSubtitle.Location = new System.Drawing.Point(29, 60);
-            this.lblAppSubtitle.Name = "lblAppSubtitle";
-            this.lblAppSubtitle.Size = new System.Drawing.Size(205, 19);
-            this.lblAppSubtitle.TabIndex = 2;
-            this.lblAppSubtitle.Text = "Dead by Daylight Match Tracker";
-            // 
+            //
+            // formHeader
+            //
+            this.formHeader.Location = new System.Drawing.Point(0, 27);
+            this.formHeader.Name = "formHeader";
+            this.formHeader.TabIndex = 1;
+            this.formHeader.Title = "KillerDex";
+            this.formHeader.TitleFontSize = 24F;
+            this.formHeader.Subtitle = "Dead by Daylight Match Tracker";
+            //
             // pnlStats
             // 
             this.pnlStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
@@ -327,7 +288,7 @@
             this.Controls.Add(this.pnlRecentMatches);
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlStats);
-            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.formHeader);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
@@ -338,8 +299,6 @@
             this.Text = "KillerDex - Dead by Daylight Tracker";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
             this.pnlStats.ResumeLayout(false);
             this.pnlRecentMatches.ResumeLayout(false);
             this.pnlRecentMatches.PerformLayout();

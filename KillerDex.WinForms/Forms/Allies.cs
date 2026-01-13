@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
+using KillerDex.Theme;
 
 namespace KillerDex
 {
@@ -13,23 +14,6 @@ namespace KillerDex
         private readonly AllyService _service;
         private Ally _selectedAlly;
         private bool _isAddMode = false;
-
-        // Dead by Daylight color palette
-        private static class DbdColors
-        {
-            public static readonly Color Background = Color.FromArgb(20, 20, 25);
-            public static readonly Color HeaderBackground = Color.FromArgb(15, 15, 20);
-            public static readonly Color CardBackground = Color.FromArgb(30, 30, 38);
-            public static readonly Color CardBackgroundAlt = Color.FromArgb(25, 25, 32);
-            public static readonly Color CardSelected = Color.FromArgb(140, 20, 20);
-            public static readonly Color CardHover = Color.FromArgb(40, 40, 50);
-            public static readonly Color AccentRed = Color.FromArgb(180, 30, 30);
-            public static readonly Color AccentRedDark = Color.FromArgb(140, 20, 20);
-            public static readonly Color TextPrimary = Color.FromArgb(220, 220, 220);
-            public static readonly Color TextSecondary = Color.FromArgb(140, 140, 140);
-            public static readonly Color TextAccent = Color.FromArgb(140, 50, 50);
-            public static readonly Color Border = Color.FromArgb(70, 70, 80);
-        }
 
         public Allies()
         {
@@ -50,7 +34,7 @@ namespace KillerDex
         private void ApplyLocalization()
         {
             this.Text = $"{Strings.AppName} - {Strings.Allies_Title}";
-            lblTitle.Text = Strings.Allies_Title;
+            formHeader.Title = Strings.Allies_Title;
             btnAdd.Text = Strings.Button_Add;
             btnEdit.Text = Strings.Button_Edit;
             btnDelete.Text = Strings.Button_Delete;
@@ -70,7 +54,7 @@ namespace KillerDex
 
         private void UpdateAllyCount()
         {
-            lblCount.Text = string.Format(Strings.Allies_Count, lstAllies.Items.Count);
+            formHeader.Subtitle = string.Format(Strings.Allies_Count, lstAllies.Items.Count);
         }
 
         private void ShowEditPanel(bool show)

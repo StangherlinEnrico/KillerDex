@@ -7,31 +7,13 @@ using KillerDex.Core.Extensions;
 using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
+using KillerDex.Theme;
 
 namespace KillerDex
 {
     public partial class MainForm : Form
     {
         private readonly MatchService _matchService;
-
-        // Dead by Daylight color palette
-        private static class DbdColors
-        {
-            public static readonly Color Background = Color.FromArgb(20, 20, 25);
-            public static readonly Color HeaderBackground = Color.FromArgb(15, 15, 20);
-            public static readonly Color CardBackground = Color.FromArgb(30, 30, 38);
-            public static readonly Color CardBackgroundAlt = Color.FromArgb(25, 25, 32);
-            public static readonly Color AccentRed = Color.FromArgb(180, 30, 30);
-            public static readonly Color AccentRedDark = Color.FromArgb(140, 20, 20);
-            public static readonly Color AccentGreen = Color.FromArgb(40, 160, 80);
-            public static readonly Color AccentBlue = Color.FromArgb(60, 140, 200);
-            public static readonly Color AccentYellow = Color.FromArgb(200, 160, 40);
-            public static readonly Color TextPrimary = Color.FromArgb(220, 220, 220);
-            public static readonly Color TextSecondary = Color.FromArgb(140, 140, 140);
-            public static readonly Color TextAccent = Color.FromArgb(140, 50, 50);
-            public static readonly Color WinColor = Color.FromArgb(50, 180, 100);
-            public static readonly Color LossColor = Color.FromArgb(180, 50, 50);
-        }
 
         public MainForm()
         {
@@ -52,8 +34,8 @@ namespace KillerDex
         private void ApplyLocalization()
         {
             this.Text = $"{Strings.AppName} - Dead by Daylight Tracker";
-            lblAppTitle.Text = Strings.AppName;
-            lblAppSubtitle.Text = GetLocalizedSubtitle();
+            formHeader.Title = Strings.AppName;
+            formHeader.Subtitle = GetLocalizedSubtitle();
 
             // Menu
             fileMenu.Text = Strings.Menu_File;

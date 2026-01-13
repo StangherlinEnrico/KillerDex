@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using KillerDex.Theme;
 
 namespace KillerDex.Controls
 {
@@ -52,65 +53,6 @@ namespace KillerDex.Controls
                 }
             }
         }
-
-        #endregion
-
-        #region Color Palette - Dead by Daylight Theme
-
-        /// <summary>
-        /// Default button background color.
-        /// </summary>
-        private static readonly Color ColorDefault = Color.FromArgb(45, 45, 55);
-
-        /// <summary>
-        /// Button background color when hovered.
-        /// </summary>
-        private static readonly Color ColorHover = Color.FromArgb(60, 60, 70);
-
-        /// <summary>
-        /// Button background color when pressed.
-        /// </summary>
-        private static readonly Color ColorPressed = Color.FromArgb(35, 35, 45);
-
-        /// <summary>
-        /// Selected button background color (red theme - for generators).
-        /// </summary>
-        private static readonly Color ColorSelectedRed = Color.FromArgb(140, 20, 20);
-
-        /// <summary>
-        /// Selected button hover color (red theme).
-        /// </summary>
-        private static readonly Color ColorSelectedRedHover = Color.FromArgb(160, 30, 30);
-
-        /// <summary>
-        /// Selected button background color (green theme - for survivors).
-        /// </summary>
-        private static readonly Color ColorSelectedGreen = Color.FromArgb(30, 130, 60);
-
-        /// <summary>
-        /// Selected button hover color (green theme).
-        /// </summary>
-        private static readonly Color ColorSelectedGreenHover = Color.FromArgb(40, 150, 70);
-
-        /// <summary>
-        /// Default border color.
-        /// </summary>
-        private static readonly Color ColorBorder = Color.FromArgb(80, 80, 90);
-
-        /// <summary>
-        /// Border color when selected (red theme).
-        /// </summary>
-        private static readonly Color ColorBorderSelectedRed = Color.FromArgb(180, 30, 30);
-
-        /// <summary>
-        /// Border color when selected (green theme).
-        /// </summary>
-        private static readonly Color ColorBorderSelectedGreen = Color.FromArgb(50, 180, 80);
-
-        /// <summary>
-        /// Text/foreground color.
-        /// </summary>
-        private static readonly Color ColorText = Color.FromArgb(220, 220, 220);
 
         #endregion
 
@@ -216,18 +158,18 @@ namespace KillerDex.Controls
             if (_isSelected)
             {
                 if (_isPressed)
-                    return UseGreenWhenSelected ? ColorSelectedGreen : ColorSelectedRed;
+                    return UseGreenWhenSelected ? DbdColors.ButtonSelectedGreen : DbdColors.ButtonSelected;
                 if (_isHovered)
-                    return UseGreenWhenSelected ? ColorSelectedGreenHover : ColorSelectedRedHover;
-                return UseGreenWhenSelected ? ColorSelectedGreen : ColorSelectedRed;
+                    return UseGreenWhenSelected ? DbdColors.ButtonSelectedGreenHover : DbdColors.ButtonSelectedHover;
+                return UseGreenWhenSelected ? DbdColors.ButtonSelectedGreen : DbdColors.ButtonSelected;
             }
             else
             {
                 if (_isPressed)
-                    return ColorPressed;
+                    return DbdColors.ButtonPressed;
                 if (_isHovered)
-                    return ColorHover;
-                return ColorDefault;
+                    return DbdColors.ButtonHover;
+                return DbdColors.ButtonDefault;
             }
         }
 
@@ -238,9 +180,9 @@ namespace KillerDex.Controls
         {
             if (_isSelected)
             {
-                return UseGreenWhenSelected ? ColorBorderSelectedGreen : ColorBorderSelectedRed;
+                return UseGreenWhenSelected ? DbdColors.BorderSelectedGreen : DbdColors.AccentRed;
             }
-            return _isHovered ? Color.FromArgb(100, 100, 110) : ColorBorder;
+            return _isHovered ? DbdColors.BorderHover : DbdColors.BorderLight;
         }
 
         /// <summary>
@@ -272,7 +214,7 @@ namespace KillerDex.Controls
                 g.DrawString(displayText, Font, shadowBrush, x + 1, y + 1);
             }
 
-            using (SolidBrush textBrush = new SolidBrush(ColorText))
+            using (SolidBrush textBrush = new SolidBrush(DbdColors.TextPrimary))
             {
                 g.DrawString(displayText, Font, textBrush, x, y);
             }

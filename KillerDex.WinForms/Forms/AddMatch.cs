@@ -10,6 +10,7 @@ using KillerDex.Core.Models;
 using KillerDex.Infrastructure.Services;
 using KillerDex.Resources;
 using KillerDex.Controls;
+using KillerDex.Theme;
 
 namespace KillerDex
 {
@@ -23,27 +24,6 @@ namespace KillerDex
         private List<DbdSelectorButton> _survivorButtons;
         private int _selectedGenerators = 0;
         private int _selectedSurvivors = 0;
-
-        // Dead by Daylight color palette
-        private static class DbdColors
-        {
-            public static readonly Color Background = Color.FromArgb(20, 20, 25);
-            public static readonly Color HeaderBackground = Color.FromArgb(15, 15, 20);
-            public static readonly Color CardBackground = Color.FromArgb(30, 30, 38);
-            public static readonly Color CardBackgroundAlt = Color.FromArgb(25, 25, 32);
-            public static readonly Color InputBackground = Color.FromArgb(35, 35, 40);
-            public static readonly Color AccentRed = Color.FromArgb(180, 30, 30);
-            public static readonly Color AccentRedDark = Color.FromArgb(140, 20, 20);
-            public static readonly Color AccentGreen = Color.FromArgb(40, 160, 80);
-            public static readonly Color AccentYellow = Color.FromArgb(200, 160, 40);
-            public static readonly Color TextPrimary = Color.FromArgb(220, 220, 220);
-            public static readonly Color TextSecondary = Color.FromArgb(140, 140, 140);
-            public static readonly Color TextAccent = Color.FromArgb(140, 50, 50);
-            public static readonly Color Border = Color.FromArgb(70, 70, 80);
-            public static readonly Color ButtonDefault = Color.FromArgb(45, 45, 55);
-            public static readonly Color ButtonHover = Color.FromArgb(55, 55, 65);
-            public static readonly Color ButtonSelected = Color.FromArgb(140, 20, 20);
-        }
 
         public AddMatch()
         {
@@ -65,8 +45,8 @@ namespace KillerDex
         private void ApplyLocalization()
         {
             this.Text = $"{Strings.AppName} - {Strings.Match_Title}";
-            lblTitle.Text = Strings.Match_Title;
-            lblSubtitle.Text = GetLocalizedSubtitle();
+            formHeader.Title = Strings.Match_Title;
+            formHeader.Subtitle = GetLocalizedSubtitle();
             lblDate.Text = Strings.Match_Date.TrimEnd(':');
             lblMap.Text = Strings.Match_Map.TrimEnd(':');
             lblKiller.Text = Strings.Match_Killer.TrimEnd(':');
@@ -82,10 +62,7 @@ namespace KillerDex
 
         private string GetLocalizedSubtitle()
         {
-            // Could add to resources, for now hardcoded based on language
-            return LanguageService.IsItalian
-                ? "Registra la tua partita Dead by Daylight"
-                : "Record your Dead by Daylight match";
+            return Strings.Match_Subtitle;
         }
 
         private void InitializeCustomControls()
@@ -163,8 +140,6 @@ namespace KillerDex
 
             // Set current date
             dtpDate.Value = DateTime.Now;
-            dtpDate.Format = DateTimePickerFormat.Custom;
-            dtpDate.CustomFormat = "dd/MM/yyyy";
 
             // Initialize first hook options
             UpdateFirstHookOptions();
