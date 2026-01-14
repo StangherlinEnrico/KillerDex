@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using KillerDex.Core.Enums;
 using KillerDex.Core.Interfaces;
 using KillerDex.Core.Models;
 using KillerDex.Core.Validators;
@@ -122,6 +124,95 @@ namespace KillerDex.Infrastructure.Services
             if (total == 0) return 0;
 
             return (double)GetWinsCount() / total * 100;
+        }
+
+        /// <summary>
+        /// Gets complete dashboard statistics
+        /// </summary>
+        /// <param name="allyService">The ally service to resolve ally names</param>
+        public DashboardStats GetDashboardStats(AllyService allyService)
+        {
+            var matches = GetAll();
+            int total = matches.Count;
+            int wins = matches.Count(m => m.IsWin);
+            int losses = total - wins;
+            double winRate = total > 0 ? (double)wins / total * 100 : 0;
+
+            return new DashboardStats
+            {
+                TotalMatches = total,
+                Wins = wins,
+                Losses = losses,
+                WinRate = winRate,
+                BestAlly = GetBestAlly(matches, allyService),
+                MostFacedKiller = GetMostFacedKiller(matches)
+            };
+        }
+
+        /// <summary>
+        /// Gets the ally with the highest win rate
+        /// </summary>
+        private AllyStats GetBestAlly(List<Match> matches, AllyService allyService)
+        {
+            if (matches == null || matches.Count == 0)
+                return null;
+
+            var allies = allyService.GetAll();
+            if (allies == null || allies.Count == 0)
+                return null;
+
+            AllyStats best = null;
+
+            foreach (var ally in allies)
+            {
+                var allyMatches = matches.Where(m => m.AllyIds != null && m.AllyIds.Contains(ally.Id)).ToList();
+
+                if (allyMatches.Count == 0)
+                    continue;
+
+                int allyWins = allyMatches.Count(m => m.IsWin);
+                double allyWinRate = (double)allyWins / allyMatches.Count * 100;
+
+                if (best == null || allyWinRate > best.WinRate ||
+                    (allyWinRate == best.WinRate && allyMatches.Count > best.MatchesPlayed))
+                {
+                    best = new AllyStats
+                    {
+                        AllyId = ally.Id,
+                        Name = ally.Name,
+                        MatchesPlayed = allyMatches.Count,
+                        Wins = allyWins,
+                        WinRate = allyWinRate
+                    };
+                }
+            }
+
+            return best;
+        }
+
+        /// <summary>
+        /// Gets the killer faced most frequently
+        /// </summary>
+        private KillerStats GetMostFacedKiller(List<Match> matches)
+        {
+            if (matches == null || matches.Count == 0)
+                return null;
+
+            var killerGroups = matches
+                .Where(m => m.Killer != KillerType.Unknown)
+                .GroupBy(m => m.Killer)
+                .Select(g => new KillerStats
+                {
+                    Killer = g.Key,
+                    TimesFaced = g.Count(),
+                    Wins = g.Count(m => m.IsWin),
+                    WinRate = g.Count() > 0 ? (double)g.Count(m => m.IsWin) / g.Count() * 100 : 0
+                })
+                .OrderByDescending(k => k.TimesFaced)
+                .ThenByDescending(k => k.WinRate)
+                .FirstOrDefault();
+
+            return killerGroups;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using KillerDex.Core.Enums;
 
 namespace KillerDex.Core.Models
@@ -25,9 +26,20 @@ namespace KillerDex.Core.Models
         }
 
         /// <summary>
+        /// Known values for "Myself" across all supported languages
+        /// </summary>
+        private static readonly string[] MyselfValues = { "Myself", "Me stesso" };
+
+        /// <summary>
+        /// Returns true if I survived (my name is in the survivors list)
+        /// This is the actual win condition for the player
+        /// </summary>
+        public bool DidISurvive => Survivors != null && Survivors.Any(s => MyselfValues.Contains(s, StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
         /// Returns true if at least one survivor escaped
         /// </summary>
-        public bool IsWin => Survivors != null && Survivors.Count > 0;
+        public bool IsWin => DidISurvive;
 
         /// <summary>
         /// Returns the number of survivors

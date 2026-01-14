@@ -285,4 +285,22 @@
   <data name="Search_NoResults" xml:space="preserve">
     <value>Nessun risultato</value>
   </data>
+  <data name="Match_SelectAllies" xml:space="preserve">
+    <value>Seleziona alleati...</value>
+  </data>
+  <data name="Match_SelectSurvivors" xml:space="preserve">
+    <value>Seleziona chi è fuggito...</value>
+  </data>
+  <data name="Match_NotesPlaceholder" xml:space="preserve">
+    <value>Aggiungi note su questa partita...</value>
+  </data>
+  <data name="Home_BestAlly" xml:space="preserve">
+    <value>Miglior Alleato:</value>
+  </data>
+  <data name="Home_MostFacedKiller" xml:space="preserve">
+    <value>Killer Più Affrontato:</value>
+  </data>
+  <data name="Home_NotAvailable" xml:space="preserve">
+    <value>N/D</value>
+  </data>
 </root>

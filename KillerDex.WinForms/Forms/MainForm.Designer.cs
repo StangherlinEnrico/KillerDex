@@ -1,4 +1,4 @@
-﻿using KillerDex.Controls;
+using KillerDex.Controls;
 
 namespace KillerDex
 {
@@ -25,12 +25,8 @@ namespace KillerDex
         private System.Windows.Forms.Panel pnlStatWins;
         private System.Windows.Forms.Panel pnlStatLosses;
         private System.Windows.Forms.Panel pnlStatWinRate;
-
-        // Recent matches
-        private System.Windows.Forms.Panel pnlRecentMatches;
-        private System.Windows.Forms.Label lblRecentTitle;
-        private System.Windows.Forms.Panel pnlRecentAccent;
-        private System.Windows.Forms.Panel pnlMatchesList;
+        private System.Windows.Forms.Panel pnlStatBestAlly;
+        private System.Windows.Forms.Panel pnlStatMostFacedKiller;
 
         // Footer / Actions
         private System.Windows.Forms.Panel pnlFooter;
@@ -59,20 +55,17 @@ namespace KillerDex
             this.pnlStatWins = new System.Windows.Forms.Panel();
             this.pnlStatLosses = new System.Windows.Forms.Panel();
             this.pnlStatWinRate = new System.Windows.Forms.Panel();
-            this.pnlRecentMatches = new System.Windows.Forms.Panel();
-            this.lblRecentTitle = new System.Windows.Forms.Label();
-            this.pnlRecentAccent = new System.Windows.Forms.Panel();
-            this.pnlMatchesList = new System.Windows.Forms.Panel();
+            this.pnlStatBestAlly = new System.Windows.Forms.Panel();
+            this.pnlStatMostFacedKiller = new System.Windows.Forms.Panel();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.btnAddMatch = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             this.pnlStats.SuspendLayout();
-            this.pnlRecentMatches.SuspendLayout();
             this.pnlFooter.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // menuStrip
-            // 
+            //
             this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(15)))));
             this.menuStrip.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.menuStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -86,45 +79,45 @@ namespace KillerDex
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStrip.Size = new System.Drawing.Size(750, 27);
             this.menuStrip.TabIndex = 0;
-            // 
+            //
             // fileMenu
-            // 
+            //
             this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitMenuItem});
             this.fileMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 19);
             this.fileMenu.Text = "File";
-            // 
+            //
             // exitMenuItem
-            // 
+            //
             this.exitMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.exitMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.exitMenuItem.Name = "exitMenuItem";
             this.exitMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
-            // 
+            //
             // manageMenu
-            // 
+            //
             this.manageMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alliesMenuItem});
             this.manageMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.manageMenu.Name = "manageMenu";
             this.manageMenu.Size = new System.Drawing.Size(62, 19);
             this.manageMenu.Text = "Manage";
-            // 
+            //
             // alliesMenuItem
-            // 
+            //
             this.alliesMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.alliesMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.alliesMenuItem.Name = "alliesMenuItem";
             this.alliesMenuItem.Size = new System.Drawing.Size(180, 22);
             this.alliesMenuItem.Text = "👤 Allies";
             this.alliesMenuItem.Click += new System.EventHandler(this.alliesMenuItem_Click);
-            // 
+            //
             // languageMenu
-            // 
+            //
             this.languageMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.italianMenuItem,
             this.englishMenuItem});
@@ -132,18 +125,18 @@ namespace KillerDex
             this.languageMenu.Name = "languageMenu";
             this.languageMenu.Size = new System.Drawing.Size(71, 19);
             this.languageMenu.Text = "Language";
-            // 
+            //
             // italianMenuItem
-            // 
+            //
             this.italianMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.italianMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.italianMenuItem.Name = "italianMenuItem";
             this.italianMenuItem.Size = new System.Drawing.Size(124, 22);
             this.italianMenuItem.Text = "🇮🇹 Italiano";
             this.italianMenuItem.Click += new System.EventHandler(this.italianMenuItem_Click);
-            // 
+            //
             // englishMenuItem
-            // 
+            //
             this.englishMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.englishMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.englishMenuItem.Name = "englishMenuItem";
@@ -161,107 +154,81 @@ namespace KillerDex
             this.formHeader.Subtitle = "Dead by Daylight Match Tracker";
             //
             // pnlStats
-            // 
+            //
             this.pnlStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
             this.pnlStats.Controls.Add(this.pnlStatTotal);
             this.pnlStats.Controls.Add(this.pnlStatWins);
             this.pnlStats.Controls.Add(this.pnlStatLosses);
             this.pnlStats.Controls.Add(this.pnlStatWinRate);
-            this.pnlStats.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlStats.Controls.Add(this.pnlStatBestAlly);
+            this.pnlStats.Controls.Add(this.pnlStatMostFacedKiller);
+            this.pnlStats.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlStats.Location = new System.Drawing.Point(0, 117);
             this.pnlStats.Name = "pnlStats";
             this.pnlStats.Padding = new System.Windows.Forms.Padding(20, 15, 20, 15);
-            this.pnlStats.Size = new System.Drawing.Size(750, 110);
+            this.pnlStats.Size = new System.Drawing.Size(750, 200);
             this.pnlStats.TabIndex = 2;
-            // 
+            //
             // pnlStatTotal
-            // 
+            //
             this.pnlStatTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
             this.pnlStatTotal.Location = new System.Drawing.Point(20, 15);
             this.pnlStatTotal.Name = "pnlStatTotal";
             this.pnlStatTotal.Size = new System.Drawing.Size(165, 80);
             this.pnlStatTotal.TabIndex = 0;
-            // 
+            //
             // pnlStatWins
-            // 
+            //
             this.pnlStatWins.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
             this.pnlStatWins.Location = new System.Drawing.Point(200, 15);
             this.pnlStatWins.Name = "pnlStatWins";
             this.pnlStatWins.Size = new System.Drawing.Size(165, 80);
             this.pnlStatWins.TabIndex = 1;
-            // 
+            //
             // pnlStatLosses
-            // 
+            //
             this.pnlStatLosses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
             this.pnlStatLosses.Location = new System.Drawing.Point(380, 15);
             this.pnlStatLosses.Name = "pnlStatLosses";
             this.pnlStatLosses.Size = new System.Drawing.Size(165, 80);
             this.pnlStatLosses.TabIndex = 2;
-            // 
+            //
             // pnlStatWinRate
-            // 
+            //
             this.pnlStatWinRate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
             this.pnlStatWinRate.Location = new System.Drawing.Point(560, 15);
             this.pnlStatWinRate.Name = "pnlStatWinRate";
             this.pnlStatWinRate.Size = new System.Drawing.Size(165, 80);
             this.pnlStatWinRate.TabIndex = 3;
-            // 
-            // pnlRecentMatches
-            // 
-            this.pnlRecentMatches.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
-            this.pnlRecentMatches.Controls.Add(this.lblRecentTitle);
-            this.pnlRecentMatches.Controls.Add(this.pnlRecentAccent);
-            this.pnlRecentMatches.Controls.Add(this.pnlMatchesList);
-            this.pnlRecentMatches.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlRecentMatches.Location = new System.Drawing.Point(0, 227);
-            this.pnlRecentMatches.Name = "pnlRecentMatches";
-            this.pnlRecentMatches.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.pnlRecentMatches.Size = new System.Drawing.Size(750, 283);
-            this.pnlRecentMatches.TabIndex = 3;
-            // 
-            // lblRecentTitle
-            // 
-            this.lblRecentTitle.AutoSize = true;
-            this.lblRecentTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblRecentTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblRecentTitle.Location = new System.Drawing.Point(20, 10);
-            this.lblRecentTitle.Name = "lblRecentTitle";
-            this.lblRecentTitle.Size = new System.Drawing.Size(150, 25);
-            this.lblRecentTitle.TabIndex = 0;
-            this.lblRecentTitle.Text = "Recent Matches";
-            // 
-            // pnlRecentAccent
-            // 
-            this.pnlRecentAccent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlRecentAccent.Location = new System.Drawing.Point(20, 38);
-            this.pnlRecentAccent.Name = "pnlRecentAccent";
-            this.pnlRecentAccent.Size = new System.Drawing.Size(60, 3);
-            this.pnlRecentAccent.TabIndex = 0;
-            // 
-            // pnlMatchesList
-            // 
-            this.pnlMatchesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlMatchesList.AutoScroll = true;
-            this.pnlMatchesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.pnlMatchesList.Location = new System.Drawing.Point(20, 50);
-            this.pnlMatchesList.Name = "pnlMatchesList";
-            this.pnlMatchesList.Size = new System.Drawing.Size(710, 220);
-            this.pnlMatchesList.TabIndex = 1;
-            // 
+            //
+            // pnlStatBestAlly
+            //
+            this.pnlStatBestAlly.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
+            this.pnlStatBestAlly.Location = new System.Drawing.Point(20, 105);
+            this.pnlStatBestAlly.Name = "pnlStatBestAlly";
+            this.pnlStatBestAlly.Size = new System.Drawing.Size(345, 80);
+            this.pnlStatBestAlly.TabIndex = 4;
+            //
+            // pnlStatMostFacedKiller
+            //
+            this.pnlStatMostFacedKiller.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
+            this.pnlStatMostFacedKiller.Location = new System.Drawing.Point(380, 105);
+            this.pnlStatMostFacedKiller.Name = "pnlStatMostFacedKiller";
+            this.pnlStatMostFacedKiller.Size = new System.Drawing.Size(345, 80);
+            this.pnlStatMostFacedKiller.TabIndex = 5;
+            //
             // pnlFooter
-            // 
+            //
             this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(20)))));
             this.pnlFooter.Controls.Add(this.btnAddMatch);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(0, 510);
+            this.pnlFooter.Location = new System.Drawing.Point(0, 317);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(750, 70);
-            this.pnlFooter.TabIndex = 4;
-            // 
+            this.pnlFooter.TabIndex = 3;
+            //
             // btnAddMatch
-            // 
+            //
             this.btnAddMatch.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnAddMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.btnAddMatch.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -275,33 +242,30 @@ namespace KillerDex
             this.btnAddMatch.Name = "btnAddMatch";
             this.btnAddMatch.Size = new System.Drawing.Size(250, 46);
             this.btnAddMatch.TabIndex = 0;
-            this.btnAddMatch.Text = "➕ Add New Match";
+            this.btnAddMatch.Text = "+ Add New Match";
             this.btnAddMatch.UseVisualStyleBackColor = false;
             this.btnAddMatch.Click += new System.EventHandler(this.btnAddMatch_Click);
-            // 
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
-            this.ClientSize = new System.Drawing.Size(750, 580);
-            this.Controls.Add(this.pnlRecentMatches);
-            this.Controls.Add(this.pnlFooter);
+            this.ClientSize = new System.Drawing.Size(750, 387);
             this.Controls.Add(this.pnlStats);
+            this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.formHeader);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(766, 619);
+            this.MinimumSize = new System.Drawing.Size(766, 426);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KillerDex - Dead by Daylight Tracker";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.pnlStats.ResumeLayout(false);
-            this.pnlRecentMatches.ResumeLayout(false);
-            this.pnlRecentMatches.PerformLayout();
             this.pnlFooter.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

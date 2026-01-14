@@ -24,6 +24,7 @@ namespace KillerDex.Theme
         public static readonly Color AccentGreen = Color.FromArgb(40, 160, 80);
         public static readonly Color AccentBlue = Color.FromArgb(60, 140, 200);
         public static readonly Color AccentYellow = Color.FromArgb(200, 160, 40);
+        public static readonly Color AccentPurple = Color.FromArgb(140, 80, 180);
 
         // Text colors
         public static readonly Color TextPrimary = Color.FromArgb(220, 220, 220);

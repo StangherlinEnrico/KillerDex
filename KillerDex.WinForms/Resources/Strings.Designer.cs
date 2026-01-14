@@ -284,7 +284,34 @@ namespace KillerDex.Resources {
                 return ResourceManager.GetString("Home_Wins", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Best Ally:.
+        /// </summary>
+        internal static string Home_BestAlly {
+            get {
+                return ResourceManager.GetString("Home_BestAlly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Most Faced Killer:.
+        /// </summary>
+        internal static string Home_MostFacedKiller {
+            get {
+                return ResourceManager.GetString("Home_MostFacedKiller", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to N/A.
+        /// </summary>
+        internal static string Home_NotAvailable {
+            get {
+                return ResourceManager.GetString("Home_NotAvailable", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Alias.
         /// </summary>
@@ -419,6 +446,15 @@ namespace KillerDex.Resources {
                 return ResourceManager.GetString("Match_Notes", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add notes about this match....
+        /// </summary>
+        internal static string Match_NotesPlaceholder {
+            get {
+                return ResourceManager.GetString("Match_NotesPlaceholder", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Save Match.
@@ -435,6 +471,24 @@ namespace KillerDex.Resources {
         internal static string Match_Saved {
             get {
                 return ResourceManager.GetString("Match_Saved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select allies....
+        /// </summary>
+        internal static string Match_SelectAllies {
+            get {
+                return ResourceManager.GetString("Match_SelectAllies", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select who escaped....
+        /// </summary>
+        internal static string Match_SelectSurvivors {
+            get {
+                return ResourceManager.GetString("Match_SelectSurvivors", resourceCulture);
             }
         }
         

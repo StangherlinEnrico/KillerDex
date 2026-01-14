@@ -22,7 +22,7 @@ namespace KillerDex
         private DbdComboBox cmbKiller;
         private System.Windows.Forms.Label lblAllies;
         private System.Windows.Forms.Label lblAlliesHint;
-        private System.Windows.Forms.CheckedListBox chkAllies;
+        private DbdMultiSelect msAllies;
 
         // Right column
         private System.Windows.Forms.Panel pnlRightColumn;
@@ -31,9 +31,9 @@ namespace KillerDex
         private System.Windows.Forms.Label lblGenerators;
         private System.Windows.Forms.Panel pnlGenerators;
         private System.Windows.Forms.Label lblSurvivors;
-        private System.Windows.Forms.Panel pnlSurvivors;
+        private DbdMultiSelect msSurvivors;
         private System.Windows.Forms.Label lblNotes;
-        private System.Windows.Forms.TextBox txtNotes;
+        private DbdTextBox txtNotes;
 
         // Footer
         private System.Windows.Forms.Panel pnlFooter;
@@ -60,16 +60,16 @@ namespace KillerDex
             this.cmbKiller = new DbdComboBox();
             this.lblAllies = new System.Windows.Forms.Label();
             this.lblAlliesHint = new System.Windows.Forms.Label();
-            this.chkAllies = new System.Windows.Forms.CheckedListBox();
+            this.msAllies = new DbdMultiSelect();
             this.pnlRightColumn = new System.Windows.Forms.Panel();
             this.lblFirstHook = new System.Windows.Forms.Label();
             this.cmbFirstHook = new DbdComboBox();
             this.lblGenerators = new System.Windows.Forms.Label();
             this.pnlGenerators = new System.Windows.Forms.Panel();
             this.lblSurvivors = new System.Windows.Forms.Label();
-            this.pnlSurvivors = new System.Windows.Forms.Panel();
+            this.msSurvivors = new DbdMultiSelect();
             this.lblNotes = new System.Windows.Forms.Label();
-            this.txtNotes = new System.Windows.Forms.TextBox();
+            this.txtNotes = new DbdTextBox();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -110,7 +110,7 @@ namespace KillerDex
             this.pnlLeftColumn.Controls.Add(this.cmbKiller);
             this.pnlLeftColumn.Controls.Add(this.lblAllies);
             this.pnlLeftColumn.Controls.Add(this.lblAlliesHint);
-            this.pnlLeftColumn.Controls.Add(this.chkAllies);
+            this.pnlLeftColumn.Controls.Add(this.msAllies);
             this.pnlLeftColumn.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeftColumn.Location = new System.Drawing.Point(20, 20);
             this.pnlLeftColumn.Name = "pnlLeftColumn";
@@ -188,20 +188,15 @@ namespace KillerDex
             this.lblAlliesHint.Name = "lblAlliesHint";
             this.lblAlliesHint.Size = new System.Drawing.Size(100, 13);
             this.lblAlliesHint.Text = "(Max 3 selectable)";
-            // 
-            // chkAllies
-            // 
-            this.chkAllies.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(38)))));
-            this.chkAllies.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.chkAllies.CheckOnClick = true;
-            this.chkAllies.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.chkAllies.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.chkAllies.FormattingEnabled = true;
-            this.chkAllies.Location = new System.Drawing.Point(0, 207);
-            this.chkAllies.Name = "chkAllies";
-            this.chkAllies.Size = new System.Drawing.Size(310, 147);
-            this.chkAllies.TabIndex = 3;
-            this.chkAllies.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.chkAllies_ItemCheck);
+            //
+            // msAllies
+            //
+            this.msAllies.Location = new System.Drawing.Point(0, 207);
+            this.msAllies.Name = "msAllies";
+            this.msAllies.Size = new System.Drawing.Size(310, 32);
+            this.msAllies.MaxSelection = 3;
+            this.msAllies.TabIndex = 3;
+            this.msAllies.SelectionChanged += new System.EventHandler(this.msAllies_SelectionChanged);
             // 
             // pnlRightColumn
             // 
@@ -210,7 +205,7 @@ namespace KillerDex
             this.pnlRightColumn.Controls.Add(this.lblGenerators);
             this.pnlRightColumn.Controls.Add(this.pnlGenerators);
             this.pnlRightColumn.Controls.Add(this.lblSurvivors);
-            this.pnlRightColumn.Controls.Add(this.pnlSurvivors);
+            this.pnlRightColumn.Controls.Add(this.msSurvivors);
             this.pnlRightColumn.Controls.Add(this.lblNotes);
             this.pnlRightColumn.Controls.Add(this.txtNotes);
             this.pnlRightColumn.Dock = System.Windows.Forms.DockStyle.Right;
@@ -262,13 +257,14 @@ namespace KillerDex
             this.lblSurvivors.Name = "lblSurvivors";
             this.lblSurvivors.Size = new System.Drawing.Size(126, 19);
             this.lblSurvivors.Text = "Survivors Escaped";
-            // 
-            // pnlSurvivors
-            // 
-            this.pnlSurvivors.Location = new System.Drawing.Point(0, 167);
-            this.pnlSurvivors.Name = "pnlSurvivors";
-            this.pnlSurvivors.Size = new System.Drawing.Size(310, 50);
-            this.pnlSurvivors.TabIndex = 6;
+            //
+            // msSurvivors
+            //
+            this.msSurvivors.Location = new System.Drawing.Point(0, 167);
+            this.msSurvivors.Name = "msSurvivors";
+            this.msSurvivors.Size = new System.Drawing.Size(310, 32);
+            this.msSurvivors.MaxSelection = 4;
+            this.msSurvivors.TabIndex = 6;
             // 
             // lblNotes
             // 
@@ -279,19 +275,14 @@ namespace KillerDex
             this.lblNotes.Name = "lblNotes";
             this.lblNotes.Size = new System.Drawing.Size(47, 19);
             this.lblNotes.Text = "Notes";
-            // 
+            //
             // txtNotes
-            // 
-            this.txtNotes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.txtNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNotes.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtNotes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            //
             this.txtNotes.Location = new System.Drawing.Point(0, 247);
-            this.txtNotes.Multiline = true;
             this.txtNotes.Name = "txtNotes";
-            this.txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtNotes.Size = new System.Drawing.Size(310, 107);
+            this.txtNotes.Size = new System.Drawing.Size(310, 100);
             this.txtNotes.TabIndex = 7;
+            this.txtNotes.Multiline = true;
             // 
             // pnlFooter
             // 

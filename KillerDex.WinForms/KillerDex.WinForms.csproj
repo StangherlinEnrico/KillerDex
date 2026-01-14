@@ -59,6 +59,12 @@
     <Compile Include="Controls\DbdSelectorButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\DbdMultiSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DbdTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

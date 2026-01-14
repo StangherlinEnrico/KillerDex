@@ -14,12 +14,14 @@ namespace KillerDex
     public partial class MainForm : Form
     {
         private readonly MatchService _matchService;
+        private readonly AllyService _allyService;
 
         public MainForm()
         {
             InitializeComponent();
 
             _matchService = new MatchService();
+            _allyService = new AllyService();
 
             // Enable double buffering
             SetStyle(ControlStyles.OptimizedDoubleBuffer |
@@ -47,7 +49,6 @@ namespace KillerDex
             englishMenuItem.Text = Strings.Menu_English;
 
             // Content
-            lblRecentTitle.Text = Strings.Home_RecentMatches;
             btnAddMatch.Text = Strings.Home_AddMatch;
         }
 
@@ -60,11 +61,15 @@ namespace KillerDex
 
         private void InitializeStatCards()
         {
-            // Create stat cards
+            // Create stat cards - first row
             CreateStatCard(pnlStatTotal, "🎮", Strings.Home_TotalMatches.TrimEnd(':'), "0", DbdColors.AccentBlue);
             CreateStatCard(pnlStatWins, "✓", Strings.Home_Wins.TrimEnd(':'), "0", DbdColors.WinColor);
             CreateStatCard(pnlStatLosses, "✗", Strings.Home_Losses.TrimEnd(':'), "0", DbdColors.LossColor);
             CreateStatCard(pnlStatWinRate, "📊", Strings.Home_WinRate.TrimEnd(':'), "0%", DbdColors.AccentYellow);
+
+            // Create stat cards - second row
+            CreateStatCard(pnlStatBestAlly, "👤", Strings.Home_BestAlly.TrimEnd(':'), Strings.Home_NotAvailable, DbdColors.AccentPurple);
+            CreateStatCard(pnlStatMostFacedKiller, "💀", Strings.Home_MostFacedKiller.TrimEnd(':'), Strings.Home_NotAvailable, DbdColors.AccentRed);
         }
 
         private void CreateStatCard(Panel panel, string icon, string title, string value, Color accentColor)
@@ -96,21 +101,21 @@ namespace KillerDex
             Label lblIcon = new Label
             {
                 Text = icon,
-                Font = new Font("Segoe UI Emoji", 16F),
+                Font = new Font("Segoe UI Emoji", 14F),
                 ForeColor = accentColor,
                 AutoSize = true,
-                Location = new Point(15, 12),
+                Location = new Point(10, 14),
                 BackColor = Color.Transparent
             };
 
-            // Title label
+            // Title label - positioned after measuring icon width
             Label lblTitle = new Label
             {
                 Text = title,
                 Font = new Font("Segoe UI", 9F),
                 ForeColor = DbdColors.TextSecondary,
                 AutoSize = true,
-                Location = new Point(45, 15),
+                Location = new Point(32, 15),
                 BackColor = Color.Transparent
             };
 
@@ -126,9 +131,10 @@ namespace KillerDex
                 BackColor = Color.Transparent
             };
 
-            panel.Controls.Add(lblIcon);
-            panel.Controls.Add(lblTitle);
+            // Add in reverse order so title is on top of icon if they overlap
             panel.Controls.Add(lblValue);
+            panel.Controls.Add(lblTitle);
+            panel.Controls.Add(lblIcon);
         }
 
         private void UpdateStatCard(Panel panel, string value)
@@ -142,143 +148,30 @@ namespace KillerDex
 
         private void LoadDashboard()
         {
-            // Load statistics
-            int total = _matchService.GetTotalCount();
-            int wins = _matchService.GetWinsCount();
-            int losses = _matchService.GetLossesCount();
-            double winRate = total > 0 ? (double)wins / total * 100 : 0;
+            // Load statistics using the centralized dashboard stats
+            var stats = _matchService.GetDashboardStats(_allyService);
 
-            UpdateStatCard(pnlStatTotal, total.ToString());
-            UpdateStatCard(pnlStatWins, wins.ToString());
-            UpdateStatCard(pnlStatLosses, losses.ToString());
-            UpdateStatCard(pnlStatWinRate, $"{winRate:F1}%");
+            UpdateStatCard(pnlStatTotal, stats.TotalMatches.ToString());
+            UpdateStatCard(pnlStatWins, stats.Wins.ToString());
+            UpdateStatCard(pnlStatLosses, stats.Losses.ToString());
+            UpdateStatCard(pnlStatWinRate, $"{stats.WinRate:F1}%");
 
-            // Load recent matches
-            LoadRecentMatches();
-        }
-
-        private void LoadRecentMatches()
-        {
-            pnlMatchesList.Controls.Clear();
-            var recentMatches = _matchService.GetRecent(5);
-
-            if (recentMatches.Count == 0)
+            // Best Ally - show name with win rate
+            string bestAllyValue = Strings.Home_NotAvailable;
+            if (stats.BestAlly != null)
             {
-                // Show empty state
-                Label lblEmpty = new Label
-                {
-                    Text = Strings.Home_NoMatches,
-                    Font = new Font("Segoe UI", 12F),
-                    ForeColor = DbdColors.TextSecondary,
-                    AutoSize = false,
-                    Size = new Size(pnlMatchesList.Width, 50),
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Location = new Point(0, 80)
-                };
-                pnlMatchesList.Controls.Add(lblEmpty);
-                return;
+                bestAllyValue = $"{stats.BestAlly.Name} ({stats.BestAlly.WinRate:F0}%)";
             }
+            UpdateStatCard(pnlStatBestAlly, bestAllyValue);
 
-            int yPos = 5;
-            foreach (var match in recentMatches)
+            // Most Faced Killer - show killer name with count
+            string mostFacedKillerValue = Strings.Home_NotAvailable;
+            if (stats.MostFacedKiller != null)
             {
-                var matchCard = CreateMatchCard(match, yPos);
-                pnlMatchesList.Controls.Add(matchCard);
-                yPos += 45;
+                string killerName = stats.MostFacedKiller.Killer.GetDisplayName();
+                mostFacedKillerValue = $"{killerName} (x{stats.MostFacedKiller.TimesFaced})";
             }
-        }
-
-        private Panel CreateMatchCard(Match match, int yPosition)
-        {
-            string killerName = match.Killer.GetDisplayName();
-            string mapName = match.Map.GetDisplayName();
-            bool isWin = match.IsWin;
-            int survivorCount = match.SurvivorsCount;
-
-            Panel card = new Panel
-            {
-                Size = new Size(pnlMatchesList.Width - 25, 40),
-                Location = new Point(5, yPosition),
-                BackColor = Color.Transparent,
-                Cursor = Cursors.Hand
-            };
-
-            // Paint event for custom drawing
-            card.Paint += (s, e) =>
-            {
-                Graphics g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                Rectangle rect = new Rectangle(0, 0, card.Width - 1, card.Height - 1);
-
-                // Background
-                using (GraphicsPath path = CreateRoundedRectangle(rect, 6))
-                using (SolidBrush brush = new SolidBrush(DbdColors.CardBackground))
-                {
-                    g.FillPath(brush, path);
-                }
-
-                // Left accent bar (win/loss color)
-                Color accentColor = isWin ? DbdColors.WinColor : DbdColors.LossColor;
-                using (SolidBrush accentBrush = new SolidBrush(accentColor))
-                {
-                    g.FillRectangle(accentBrush, 0, 5, 4, card.Height - 10);
-                }
-
-                // Date
-                using (Font dateFont = new Font("Segoe UI", 9F))
-                using (SolidBrush dateBrush = new SolidBrush(DbdColors.TextSecondary))
-                {
-                    g.DrawString(match.Date.ToString("dd/MM/yyyy"), dateFont, dateBrush, 15, 12);
-                }
-
-                // Killer with icon
-                using (Font killerFont = new Font("Segoe UI", 10F, FontStyle.Bold))
-                using (SolidBrush killerBrush = new SolidBrush(DbdColors.TextPrimary))
-                {
-                    g.DrawString($"💀 {killerName}", killerFont, killerBrush, 110, 10);
-                }
-
-                // Map with icon
-                using (Font mapFont = new Font("Segoe UI", 9F))
-                using (SolidBrush mapBrush = new SolidBrush(DbdColors.TextSecondary))
-                {
-                    g.DrawString($"🗺️ {mapName}", mapFont, mapBrush, 300, 12);
-                }
-
-                // Result
-                string resultText = isWin
-                    ? $"✓ {survivorCount} {Strings.Home_Survivors}"
-                    : $"✗ {Strings.Home_Defeat}";
-                Color resultColor = isWin ? DbdColors.WinColor : DbdColors.LossColor;
-
-                using (Font resultFont = new Font("Segoe UI", 9F, FontStyle.Bold))
-                using (SolidBrush resultBrush = new SolidBrush(resultColor))
-                {
-                    SizeF resultSize = g.MeasureString(resultText, resultFont);
-                    g.DrawString(resultText, resultFont, resultBrush, card.Width - resultSize.Width - 15, 12);
-                }
-            };
-
-            // Hover effects
-            card.MouseEnter += (s, e) =>
-            {
-                card.BackColor = DbdColors.CardBackgroundAlt;
-                card.Invalidate();
-            };
-
-            card.MouseLeave += (s, e) =>
-            {
-                card.BackColor = Color.Transparent;
-                card.Invalidate();
-            };
-
-            return card;
-        }
-
-        private string GetLocalizedUnknownMap()
-        {
-            return LanguageService.IsItalian ? "Sconosciuta" : "Unknown";
+            UpdateStatCard(pnlStatMostFacedKiller, mostFacedKillerValue);
         }
 
         private GraphicsPath CreateRoundedRectangle(Rectangle rect, int radius)

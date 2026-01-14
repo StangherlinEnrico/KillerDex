@@ -48,6 +48,7 @@
     <Compile Include="Interfaces\IAllyRepository.cs" />
     <Compile Include="Interfaces\IMatchRepository.cs" />
     <Compile Include="Models\Ally.cs" />
+    <Compile Include="Models\DashboardStats.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\KillerNames.Designer.cs">

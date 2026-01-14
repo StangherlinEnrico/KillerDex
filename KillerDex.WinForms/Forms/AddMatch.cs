@@ -21,9 +21,7 @@ namespace KillerDex
 
         // Custom selector buttons
         private List<DbdSelectorButton> _generatorButtons;
-        private List<DbdSelectorButton> _survivorButtons;
         private int _selectedGenerators = 0;
-        private int _selectedSurvivors = 0;
 
         public AddMatch()
         {
@@ -56,6 +54,7 @@ namespace KillerDex
             lblGenerators.Text = Strings.Match_Generators.TrimEnd(':');
             lblSurvivors.Text = Strings.Match_Survivors.TrimEnd(':');
             lblNotes.Text = Strings.Match_Notes.TrimEnd(':');
+            txtNotes.PlaceholderText = Strings.Match_NotesPlaceholder;
             btnSave.Text = "💾 " + Strings.Match_Save;
             btnCancel.Text = Strings.Button_Cancel;
         }
@@ -84,35 +83,17 @@ namespace KillerDex
                 _generatorButtons.Add(btn);
                 pnlGenerators.Controls.Add(btn);
             }
-
-            // Create survivor selector buttons (0-4)
-            _survivorButtons = new List<DbdSelectorButton>();
-            for (int i = 0; i <= 4; i++)
-            {
-                var btn = new DbdSelectorButton
-                {
-                    Text = i.ToString(),
-                    Value = i,
-                    Size = new Size(55, 40),
-                    Location = new Point(i * 60, 5),
-                    IsSelected = i == 0,
-                    Icon = "👤",
-                    UseGreenWhenSelected = true
-                };
-                btn.Click += SurvivorButton_Click;
-                _survivorButtons.Add(btn);
-                pnlSurvivors.Controls.Add(btn);
-            }
         }
 
         private void LoadData()
         {
             // Load allies
-            chkAllies.Items.Clear();
+            msAllies.ClearItems();
             foreach (var ally in _allyService.GetAll())
             {
-                chkAllies.Items.Add(ally);
+                msAllies.AddItem(ally);
             }
+            msAllies.PlaceholderText = Strings.Match_SelectAllies;
 
             // Load maps
             cmbMap.DataSource = null;
@@ -141,28 +122,16 @@ namespace KillerDex
             // Set current date
             dtpDate.Value = DateTime.Now;
 
-            // Initialize first hook options
+            // Initialize first hook and survivor options
             UpdateFirstHookOptions();
+            UpdateSurvivorOptions();
         }
 
-        private void chkAllies_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void msAllies_SelectionChanged(object sender, EventArgs e)
         {
-            // Count currently checked + the one being checked/unchecked
-            int checkedCount = chkAllies.CheckedItems.Count;
-
-            if (e.NewValue == CheckState.Checked)
-            {
-                checkedCount++;
-                if (checkedCount > 3)
-                {
-                    e.NewValue = CheckState.Unchecked;
-                    ShowWarning(Strings.Match_AlliesMax);
-                    return;
-                }
-            }
-
-            // Update first hook options after a small delay to let the check complete
-            BeginInvoke(new Action(UpdateFirstHookOptions));
+            // Update first hook and survivor options when allies selection changes
+            UpdateFirstHookOptions();
+            UpdateSurvivorOptions();
         }
 
         private void UpdateFirstHookOptions()
@@ -170,17 +139,16 @@ namespace KillerDex
             cmbFirstHook.Items.Clear();
             cmbFirstHook.Items.Add(Strings.Match_Myself);
 
-            var selectedAllies = chkAllies.CheckedItems.Cast<Ally>().ToList();
+            var selectedAllies = msAllies.SelectedItems.Cast<Ally>().ToList();
             foreach (var ally in selectedAllies)
             {
                 cmbFirstHook.Items.Add(ally.Name);
             }
 
             // Add fillers for remaining slots
-            int fillerCount = 3 - selectedAllies.Count;
-            for (int i = 0; i < fillerCount; i++)
+            if (3 - selectedAllies.Count > 0)
             {
-                cmbFirstHook.Items.Add($"{Strings.Match_Filler} {i + 1}");
+                cmbFirstHook.Items.Add(Strings.Match_Filler);
             }
 
             if (cmbFirstHook.Items.Count > 0)
@@ -201,18 +169,34 @@ namespace KillerDex
             }
         }
 
-        private void SurvivorButton_Click(object sender, EventArgs e)
+        private void UpdateSurvivorOptions()
         {
-            var clickedBtn = sender as DbdSelectorButton;
-            if (clickedBtn == null) return;
+            // Remember current selections by name
+            var previousSelections = msSurvivors.SelectedItems
+                .Cast<string>()
+                .ToList();
 
-            _selectedSurvivors = clickedBtn.Value;
+            msSurvivors.ClearItems();
+            msSurvivors.ClearSelection();
 
-            foreach (var btn in _survivorButtons)
+            // Add "Myself" first
+            msSurvivors.AddItem(Strings.Match_Myself);
+
+            // Add selected allies
+            var selectedAllies = msAllies.SelectedItems.Cast<Ally>().ToList();
+            foreach (var ally in selectedAllies)
             {
-                btn.IsSelected = btn.Value == _selectedSurvivors;
-                btn.Invalidate();
+                msSurvivors.AddItem(ally.Name);
             }
+
+            // Add filler for remaining slots (total 4 survivors: me + 3 others)
+            int fillerCount = 3 - selectedAllies.Count;
+            if (fillerCount > 0)
+            {
+                msSurvivors.AddItem(Strings.Match_Filler);
+            }
+
+            msSurvivors.PlaceholderText = Strings.Match_SelectSurvivors;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -241,15 +225,9 @@ namespace KillerDex
                 FirstHook = cmbFirstHook.SelectedItem?.ToString() ?? Strings.Match_Myself,
                 GeneratorsCompleted = _selectedGenerators,
                 Notes = txtNotes.Text.Trim(),
-                AllyIds = chkAllies.CheckedItems.Cast<Ally>().Select(a => a.Id).ToList()
+                AllyIds = msAllies.SelectedItems.Cast<Ally>().Select(a => a.Id).ToList(),
+                Survivors = msSurvivors.SelectedItems.Cast<string>().ToList()
             };
-
-            // Set survivors as a list of names based on count
-            match.Survivors = new List<string>();
-            for (int i = 0; i < _selectedSurvivors; i++)
-            {
-                match.Survivors.Add($"Survivor {i + 1}");
-            }
 
             var result = _matchService.Add(match);
 
