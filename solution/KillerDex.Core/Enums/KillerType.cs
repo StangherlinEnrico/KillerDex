@@ -9,8 +9,8 @@ namespace KillerDex.Core.Enums
         Shape,
         Hag,
         Doctor,
-        Huntress,
         Cannibal,
+        Huntress,
         Nightmare,
         Pig,
         Clown,
@@ -34,11 +34,14 @@ namespace KillerDex.Core.Enums
         Knight,
         SkullMerchant,
         Singularity,
-        Xenomorph,
         GoodGuy,
         Unknown,
         Lich,
         DarkLord,
-        Houndmaster
+        Houndmaster,
+        Krasue,
+        Animatronic,
+        Ghoul,
+        Xenomorph,
     }
 }

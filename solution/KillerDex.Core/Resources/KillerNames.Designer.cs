@@ -61,6 +61,15 @@ namespace KillerDex.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Animatronic.
+        /// </summary>
+        internal static string Animatronic {
+            get {
+                return ResourceManager.GetString("Animatronic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Artist.
         /// </summary>
         internal static string Artist {
@@ -169,6 +178,15 @@ namespace KillerDex.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Ghoul.
+        /// </summary>
+        internal static string Ghoul {
+            get {
+                return ResourceManager.GetString("Ghoul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Good Guy.
         /// </summary>
         internal static string GoodGuy {
@@ -219,6 +237,15 @@ namespace KillerDex.Core.Resources {
         internal static string Knight {
             get {
                 return ResourceManager.GetString("Knight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Krasue.
+        /// </summary>
+        internal static string Krasue {
+            get {
+                return ResourceManager.GetString("Krasue", resourceCulture);
             }
         }
         

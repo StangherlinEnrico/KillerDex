@@ -231,4 +231,13 @@
   <data name="Houndmaster" xml:space="preserve">
     <value>La Signora dei Segugi</value>
   </data>
+  <data name="Krasue" xml:space="preserve">
+    <value>La Krasue</value>
+  </data>
+  <data name="Animatronic" xml:space="preserve">
+    <value>L'Animatronic</value>
+  </data>
+  <data name="Ghoul" xml:space="preserve">
+    <value>Il Ghoul</value>
+  </data>
 </root>
