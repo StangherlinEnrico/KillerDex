@@ -42,7 +42,11 @@ namespace KillerDex.Core.Enums
         TempleOfPurgation,
 
         // Springwood
-        BadhamPreschool,
+        BadhamPreschoolI,
+        BadhamPreschoolII,
+        BadhamPreschoolIII,
+        BadhamPreschoolIV,
+        BadhamPreschoolV,
 
         // Gideon Meat Plant
         TheGame,
@@ -53,6 +57,10 @@ namespace KillerDex.Core.Enums
 
         // Ormond
         MountOrmondResort,
+        OrmondLakeMine,
+
+        // Hawkins National Laboratory
+        TheUndergroundComplex,
 
         // Grave of Glenvale
         DeadDawgSaloon,
@@ -62,32 +70,25 @@ namespace KillerDex.Core.Enums
 
         // Raccoon City
         RaccoonCityPoliceStation,
+        RaccoonCityPoliceStationEastWing,
+        RaccoonCityPoliceStationWestWing,
 
-        // Eyrie of Crows
+        // Forsaken Boneyard
         EyrieOfCrows,
+        DeadSands,
 
-        // Garden of Joy
+        // Withered Isle
         GardenOfJoy,
+        GreenvilleSquare,
+        FreddyFazbearsPizza,
+        FallenRefuge,
 
-        // Shattered Square
+        // The Decimated Borgo
         ShatteredSquare,
-
-        // Toba Landing
-        TobaLanding,
-
-        // Nostromo Wreckage
-        NostromoWreckage,
-
-        // Greenville Square
-        GreenvilleSquareShoppingCentre,
-
-        // Forgotten Ruins
         ForgottenRuins,
 
-        // Borgo
-        Borgo,
-
         // Dvarka Deepwood
-        DvarkaDeepwood
+        TobaLanding,
+        NostromoWreckage
     }
 }

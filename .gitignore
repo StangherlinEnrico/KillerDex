@@ -1,3 +1,7 @@
 # Claude
 .claude/
 tmpclaude-*
+
+# Portable Win App (keep folder, ignore contents)
+portable_win_app/*
+!portable_win_app/.gitkeep

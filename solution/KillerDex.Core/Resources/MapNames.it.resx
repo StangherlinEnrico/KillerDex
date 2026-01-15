@@ -145,8 +145,20 @@
   </data>
 
   <!-- Springwood -->
-  <data name="BadhamPreschool" xml:space="preserve">
-    <value>Asilo Badham</value>
+  <data name="BadhamPreschoolI" xml:space="preserve">
+    <value>Asilo Badham I</value>
+  </data>
+  <data name="BadhamPreschoolII" xml:space="preserve">
+    <value>Asilo Badham II</value>
+  </data>
+  <data name="BadhamPreschoolIII" xml:space="preserve">
+    <value>Asilo Badham III</value>
+  </data>
+  <data name="BadhamPreschoolIV" xml:space="preserve">
+    <value>Asilo Badham IV</value>
+  </data>
+  <data name="BadhamPreschoolV" xml:space="preserve">
+    <value>Asilo Badham V</value>
   </data>
 
   <!-- Gideon Meat Plant -->
@@ -166,6 +178,14 @@
   <data name="MountOrmondResort" xml:space="preserve">
     <value>Resort Monte Ormond</value>
   </data>
+  <data name="OrmondLakeMine" xml:space="preserve">
+    <value>Miniera del Lago Ormond</value>
+  </data>
+
+  <!-- Hawkins National Laboratory -->
+  <data name="TheUndergroundComplex" xml:space="preserve">
+    <value>Il Complesso Sotterraneo</value>
+  </data>
 
   <!-- Grave of Glenvale -->
   <data name="DeadDawgSaloon" xml:space="preserve">
@@ -181,50 +201,49 @@
   <data name="RaccoonCityPoliceStation" xml:space="preserve">
     <value>Stazione di Polizia di Raccoon City</value>
   </data>
+  <data name="RaccoonCityPoliceStationEastWing" xml:space="preserve">
+    <value>Stazione di Polizia di Raccoon City - Ala Est</value>
+  </data>
+  <data name="RaccoonCityPoliceStationWestWing" xml:space="preserve">
+    <value>Stazione di Polizia di Raccoon City - Ala Ovest</value>
+  </data>
 
-  <!-- Eyrie of Crows -->
+  <!-- Forsaken Boneyard -->
   <data name="EyrieOfCrows" xml:space="preserve">
     <value>Nido dei Corvi</value>
   </data>
+  <data name="DeadSands" xml:space="preserve">
+    <value>Sabbie Morte</value>
+  </data>
 
-  <!-- Garden of Joy -->
+  <!-- Withered Isle -->
   <data name="GardenOfJoy" xml:space="preserve">
     <value>Giardino della Gioia</value>
   </data>
+  <data name="GreenvilleSquare" xml:space="preserve">
+    <value>Greenville Square</value>
+  </data>
+  <data name="FreddyFazbearsPizza" xml:space="preserve">
+    <value>Pizzeria di Freddy Fazbear</value>
+  </data>
+  <data name="FallenRefuge" xml:space="preserve">
+    <value>Rifugio Caduto</value>
+  </data>
 
-  <!-- Shattered Square -->
+  <!-- The Decimated Borgo -->
   <data name="ShatteredSquare" xml:space="preserve">
     <value>Piazza Distrutta</value>
   </data>
-
-  <!-- Toba Landing -->
-  <data name="TobaLanding" xml:space="preserve">
-    <value>Approdo Toba</value>
-  </data>
-
-  <!-- Nostromo Wreckage -->
-  <data name="NostromoWreckage" xml:space="preserve">
-    <value>Relitto del Nostromo</value>
-  </data>
-
-  <!-- Greenville Square -->
-  <data name="GreenvilleSquareShoppingCentre" xml:space="preserve">
-    <value>Centro Commerciale Greenville Square</value>
-  </data>
-
-  <!-- Forgotten Ruins -->
   <data name="ForgottenRuins" xml:space="preserve">
     <value>Rovine Dimenticate</value>
   </data>
 
-  <!-- Borgo -->
-  <data name="Borgo" xml:space="preserve">
-    <value>Borgo</value>
-  </data>
-
   <!-- Dvarka Deepwood -->
-  <data name="DvarkaDeepwood" xml:space="preserve">
-    <value>Foresta Profonda di Dvarka</value>
+  <data name="TobaLanding" xml:space="preserve">
+    <value>Approdo Toba</value>
+  </data>
+  <data name="NostromoWreckage" xml:space="preserve">
+    <value>Relitto del Nostromo</value>
   </data>
 
 </root>
