@@ -1,0 +1,21 @@
+@using API.Admin.Themes
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="DbdTheme.Theme" IsDarkMode="true" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<style>
+    @DbdTheme.CssVariables
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+</style>
+
+<div style="@DbdTheme.BackgroundGradient min-height: 100vh; overflow: hidden;">
+    @Body
+</div>

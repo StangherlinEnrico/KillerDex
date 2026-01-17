@@ -1,0 +1,177 @@
+@page "/admin/chapters/new"
+@page "/admin/chapters/{Id:guid}"
+@attribute [Authorize]
+@inject IChapterService ChapterService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+<PageTitle>@(_isNew ? "New Chapter" : "Edit Chapter") - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Href="/admin/chapters" />
+    <MudText Typo="Typo.h4">@(_isNew ? "New Chapter" : $"Edit {_model.Name}")</MudText>
+</MudStack>
+
+@if (_isLoading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudForm @ref="_form" @bind-IsValid="_isValid">
+        <MudGrid>
+            <MudItem xs="12" md="8">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Chapter Information</MudText>
+
+                    <MudGrid>
+                        <MudItem xs="12" md="8">
+                            <MudTextField @bind-Value="_model.Name" Label="Name" Required="true"
+                                          RequiredError="Name is required" MaxLength="100" />
+                        </MudItem>
+                        <MudItem xs="12" md="4">
+                            <MudNumericField @bind-Value="_model.Number" Label="Number" Required="true"
+                                             RequiredError="Number is required" Min="0" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="_releaseDate" Label="Release Date" DateFormat="yyyy-MM-dd" Clearable="true" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="_model.GameVersion" Label="Game Version" MaxLength="20" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Image</MudText>
+
+                    <MudTextField @bind-Value="_model.ImageUrl" Label="Image URL" MaxLength="500" Class="mb-4" />
+
+                    @if (!string.IsNullOrEmpty(_model.ImageUrl))
+                    {
+                        <MudImage Src="@_model.ImageUrl" Alt="Preview" Class="mb-4" Style="max-width: 100%; max-height: 200px;" ObjectFit="ObjectFit.Contain" />
+                    }
+                </MudPaper>
+
+                <MudPaper Class="pa-4 mt-4" Elevation="2">
+                    <MudStack>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   Disabled="@(!_isValid || _isSaving)" OnClick="Save">
+                            @if (_isSaving)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Saving...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>@(_isNew ? "Create Chapter" : "Save Changes")</MudText>
+                            }
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Default" FullWidth="true" Href="/admin/chapters">
+                            Cancel
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+}
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+
+    private MudForm? _form;
+    private bool _isValid;
+    private bool _isNew => !Id.HasValue;
+    private bool _isLoading = true;
+    private bool _isSaving;
+    private DateTime? _releaseDate;
+
+    private ChapterFormModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (Id.HasValue)
+            {
+                var chapter = await ChapterService.GetByIdAsync(Id.Value);
+                if (chapter != null)
+                {
+                    _model = new ChapterFormModel
+                    {
+                        Name = chapter.Name,
+                        Number = chapter.Number,
+                        ImageUrl = chapter.ImageUrl,
+                        GameVersion = chapter.GameVersion
+                    };
+                    _releaseDate = chapter.ReleaseDate?.ToDateTime(TimeOnly.MinValue);
+                }
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task Save()
+    {
+        if (_form == null) return;
+        await _form.Validate();
+        if (!_isValid) return;
+
+        _isSaving = true;
+        try
+        {
+            var releaseDate = _releaseDate.HasValue ? DateOnly.FromDateTime(_releaseDate.Value) : (DateOnly?)null;
+
+            if (_isNew)
+            {
+                var request = new CreateChapterRequest(
+                    _model.Name,
+                    _model.Number,
+                    releaseDate,
+                    _model.ImageUrl,
+                    _model.GameVersion
+                );
+
+                await ChapterService.CreateAsync(request);
+                Snackbar.Add("Chapter created successfully", Severity.Success);
+            }
+            else
+            {
+                var request = new UpdateChapterRequest(
+                    _model.Name,
+                    _model.Number,
+                    releaseDate,
+                    _model.ImageUrl,
+                    _model.GameVersion
+                );
+
+                await ChapterService.UpdateAsync(Id!.Value, request);
+                Snackbar.Add("Chapter updated successfully", Severity.Success);
+            }
+
+            Navigation.NavigateTo("/admin/chapters");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private class ChapterFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Number { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? GameVersion { get; set; }
+    }
+}

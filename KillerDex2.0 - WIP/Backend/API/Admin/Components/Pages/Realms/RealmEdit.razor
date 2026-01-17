@@ -1,0 +1,182 @@
+@page "/admin/realms/new"
+@page "/admin/realms/{Id:guid}"
+@attribute [Authorize]
+@inject IRealmService RealmService
+@inject IKillerService KillerService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+<PageTitle>@(_isNew ? "New Realm" : "Edit Realm") - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Href="/admin/realms" />
+    <MudText Typo="Typo.h4">@(_isNew ? "New Realm" : $"Edit {_model.Name}")</MudText>
+</MudStack>
+
+@if (_isLoading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudForm @ref="_form" @bind-IsValid="_isValid">
+        <MudGrid>
+            <MudItem xs="12" md="8">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Realm Information</MudText>
+
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="_model.Name" Label="Name" Required="true"
+                                          RequiredError="Name is required" MaxLength="200" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="_model.Description" Label="Description" Lines="4" MaxLength="4000" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudSelect @bind-Value="_model.KillerId" Label="Associated Killer" Clearable="true">
+                                @foreach (var killer in _killers)
+                                {
+                                    <MudSelectItem Value="@killer.Id">@killer.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Image & Version</MudText>
+
+                    <MudTextField @bind-Value="_model.ImageUrl" Label="Image URL" MaxLength="500" Class="mb-4" />
+
+                    @if (!string.IsNullOrEmpty(_model.ImageUrl))
+                    {
+                        <MudImage Src="@_model.ImageUrl" Alt="Preview" Class="mb-4" Style="max-width: 100%; max-height: 150px;" ObjectFit="ObjectFit.Contain" />
+                    }
+
+                    <MudTextField @bind-Value="_model.GameVersion" Label="Game Version" MaxLength="20" />
+                </MudPaper>
+
+                <MudPaper Class="pa-4 mt-4" Elevation="2">
+                    <MudStack>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   Disabled="@(!_isValid || _isSaving)" OnClick="Save">
+                            @if (_isSaving)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Saving...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>@(_isNew ? "Create Realm" : "Save Changes")</MudText>
+                            }
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Default" FullWidth="true" Href="/admin/realms">
+                            Cancel
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+}
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+
+    private MudForm? _form;
+    private bool _isValid;
+    private bool _isNew => !Id.HasValue;
+    private bool _isLoading = true;
+    private bool _isSaving;
+    private List<KillerSummaryDto> _killers = new();
+
+    private RealmFormModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _killers = (await KillerService.GetAllAsync()).ToList();
+
+            if (Id.HasValue)
+            {
+                var realm = await RealmService.GetByIdAsync(Id.Value);
+                if (realm != null)
+                {
+                    _model = new RealmFormModel
+                    {
+                        Name = realm.Name,
+                        Description = realm.Description,
+                        ImageUrl = realm.ImageUrl,
+                        GameVersion = realm.GameVersion,
+                        KillerId = realm.Killer?.Id
+                    };
+                }
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task Save()
+    {
+        if (_form == null) return;
+        await _form.Validate();
+        if (!_isValid) return;
+
+        _isSaving = true;
+        try
+        {
+            if (_isNew)
+            {
+                var request = new CreateRealmRequest(
+                    _model.Name,
+                    _model.Description,
+                    _model.KillerId,
+                    _model.ImageUrl,
+                    _model.GameVersion
+                );
+
+                await RealmService.CreateAsync(request);
+                Snackbar.Add("Realm created successfully", Severity.Success);
+            }
+            else
+            {
+                var request = new UpdateRealmRequest(
+                    _model.Name,
+                    _model.Description,
+                    _model.KillerId,
+                    _model.ImageUrl,
+                    _model.GameVersion
+                );
+
+                await RealmService.UpdateAsync(Id!.Value, request);
+                Snackbar.Add("Realm updated successfully", Severity.Success);
+            }
+
+            Navigation.NavigateTo("/admin/realms");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private class RealmFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? GameVersion { get; set; }
+        public Guid? KillerId { get; set; }
+    }
+}

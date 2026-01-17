@@ -1,0 +1,109 @@
+@page "/admin/chapters"
+@attribute [Authorize]
+@inject IChapterService ChapterService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Chapters - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Chapters</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/chapters/new">
+        Add Chapter
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredChapters" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterChapters" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ChapterSummaryDto, object>(x => x.Number)">Number</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<ChapterSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Number">
+            <MudChip T="string" Color="Color.Primary" Size="Size.Small">@context.Number</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/chapters/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteChapter(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No chapters found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<ChapterSummaryDto> _chapters = new();
+    private IEnumerable<ChapterSummaryDto> _filteredChapters = Enumerable.Empty<ChapterSummaryDto>();
+    private string _searchString = string.Empty;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadChapters();
+    }
+
+    private async Task LoadChapters()
+    {
+        _isLoading = true;
+        try
+        {
+            _chapters = (await ChapterService.GetAllAsync()).ToList();
+            FilterChapters();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterChapters()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+        {
+            _filteredChapters = _chapters;
+        }
+        else
+        {
+            _filteredChapters = _chapters.Where(c =>
+                c.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+                c.Number.ToString().Contains(_searchString));
+        }
+    }
+
+    private async Task DeleteChapter(ChapterSummaryDto chapter)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{chapter.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await ChapterService.DeleteAsync(chapter.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{chapter.Name}' deleted successfully", Severity.Success);
+                await LoadChapters();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete chapter", Severity.Error);
+            }
+        }
+    }
+}

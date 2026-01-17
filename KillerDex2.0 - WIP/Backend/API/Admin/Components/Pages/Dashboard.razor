@@ -1,0 +1,181 @@
+@page "/admin"
+@attribute [Authorize]
+@inject IKillerService KillerService
+@inject ISurvivorService SurvivorService
+@inject IChapterService ChapterService
+@inject IPerkService PerkService
+@inject IItemService ItemService
+@inject IKillerAddonService KillerAddonService
+@inject ISurvivorAddonService SurvivorAddonService
+@inject IOfferingService OfferingService
+@inject IMapService MapService
+@inject IRealmService RealmService
+@inject IStatusEffectService StatusEffectService
+
+<PageTitle>Dashboard - KillerDex Admin</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Dashboard</MudText>
+
+@if (_isLoading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Bloodtype" Color="Color.Error" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_killerCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Killers</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Info" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_survivorCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Survivors</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Book" Color="Color.Warning" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_chapterCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Chapters</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Star" Color="Color.Primary" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_perkCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Perks</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Inventory" Color="Color.Success" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_itemCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Items</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Tertiary" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_addonCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Addons</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalOffer" Color="Color.Secondary" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_offeringCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Offerings</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Map" Color="Color.Dark" Size="Size.Large" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.h4">@_mapCount</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Maps</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudText Typo="Typo.h5" Class="mt-8 mb-4">Quick Actions</MudText>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true" Href="/admin/killers/new" StartIcon="@Icons.Material.Filled.Add">
+                Add New Killer
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true" Href="/admin/survivors/new" StartIcon="@Icons.Material.Filled.Add">
+                Add New Survivor
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true" Href="/admin/perks/new" StartIcon="@Icons.Material.Filled.Add">
+                Add New Perk
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private bool _isLoading = true;
+    private int _killerCount;
+    private int _survivorCount;
+    private int _chapterCount;
+    private int _perkCount;
+    private int _itemCount;
+    private int _addonCount;
+    private int _offeringCount;
+    private int _mapCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Execute sequentially to avoid DbContext concurrency issues
+            _killerCount = (await KillerService.GetAllAsync()).Count();
+            _survivorCount = (await SurvivorService.GetAllAsync()).Count();
+            _chapterCount = (await ChapterService.GetAllAsync()).Count();
+            _perkCount = (await PerkService.GetAllAsync()).Count();
+            _itemCount = (await ItemService.GetAllAsync()).Count();
+
+            var killerAddons = (await KillerAddonService.GetAllAsync()).Count();
+            var survivorAddons = (await SurvivorAddonService.GetAllAsync()).Count();
+            _addonCount = killerAddons + survivorAddons;
+
+            _offeringCount = (await OfferingService.GetAllAsync()).Count();
+            _mapCount = (await MapService.GetAllAsync()).Count();
+        }
+        catch
+        {
+            // Handle error silently for dashboard
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

@@ -1,0 +1,147 @@
+@page "/admin/items"
+@attribute [Authorize]
+@inject IItemService ItemService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Items - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Items</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/items/new">
+        Add Item
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredItems" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mr-4"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterItems" Style="max-width: 300px;" />
+        <MudSelect T="string" Value="_typeFilter" Label="Type" Clearable="true" Class="mt-0" Style="max-width: 150px;"
+                   ValueChanged="@((string? value) => { _typeFilter = value; FilterItems(); })">
+            @foreach (var type in Enum.GetValues<ItemType>())
+            {
+                <MudSelectItem Value="@type.ToString()">@type</MudSelectItem>
+            }
+        </MudSelect>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<ItemSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<ItemSummaryDto, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<ItemSummaryDto, object>(x => x.Rarity)">Rarity</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Success" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="Rarity">
+            <MudChip T="string" Color="@GetRarityColor(context.Rarity)" Size="Size.Small">@context.Rarity</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/items/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteItem(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No items found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<ItemSummaryDto> _items = new();
+    private IEnumerable<ItemSummaryDto> _filteredItems = Enumerable.Empty<ItemSummaryDto>();
+    private string _searchString = string.Empty;
+    private string? _typeFilter;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItems();
+    }
+
+    private async Task LoadItems()
+    {
+        _isLoading = true;
+        try
+        {
+            _items = (await ItemService.GetAllAsync()).ToList();
+            FilterItems();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterItems()
+    {
+        var filtered = _items.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(_searchString))
+        {
+            filtered = filtered.Where(i =>
+                i.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_typeFilter))
+        {
+            filtered = filtered.Where(i => i.Type == _typeFilter);
+        }
+
+        _filteredItems = filtered;
+    }
+
+    private Color GetRarityColor(string rarity) => rarity switch
+    {
+        "Common" => Color.Default,
+        "Uncommon" => Color.Success,
+        "Rare" => Color.Info,
+        "VeryRare" => Color.Secondary,
+        "UltraRare" => Color.Error,
+        "Event" => Color.Warning,
+        _ => Color.Default
+    };
+
+    private async Task DeleteItem(ItemSummaryDto item)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{item.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await ItemService.DeleteAsync(item.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{item.Name}' deleted successfully", Severity.Success);
+                await LoadItems();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete item", Severity.Error);
+            }
+        }
+    }
+}

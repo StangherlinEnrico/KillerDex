@@ -1,0 +1,268 @@
+@page "/admin/addons/new"
+@page "/admin/addons/{Id:guid}"
+@attribute [Authorize]
+@inject IKillerAddonService KillerAddonService
+@inject ISurvivorAddonService SurvivorAddonService
+@inject IKillerService KillerService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+<PageTitle>@(_isNew ? "New Addon" : "Edit Addon") - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Href="/admin/addons" />
+    <MudText Typo="Typo.h4">@(_isNew ? $"New {Type} Addon" : $"Edit {_model.Name}")</MudText>
+</MudStack>
+
+@if (_isLoading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudForm @ref="_form" @bind-IsValid="_isValid">
+        <MudGrid>
+            <MudItem xs="12" md="8">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Addon Information</MudText>
+
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="_model.Name" Label="Name" Required="true"
+                                          RequiredError="Name is required" MaxLength="200" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudSelect @bind-Value="_model.Rarity" Label="Rarity" Required="true">
+                                @foreach (var rarity in Enum.GetValues<Rarity>())
+                                {
+                                    <MudSelectItem Value="@rarity.ToString()">@rarity</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="_model.Description" Label="Description" Lines="5" MaxLength="4000" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+
+                <MudPaper Class="pa-4 mt-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">@(Type == "Killer" ? "Killer" : "Item Type")</MudText>
+
+                    @if (Type == "Killer")
+                    {
+                        <MudSelect @bind-Value="_model.KillerId" Label="Killer" Required="true" RequiredError="Killer is required" Disabled="@(!_isNew)">
+                            @foreach (var killer in _killers)
+                            {
+                                <MudSelectItem Value="@killer.Id">@killer.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                    else
+                    {
+                        <MudSelect @bind-Value="_model.ItemType" Label="Item Type" Required="true" RequiredError="Item Type is required" Disabled="@(!_isNew)">
+                            @foreach (var type in Enum.GetValues<ItemType>())
+                            {
+                                <MudSelectItem Value="@type.ToString()">@type</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4" Elevation="2">
+                    <MudText Typo="Typo.h6" Class="mb-4">Image & Version</MudText>
+
+                    <MudTextField @bind-Value="_model.ImageUrl" Label="Image URL" MaxLength="500" Class="mb-4" />
+
+                    @if (!string.IsNullOrEmpty(_model.ImageUrl))
+                    {
+                        <MudImage Src="@_model.ImageUrl" Alt="Preview" Class="mb-4" Style="max-width: 100%; max-height: 150px;" ObjectFit="ObjectFit.Contain" />
+                    }
+
+                    <MudTextField @bind-Value="_model.GameVersion" Label="Game Version" MaxLength="20" />
+                </MudPaper>
+
+                <MudPaper Class="pa-4 mt-4" Elevation="2">
+                    <MudStack>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   Disabled="@(!_isValid || _isSaving)" OnClick="Save">
+                            @if (_isSaving)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Saving...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>@(_isNew ? "Create Addon" : "Save Changes")</MudText>
+                            }
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Default" FullWidth="true" Href="/admin/addons">
+                            Cancel
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+}
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+    [SupplyParameterFromQuery] public string Type { get; set; } = "Killer";
+
+    private MudForm? _form;
+    private bool _isValid;
+    private bool _isNew => !Id.HasValue;
+    private bool _isLoading = true;
+    private bool _isSaving;
+    private List<KillerSummaryDto> _killers = new();
+
+    private AddonFormModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (Type == "Killer")
+            {
+                _killers = (await KillerService.GetAllAsync()).ToList();
+            }
+
+            if (Id.HasValue)
+            {
+                if (Type == "Killer")
+                {
+                    var addon = await KillerAddonService.GetByIdAsync(Id.Value);
+                    if (addon != null)
+                    {
+                        _model = new AddonFormModel
+                        {
+                            Name = addon.Name,
+                            Description = addon.Description,
+                            Rarity = addon.Rarity,
+                            ImageUrl = addon.ImageUrl,
+                            GameVersion = addon.GameVersion,
+                            KillerId = addon.Killer.Id
+                        };
+                    }
+                }
+                else
+                {
+                    var addon = await SurvivorAddonService.GetByIdAsync(Id.Value);
+                    if (addon != null)
+                    {
+                        _model = new AddonFormModel
+                        {
+                            Name = addon.Name,
+                            Description = addon.Description,
+                            Rarity = addon.Rarity,
+                            ImageUrl = addon.ImageUrl,
+                            GameVersion = addon.GameVersion,
+                            ItemType = addon.ItemType
+                        };
+                    }
+                }
+            }
+            else
+            {
+                _model = new AddonFormModel
+                {
+                    Rarity = Rarity.Common.ToString(),
+                    ItemType = ItemType.Medkit.ToString()
+                };
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task Save()
+    {
+        if (_form == null) return;
+        await _form.Validate();
+        if (!_isValid) return;
+
+        _isSaving = true;
+        try
+        {
+            if (Type == "Killer")
+            {
+                if (_isNew)
+                {
+                    var request = new CreateKillerAddonRequest(
+                        _model.Name,
+                        _model.Description,
+                        _model.Rarity,
+                        _model.KillerId!.Value,
+                        _model.ImageUrl,
+                        _model.GameVersion
+                    );
+                    await KillerAddonService.CreateAsync(request);
+                }
+                else
+                {
+                    var request = new UpdateKillerAddonRequest(
+                        _model.Name,
+                        _model.Description,
+                        _model.Rarity,
+                        _model.ImageUrl,
+                        _model.GameVersion
+                    );
+                    await KillerAddonService.UpdateAsync(Id!.Value, request);
+                }
+            }
+            else
+            {
+                if (_isNew)
+                {
+                    var request = new CreateSurvivorAddonRequest(
+                        _model.Name,
+                        _model.Description,
+                        _model.Rarity,
+                        _model.ItemType!,
+                        _model.ImageUrl,
+                        _model.GameVersion
+                    );
+                    await SurvivorAddonService.CreateAsync(request);
+                }
+                else
+                {
+                    var request = new UpdateSurvivorAddonRequest(
+                        _model.Name,
+                        _model.Description,
+                        _model.Rarity,
+                        _model.ItemType,
+                        _model.ImageUrl,
+                        _model.GameVersion
+                    );
+                    await SurvivorAddonService.UpdateAsync(Id!.Value, request);
+                }
+            }
+
+            Snackbar.Add($"Addon {(_isNew ? "created" : "updated")} successfully", Severity.Success);
+            Navigation.NavigateTo("/admin/addons");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private class AddonFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string Rarity { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
+        public string? GameVersion { get; set; }
+        public Guid? KillerId { get; set; }
+        public string? ItemType { get; set; }
+    }
+}

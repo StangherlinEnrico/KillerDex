@@ -1,0 +1,135 @@
+@page "/admin/perks"
+@attribute [Authorize]
+@inject IPerkService PerkService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Perks - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Perks</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/perks/new">
+        Add Perk
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredPerks" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mr-4"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterPerks" Style="max-width: 300px;" />
+        <MudSelect T="string" Value="_roleFilter" Label="Role" Clearable="true" Class="mt-0" Style="max-width: 150px;"
+                   ValueChanged="@((string? value) => { _roleFilter = value; FilterPerks(); })">
+            <MudSelectItem Value="@("Killer")">Killer</MudSelectItem>
+            <MudSelectItem Value="@("Survivor")">Survivor</MudSelectItem>
+            <MudSelectItem Value="@("All")">All</MudSelectItem>
+        </MudSelect>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PerkSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<PerkSummaryDto, object>(x => x.Role)">Role</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Primary" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Role">
+            <MudChip T="string" Color="@(context.Role == "Killer" ? Color.Error : context.Role == "Survivor" ? Color.Info : Color.Default)" Size="Size.Small">
+                @context.Role
+            </MudChip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/perks/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeletePerk(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No perks found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<PerkSummaryDto> _perks = new();
+    private IEnumerable<PerkSummaryDto> _filteredPerks = Enumerable.Empty<PerkSummaryDto>();
+    private string _searchString = string.Empty;
+    private string? _roleFilter;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPerks();
+    }
+
+    private async Task LoadPerks()
+    {
+        _isLoading = true;
+        try
+        {
+            _perks = (await PerkService.GetAllAsync()).ToList();
+            FilterPerks();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterPerks()
+    {
+        var filtered = _perks.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(_searchString))
+        {
+            filtered = filtered.Where(p =>
+                p.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_roleFilter))
+        {
+            filtered = filtered.Where(p => p.Role == _roleFilter);
+        }
+
+        _filteredPerks = filtered;
+    }
+
+    private async Task DeletePerk(PerkSummaryDto perk)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{perk.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await PerkService.DeleteAsync(perk.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{perk.Name}' deleted successfully", Severity.Success);
+                await LoadPerks();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete perk", Severity.Error);
+            }
+        }
+    }
+}

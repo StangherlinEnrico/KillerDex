@@ -76,12 +76,11 @@ public class ApiKeyAuthenticationOptions : AuthenticationSchemeOptions
 public static class ApiKeyAuthenticationExtensions
 {
     public static AuthenticationBuilder AddApiKeyAuthentication(
-        this IServiceCollection services,
+        this AuthenticationBuilder builder,
         Action<ApiKeyAuthenticationOptions> configureOptions)
     {
-        return services.AddAuthentication(ApiKeyAuthenticationOptions.DefaultScheme)
-            .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
-                ApiKeyAuthenticationOptions.DefaultScheme,
-                configureOptions);
+        return builder.AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
+            ApiKeyAuthenticationOptions.DefaultScheme,
+            configureOptions);
     }
 }

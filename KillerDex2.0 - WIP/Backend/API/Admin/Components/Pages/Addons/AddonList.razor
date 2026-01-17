@@ -1,0 +1,164 @@
+@page "/admin/addons"
+@attribute [Authorize]
+@inject IKillerAddonService KillerAddonService
+@inject ISurvivorAddonService SurvivorAddonService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Addons - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Addons</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+               Href="@($"/admin/addons/new?type={_addonType}")">
+        Add @_addonType Addon
+    </MudButton>
+</MudStack>
+
+<MudTabs @bind-ActivePanelIndex="_tabIndex" Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4">
+    <MudTabPanel Text="Killer Addons" OnClick="() => SwitchTab(0)" />
+    <MudTabPanel Text="Survivor Addons" OnClick="() => SwitchTab(1)" />
+</MudTabs>
+
+<MudTable Items="@_filteredAddons" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterAddons" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<AddonSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<AddonSummaryDto, object>(x => x.Rarity)">Rarity</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Tertiary" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Rarity">
+            <MudChip T="string" Color="@GetRarityColor(context.Rarity)" Size="Size.Small">@context.Rarity</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/addons/{context.Id}?type={_addonType}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteAddon(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No addons found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private int _tabIndex = 0;
+    private string _addonType => _tabIndex == 0 ? "Killer" : "Survivor";
+    private List<AddonSummaryDto> _addons = new();
+    private IEnumerable<AddonSummaryDto> _filteredAddons = Enumerable.Empty<AddonSummaryDto>();
+    private string _searchString = string.Empty;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAddons();
+    }
+
+    private async Task SwitchTab(int index)
+    {
+        _tabIndex = index;
+        _searchString = string.Empty;
+        await LoadAddons();
+    }
+
+    private async Task LoadAddons()
+    {
+        _isLoading = true;
+        try
+        {
+            if (_tabIndex == 0)
+            {
+                _addons = (await KillerAddonService.GetAllAsync()).ToList();
+            }
+            else
+            {
+                _addons = (await SurvivorAddonService.GetAllAsync()).ToList();
+            }
+            FilterAddons();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterAddons()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+        {
+            _filteredAddons = _addons;
+        }
+        else
+        {
+            _filteredAddons = _addons.Where(a =>
+                a.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private Color GetRarityColor(string rarity) => rarity switch
+    {
+        "Common" => Color.Default,
+        "Uncommon" => Color.Success,
+        "Rare" => Color.Info,
+        "VeryRare" => Color.Secondary,
+        "UltraRare" => Color.Error,
+        "Event" => Color.Warning,
+        _ => Color.Default
+    };
+
+    private async Task DeleteAddon(AddonSummaryDto addon)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{addon.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            bool success;
+            if (_tabIndex == 0)
+            {
+                success = await KillerAddonService.DeleteAsync(addon.Id);
+            }
+            else
+            {
+                success = await SurvivorAddonService.DeleteAsync(addon.Id);
+            }
+
+            if (success)
+            {
+                Snackbar.Add($"'{addon.Name}' deleted successfully", Severity.Success);
+                await LoadAddons();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete addon", Severity.Error);
+            }
+        }
+    }
+}

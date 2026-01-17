@@ -1,0 +1,132 @@
+@page "/admin/status-effects"
+@attribute [Authorize]
+@inject IStatusEffectService StatusEffectService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Status Effects - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Status Effects</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/status-effects/new">
+        Add Status Effect
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredEffects" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mr-4"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterEffects" Style="max-width: 300px;" />
+        <MudSelect T="string" Value="_typeFilter" Label="Type" Clearable="true" Class="mt-0" Style="max-width: 150px;"
+                   ValueChanged="@((string? value) => { _typeFilter = value; FilterEffects(); })">
+            <MudSelectItem Value="@("Buff")">Buff</MudSelectItem>
+            <MudSelectItem Value="@("Debuff")">Debuff</MudSelectItem>
+        </MudSelect>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<StatusEffectSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<StatusEffectSummaryDto, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="@(context.Type == "Buff" ? Color.Success : Color.Error)" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Type">
+            <MudChip T="string" Color="@(context.Type == "Buff" ? Color.Success : Color.Error)" Size="Size.Small">@context.Type</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/status-effects/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteEffect(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No status effects found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<StatusEffectSummaryDto> _effects = new();
+    private IEnumerable<StatusEffectSummaryDto> _filteredEffects = Enumerable.Empty<StatusEffectSummaryDto>();
+    private string _searchString = string.Empty;
+    private string? _typeFilter;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEffects();
+    }
+
+    private async Task LoadEffects()
+    {
+        _isLoading = true;
+        try
+        {
+            _effects = (await StatusEffectService.GetAllAsync()).ToList();
+            FilterEffects();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterEffects()
+    {
+        var filtered = _effects.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(_searchString))
+        {
+            filtered = filtered.Where(e =>
+                e.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_typeFilter))
+        {
+            filtered = filtered.Where(e => e.Type == _typeFilter);
+        }
+
+        _filteredEffects = filtered;
+    }
+
+    private async Task DeleteEffect(StatusEffectSummaryDto effect)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{effect.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await StatusEffectService.DeleteAsync(effect.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{effect.Name}' deleted successfully", Severity.Success);
+                await LoadEffects();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete status effect", Severity.Error);
+            }
+        }
+    }
+}

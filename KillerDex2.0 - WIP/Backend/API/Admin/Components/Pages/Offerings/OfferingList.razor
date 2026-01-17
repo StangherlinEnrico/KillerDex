@@ -1,0 +1,150 @@
+@page "/admin/offerings"
+@attribute [Authorize]
+@inject IOfferingService OfferingService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Offerings - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Offerings</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/offerings/new">
+        Add Offering
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredOfferings" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mr-4"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterOfferings" Style="max-width: 300px;" />
+        <MudSelect T="string" Value="_roleFilter" Label="Role" Clearable="true" Class="mt-0" Style="max-width: 150px;"
+                   ValueChanged="@((string? value) => { _roleFilter = value; FilterOfferings(); })">
+            <MudSelectItem Value="@("Killer")">Killer</MudSelectItem>
+            <MudSelectItem Value="@("Survivor")">Survivor</MudSelectItem>
+            <MudSelectItem Value="@("All")">All</MudSelectItem>
+        </MudSelect>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<OfferingSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<OfferingSummaryDto, object>(x => x.Rarity)">Rarity</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<OfferingSummaryDto, object>(x => x.Role)">Role</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Secondary" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Rarity">
+            <MudChip T="string" Color="@GetRarityColor(context.Rarity)" Size="Size.Small">@context.Rarity</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Role">
+            <MudChip T="string" Color="@(context.Role == "Killer" ? Color.Error : context.Role == "Survivor" ? Color.Info : Color.Default)" Size="Size.Small">
+                @context.Role
+            </MudChip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/offerings/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteOffering(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No offerings found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<OfferingSummaryDto> _offerings = new();
+    private IEnumerable<OfferingSummaryDto> _filteredOfferings = Enumerable.Empty<OfferingSummaryDto>();
+    private string _searchString = string.Empty;
+    private string? _roleFilter;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadOfferings();
+    }
+
+    private async Task LoadOfferings()
+    {
+        _isLoading = true;
+        try
+        {
+            _offerings = (await OfferingService.GetAllAsync()).ToList();
+            FilterOfferings();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterOfferings()
+    {
+        var filtered = _offerings.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(_searchString))
+        {
+            filtered = filtered.Where(o =>
+                o.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_roleFilter))
+        {
+            filtered = filtered.Where(o => o.Role == _roleFilter);
+        }
+
+        _filteredOfferings = filtered;
+    }
+
+    private Color GetRarityColor(string rarity) => rarity switch
+    {
+        "Common" => Color.Default,
+        "Uncommon" => Color.Success,
+        "Rare" => Color.Info,
+        "VeryRare" => Color.Secondary,
+        "UltraRare" => Color.Error,
+        "Event" => Color.Warning,
+        _ => Color.Default
+    };
+
+    private async Task DeleteOffering(OfferingSummaryDto offering)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{offering.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await OfferingService.DeleteAsync(offering.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{offering.Name}' deleted successfully", Severity.Success);
+                await LoadOfferings();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete offering", Severity.Error);
+            }
+        }
+    }
+}

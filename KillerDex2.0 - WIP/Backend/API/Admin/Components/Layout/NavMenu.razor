@@ -1,0 +1,23 @@
+<MudNavMenu>
+    <MudNavLink Href="/admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+
+    <MudNavGroup Title="Characters" Icon="@Icons.Material.Filled.People" Expanded="true">
+        <MudNavLink Href="/admin/killers" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bloodtype">Killers</MudNavLink>
+        <MudNavLink Href="/admin/survivors" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Survivors</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Game Content" Icon="@Icons.Material.Filled.Games" Expanded="true">
+        <MudNavLink Href="/admin/chapters" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Chapters</MudNavLink>
+        <MudNavLink Href="/admin/perks" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Star">Perks</MudNavLink>
+        <MudNavLink Href="/admin/items" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Inventory">Items</MudNavLink>
+        <MudNavLink Href="/admin/addons" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Extension">Addons</MudNavLink>
+        <MudNavLink Href="/admin/offerings" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalOffer">Offerings</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="World" Icon="@Icons.Material.Filled.Map" Expanded="false">
+        <MudNavLink Href="/admin/realms" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Landscape">Realms</MudNavLink>
+        <MudNavLink Href="/admin/maps" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Place">Maps</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavLink Href="/admin/status-effects" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bolt">Status Effects</MudNavLink>
+</MudNavMenu>

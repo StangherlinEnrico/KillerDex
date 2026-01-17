@@ -1,0 +1,117 @@
+@page "/admin/maps"
+@attribute [Authorize]
+@inject IMapService MapService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Maps - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Maps</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/maps/new">
+        Add Map
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredMaps" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterMaps" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MapSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium" Square="true">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Dark" Size="Size.Medium" Square="true">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/maps/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteMap(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No maps found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<MapSummaryDto> _maps = new();
+    private IEnumerable<MapSummaryDto> _filteredMaps = Enumerable.Empty<MapSummaryDto>();
+    private string _searchString = string.Empty;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMaps();
+    }
+
+    private async Task LoadMaps()
+    {
+        _isLoading = true;
+        try
+        {
+            _maps = (await MapService.GetAllAsync()).ToList();
+            FilterMaps();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterMaps()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+        {
+            _filteredMaps = _maps;
+        }
+        else
+        {
+            _filteredMaps = _maps.Where(m =>
+                m.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private async Task DeleteMap(MapSummaryDto map)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{map.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await MapService.DeleteAsync(map.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{map.Name}' deleted successfully", Severity.Success);
+                await LoadMaps();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete map", Severity.Error);
+            }
+        }
+    }
+}

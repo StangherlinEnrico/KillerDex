@@ -1,0 +1,117 @@
+@page "/admin/survivors"
+@attribute [Authorize]
+@inject ISurvivorService SurvivorService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Survivors - KillerDex Admin</PageTitle>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+    <MudText Typo="Typo.h4">Survivors</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/survivors/new">
+        Add Survivor
+    </MudButton>
+</MudStack>
+
+<MudTable Items="@_filteredSurvivors" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                      Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterSurvivors" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Image</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<SurvivorSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Image">
+            @if (!string.IsNullOrEmpty(context.ImageUrl))
+            {
+                <MudAvatar Size="Size.Medium">
+                    <MudImage Src="@context.ImageUrl" Alt="@context.Name" />
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Info" Size="Size.Medium">@context.Name[0]</MudAvatar>
+            }
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                           Href="@($"/admin/survivors/{context.Id}")" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(() => DeleteSurvivor(context))" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <NoRecordsContent>
+        <MudText>No survivors found.</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+@code {
+    private List<SurvivorSummaryDto> _survivors = new();
+    private IEnumerable<SurvivorSummaryDto> _filteredSurvivors = Enumerable.Empty<SurvivorSummaryDto>();
+    private string _searchString = string.Empty;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSurvivors();
+    }
+
+    private async Task LoadSurvivors()
+    {
+        _isLoading = true;
+        try
+        {
+            _survivors = (await SurvivorService.GetAllAsync()).ToList();
+            FilterSurvivors();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void FilterSurvivors()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+        {
+            _filteredSurvivors = _survivors;
+        }
+        else
+        {
+            _filteredSurvivors = _survivors.Where(s =>
+                s.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private async Task DeleteSurvivor(SurvivorSummaryDto survivor)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{survivor.Name}'?",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            var success = await SurvivorService.DeleteAsync(survivor.Id);
+            if (success)
+            {
+                Snackbar.Add($"'{survivor.Name}' deleted successfully", Severity.Success);
+                await LoadSurvivors();
+            }
+            else
+            {
+                Snackbar.Add("Failed to delete survivor", Severity.Error);
+            }
+        }
+    }
+}
