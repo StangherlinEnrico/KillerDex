@@ -1,5 +1,7 @@
 using Application.DTOs;
+using Application.DTOs.Requests;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -73,5 +75,50 @@ public class KillersController : ControllerBase
     {
         var addons = await _killerService.GetAddonsAsync(id, cancellationToken);
         return Ok(addons);
+    }
+
+    /// <summary>
+    /// Create a new killer (requires API Key)
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [ProducesResponseType(typeof(KillerDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<KillerDto>> Create([FromBody] CreateKillerRequest request, CancellationToken cancellationToken)
+    {
+        var killer = await _killerService.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = killer.Id }, killer);
+    }
+
+    /// <summary>
+    /// Update an existing killer (requires API Key)
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(typeof(KillerDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<KillerDto>> Update(Guid id, [FromBody] UpdateKillerRequest request, CancellationToken cancellationToken)
+    {
+        var killer = await _killerService.UpdateAsync(id, request, cancellationToken);
+        if (killer is null) return NotFound();
+        return Ok(killer);
+    }
+
+    /// <summary>
+    /// Delete a killer (requires API Key)
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var deleted = await _killerService.DeleteAsync(id, cancellationToken);
+        if (!deleted) return NotFound();
+        return NoContent();
     }
 }

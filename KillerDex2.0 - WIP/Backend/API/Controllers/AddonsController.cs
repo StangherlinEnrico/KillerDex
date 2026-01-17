@@ -1,5 +1,7 @@
 using Application.DTOs;
+using Application.DTOs.Requests;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -58,6 +60,51 @@ public class KillerAddonsController : ControllerBase
         if (addon is null) return NotFound();
         return Ok(addon);
     }
+
+    /// <summary>
+    /// Create a new killer addon (requires API Key)
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [ProducesResponseType(typeof(KillerAddonDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<KillerAddonDto>> Create([FromBody] CreateKillerAddonRequest request, CancellationToken cancellationToken)
+    {
+        var addon = await _addonService.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = addon.Id }, addon);
+    }
+
+    /// <summary>
+    /// Update an existing killer addon (requires API Key)
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(typeof(KillerAddonDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<KillerAddonDto>> Update(Guid id, [FromBody] UpdateKillerAddonRequest request, CancellationToken cancellationToken)
+    {
+        var addon = await _addonService.UpdateAsync(id, request, cancellationToken);
+        if (addon is null) return NotFound();
+        return Ok(addon);
+    }
+
+    /// <summary>
+    /// Delete a killer addon (requires API Key)
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var deleted = await _addonService.DeleteAsync(id, cancellationToken);
+        if (!deleted) return NotFound();
+        return NoContent();
+    }
 }
 
 [ApiController]
@@ -113,5 +160,50 @@ public class SurvivorAddonsController : ControllerBase
         var addon = await _addonService.GetBySlugAsync(slug, cancellationToken);
         if (addon is null) return NotFound();
         return Ok(addon);
+    }
+
+    /// <summary>
+    /// Create a new survivor addon (requires API Key)
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [ProducesResponseType(typeof(SurvivorAddonDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<SurvivorAddonDto>> Create([FromBody] CreateSurvivorAddonRequest request, CancellationToken cancellationToken)
+    {
+        var addon = await _addonService.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = addon.Id }, addon);
+    }
+
+    /// <summary>
+    /// Update an existing survivor addon (requires API Key)
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(typeof(SurvivorAddonDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<SurvivorAddonDto>> Update(Guid id, [FromBody] UpdateSurvivorAddonRequest request, CancellationToken cancellationToken)
+    {
+        var addon = await _addonService.UpdateAsync(id, request, cancellationToken);
+        if (addon is null) return NotFound();
+        return Ok(addon);
+    }
+
+    /// <summary>
+    /// Delete a survivor addon (requires API Key)
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var deleted = await _addonService.DeleteAsync(id, cancellationToken);
+        if (!deleted) return NotFound();
+        return NoContent();
     }
 }

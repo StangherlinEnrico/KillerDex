@@ -1,5 +1,7 @@
 using Application.DTOs;
+using Application.DTOs.Requests;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -68,5 +70,50 @@ public class ItemsController : ControllerBase
     {
         var addons = await _itemService.GetAddonsAsync(itemType, cancellationToken);
         return Ok(addons);
+    }
+
+    /// <summary>
+    /// Create a new item (requires API Key)
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [ProducesResponseType(typeof(ItemDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ItemDto>> Create([FromBody] CreateItemRequest request, CancellationToken cancellationToken)
+    {
+        var item = await _itemService.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+    }
+
+    /// <summary>
+    /// Update an existing item (requires API Key)
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(typeof(ItemDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ItemDto>> Update(Guid id, [FromBody] UpdateItemRequest request, CancellationToken cancellationToken)
+    {
+        var item = await _itemService.UpdateAsync(id, request, cancellationToken);
+        if (item is null) return NotFound();
+        return Ok(item);
+    }
+
+    /// <summary>
+    /// Delete an item (requires API Key)
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var deleted = await _itemService.DeleteAsync(id, cancellationToken);
+        if (!deleted) return NotFound();
+        return NoContent();
     }
 }
