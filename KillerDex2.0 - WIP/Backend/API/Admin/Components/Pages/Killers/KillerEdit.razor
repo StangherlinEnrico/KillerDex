@@ -5,12 +5,13 @@
 @inject IChapterService ChapterService
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>@(_isNew ? "New Killer" : "Edit Killer") - KillerDex Admin</PageTitle>
+<PageTitle>@(_isNew ? L["Killers_New"] : L["Killers_Edit"]) - KillerDex Admin</PageTitle>
 
 <MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
     <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Href="/admin/killers" />
-    <MudText Typo="Typo.h4">@(_isNew ? "New Killer" : $"Edit {_model.Name}")</MudText>
+    <MudText Typo="Typo.h4">@(_isNew ? L["Killers_New"] : $"{L["Common_Edit"]} {_model.Name}")</MudText>
 </MudStack>
 
 @if (_isLoading)
@@ -23,53 +24,53 @@ else
         <MudGrid>
             <MudItem xs="12" md="8">
                 <MudPaper Class="pa-4" Elevation="2">
-                    <MudText Typo="Typo.h6" Class="mb-4">Basic Information</MudText>
+                    <MudText Typo="Typo.h6" Class="mb-4">@L["Form_BasicInformation"]</MudText>
 
                     <MudGrid>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="_model.Name" Label="Name" Required="true"
-                                          RequiredError="Name is required" MaxLength="100" />
+                            <MudTextField @bind-Value="_model.Name" Label="@L["Common_Name"]" Required="true"
+                                          RequiredError="@string.Format(L["Common_Required"], L["Common_Name"])" MaxLength="100" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="_model.RealName" Label="Real Name" MaxLength="100" />
+                            <MudTextField @bind-Value="_model.RealName" Label="@L["Form_RealName"]" MaxLength="100" />
                         </MudItem>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="_model.Overview" Label="Overview" Lines="3" MaxLength="2000" />
+                            <MudTextField @bind-Value="_model.Overview" Label="@L["Form_Overview"]" Lines="3" MaxLength="2000" />
                         </MudItem>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="_model.Backstory" Label="Backstory" Lines="5" MaxLength="4000" />
+                            <MudTextField @bind-Value="_model.Backstory" Label="@L["Form_Backstory"]" Lines="5" MaxLength="4000" />
                         </MudItem>
                     </MudGrid>
                 </MudPaper>
 
                 <MudPaper Class="pa-4 mt-4" Elevation="2">
-                    <MudText Typo="Typo.h6" Class="mb-4">Power</MudText>
+                    <MudText Typo="Typo.h6" Class="mb-4">@L["Form_Power"]</MudText>
 
                     <MudGrid>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="_model.PowerName" Label="Power Name" Required="true"
-                                          RequiredError="Power name is required" MaxLength="100" />
+                            <MudTextField @bind-Value="_model.PowerName" Label="@L["Form_PowerName"]" Required="true"
+                                          RequiredError="@string.Format(L["Common_Required"], L["Form_PowerName"])" MaxLength="100" />
                         </MudItem>
                         <MudItem xs="12">
-                            <MudTextField @bind-Value="_model.PowerDescription" Label="Power Description" Lines="3" MaxLength="2000" />
+                            <MudTextField @bind-Value="_model.PowerDescription" Label="@L["Form_PowerDescription"]" Lines="3" MaxLength="2000" />
                         </MudItem>
                     </MudGrid>
                 </MudPaper>
 
                 <MudPaper Class="pa-4 mt-4" Elevation="2">
-                    <MudText Typo="Typo.h6" Class="mb-4">Stats</MudText>
+                    <MudText Typo="Typo.h6" Class="mb-4">@L["Form_Stats"]</MudText>
 
                     <MudGrid>
                         <MudItem xs="12" md="4">
-                            <MudNumericField @bind-Value="_model.MovementSpeed" Label="Movement Speed (m/s)"
+                            <MudNumericField @bind-Value="_model.MovementSpeed" Label="@L["Form_MovementSpeed"]"
                                              Required="true" Min="0.01m" Max="10.0m" Step="0.01m" />
                         </MudItem>
                         <MudItem xs="12" md="4">
-                            <MudNumericField @bind-Value="_model.TerrorRadius" Label="Terror Radius (m)"
+                            <MudNumericField @bind-Value="_model.TerrorRadius" Label="@L["Form_TerrorRadius"]"
                                              Required="true" Min="0" Max="100" />
                         </MudItem>
                         <MudItem xs="12" md="4">
-                            <MudSelect @bind-Value="_model.Height" Label="Height" Required="true">
+                            <MudSelect @bind-Value="_model.Height" Label="@L["Form_Height"]" Required="true">
                                 @foreach (var height in Enum.GetValues<KillerHeight>())
                                 {
                                     <MudSelectItem Value="@height.ToString()">@height</MudSelectItem>
@@ -82,23 +83,23 @@ else
 
             <MudItem xs="12" md="4">
                 <MudPaper Class="pa-4" Elevation="2">
-                    <MudText Typo="Typo.h6" Class="mb-4">Media & Chapter</MudText>
+                    <MudText Typo="Typo.h6" Class="mb-4">@L["Form_MediaAndChapter"]</MudText>
 
-                    <MudTextField @bind-Value="_model.ImageUrl" Label="Image URL" MaxLength="500" Class="mb-4" />
+                    <MudTextField @bind-Value="_model.ImageUrl" Label="@L["Form_ImageUrl"]" MaxLength="500" Class="mb-4" />
 
                     @if (!string.IsNullOrEmpty(_model.ImageUrl))
                     {
                         <MudImage Src="@_model.ImageUrl" Alt="Preview" Class="mb-4" Style="max-width: 100%; max-height: 200px;" ObjectFit="ObjectFit.Contain" />
                     }
 
-                    <MudSelect @bind-Value="_model.ChapterId" Label="Chapter" Clearable="true" Class="mb-4">
+                    <MudSelect @bind-Value="_model.ChapterId" Label="@L["Form_Chapter"]" Clearable="true" Class="mb-4">
                         @foreach (var chapter in _chapters)
                         {
                             <MudSelectItem Value="@chapter.Id">@chapter.Name</MudSelectItem>
                         }
                     </MudSelect>
 
-                    <MudTextField @bind-Value="_model.GameVersion" Label="Game Version" MaxLength="20" />
+                    <MudTextField @bind-Value="_model.GameVersion" Label="@L["Form_GameVersion"]" MaxLength="20" />
                 </MudPaper>
 
                 <MudPaper Class="pa-4 mt-4" Elevation="2">
@@ -108,15 +109,15 @@ else
                             @if (_isSaving)
                             {
                                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                                <MudText Class="ms-2">Saving...</MudText>
+                                <MudText Class="ms-2">@L["Common_Saving"]</MudText>
                             }
                             else
                             {
-                                <MudText>@(_isNew ? "Create Killer" : "Save Changes")</MudText>
+                                <MudText>@(_isNew ? L["Killers_Create"] : L["Common_SaveChanges"])</MudText>
                             }
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Default" FullWidth="true" Href="/admin/killers">
-                            Cancel
+                            @L["Common_Cancel"]
                         </MudButton>
                     </MudStack>
                 </MudPaper>
@@ -207,7 +208,7 @@ else
                 );
 
                 await KillerService.CreateAsync(request);
-                Snackbar.Add("Killer created successfully", Severity.Success);
+                Snackbar.Add(L["Common_CreateSuccess"], Severity.Success);
             }
             else
             {
@@ -226,14 +227,14 @@ else
                 );
 
                 await KillerService.UpdateAsync(Id!.Value, request);
-                Snackbar.Add("Killer updated successfully", Severity.Success);
+                Snackbar.Add(L["Common_UpdateSuccess"], Severity.Success);
             }
 
             Navigation.NavigateTo("/admin/killers");
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error: {ex.Message}", Severity.Error);
+            Snackbar.Add($"{L["Common_Error"]}: {ex.Message}", Severity.Error);
         }
         finally
         {

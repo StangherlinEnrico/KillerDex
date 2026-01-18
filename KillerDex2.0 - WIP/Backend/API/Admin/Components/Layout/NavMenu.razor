@@ -1,23 +1,25 @@
+@inject IStringLocalizer<SharedResource> L
+
 <MudNavMenu>
-    <MudNavLink Href="/admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+    <MudNavLink Href="/admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">@L["Nav_Dashboard"]</MudNavLink>
 
-    <MudNavGroup Title="Characters" Icon="@Icons.Material.Filled.People" Expanded="true">
-        <MudNavLink Href="/admin/killers" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bloodtype">Killers</MudNavLink>
-        <MudNavLink Href="/admin/survivors" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Survivors</MudNavLink>
+    <MudNavGroup Title="@L["Nav_Characters"]" Icon="@Icons.Material.Filled.People" Expanded="true">
+        <MudNavLink Href="/admin/killers" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bloodtype">@L["Nav_Killers"]</MudNavLink>
+        <MudNavLink Href="/admin/survivors" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">@L["Nav_Survivors"]</MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="Game Content" Icon="@Icons.Material.Filled.Games" Expanded="true">
-        <MudNavLink Href="/admin/chapters" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Chapters</MudNavLink>
-        <MudNavLink Href="/admin/perks" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Star">Perks</MudNavLink>
-        <MudNavLink Href="/admin/items" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Inventory">Items</MudNavLink>
-        <MudNavLink Href="/admin/addons" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Extension">Addons</MudNavLink>
-        <MudNavLink Href="/admin/offerings" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalOffer">Offerings</MudNavLink>
+    <MudNavGroup Title="@L["Nav_GameContent"]" Icon="@Icons.Material.Filled.Games" Expanded="true">
+        <MudNavLink Href="/admin/chapters" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">@L["Nav_Chapters"]</MudNavLink>
+        <MudNavLink Href="/admin/perks" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Star">@L["Nav_Perks"]</MudNavLink>
+        <MudNavLink Href="/admin/items" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Inventory">@L["Nav_Items"]</MudNavLink>
+        <MudNavLink Href="/admin/addons" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Extension">@L["Nav_Addons"]</MudNavLink>
+        <MudNavLink Href="/admin/offerings" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalOffer">@L["Nav_Offerings"]</MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="World" Icon="@Icons.Material.Filled.Map" Expanded="false">
-        <MudNavLink Href="/admin/realms" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Landscape">Realms</MudNavLink>
-        <MudNavLink Href="/admin/maps" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Place">Maps</MudNavLink>
+    <MudNavGroup Title="@L["Nav_World"]" Icon="@Icons.Material.Filled.Map" Expanded="false">
+        <MudNavLink Href="/admin/realms" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Landscape">@L["Nav_Realms"]</MudNavLink>
+        <MudNavLink Href="/admin/maps" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Place">@L["Nav_Maps"]</MudNavLink>
     </MudNavGroup>
 
-    <MudNavLink Href="/admin/status-effects" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bolt">Status Effects</MudNavLink>
+    <MudNavLink Href="/admin/status-effects" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Bolt">@L["Nav_StatusEffects"]</MudNavLink>
 </MudNavMenu>

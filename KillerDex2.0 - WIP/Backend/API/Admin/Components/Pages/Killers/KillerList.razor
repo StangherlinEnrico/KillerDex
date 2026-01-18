@@ -4,31 +4,32 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Killers - KillerDex Admin</PageTitle>
+<PageTitle>@L["Killers_PageTitle"]</PageTitle>
 
 <MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
-    <MudText Typo="Typo.h4">Killers</MudText>
+    <MudText Typo="Typo.h4">@L["Nav_Killers"]</MudText>
     <MudSpacer />
     <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/admin/killers/new">
-        Add Killer
+        @L["Killers_Add"]
     </MudButton>
 </MudStack>
 
 <MudTable Items="@_filteredKillers" Dense="true" Hover="true" Striped="true" Loading="@_isLoading" LoadingProgressColor="Color.Primary">
     <ToolBarContent>
-        <MudTextField @bind-Value="_searchString" Placeholder="Search by name..." Adornment="Adornment.Start"
+        <MudTextField @bind-Value="_searchString" Placeholder="@L["Common_SearchByName"]" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
                       Immediate="true" DebounceInterval="300" OnDebounceIntervalElapsed="FilterKillers" />
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>Image</MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<KillerSummaryDto, object>(x => x.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<KillerSummaryDto, object>(x => x.PowerName)">Power</MudTableSortLabel></MudTh>
-        <MudTh>Actions</MudTh>
+        <MudTh>@L["Common_Image"]</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<KillerSummaryDto, object>(x => x.Name)">@L["Common_Name"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<KillerSummaryDto, object>(x => x.PowerName)">@L["Killers_Power"]</MudTableSortLabel></MudTh>
+        <MudTh>@L["Common_Actions"]</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Image">
+        <MudTd DataLabel="@L["Common_Image"]">
             @if (!string.IsNullOrEmpty(context.ImageUrl))
             {
                 <MudAvatar Size="Size.Medium">
@@ -40,9 +41,9 @@
                 <MudAvatar Color="Color.Primary" Size="Size.Medium">@context.Name[0]</MudAvatar>
             }
         </MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Power">@context.PowerName</MudTd>
-        <MudTd DataLabel="Actions">
+        <MudTd DataLabel="@L["Common_Name"]">@context.Name</MudTd>
+        <MudTd DataLabel="@L["Killers_Power"]">@context.PowerName</MudTd>
+        <MudTd DataLabel="@L["Common_Actions"]">
             <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
                            Href="@($"/admin/killers/{context.Id}")" />
             <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
@@ -53,7 +54,7 @@
         <MudTablePager />
     </PagerContent>
     <NoRecordsContent>
-        <MudText>No killers found.</MudText>
+        <MudText>@L["Killers_NoRecords"]</MudText>
     </NoRecordsContent>
 </MudTable>
 
@@ -99,22 +100,22 @@
     private async Task DeleteKiller(KillerSummaryDto killer)
     {
         var result = await DialogService.ShowMessageBox(
-            "Confirm Delete",
-            $"Are you sure you want to delete '{killer.Name}'?",
-            yesText: "Delete",
-            cancelText: "Cancel");
+            L["Common_ConfirmDelete"],
+            string.Format(L["Common_ConfirmDeleteMessage"], killer.Name),
+            yesText: L["Common_Delete"],
+            cancelText: L["Common_Cancel"]);
 
         if (result == true)
         {
             var success = await KillerService.DeleteAsync(killer.Id);
             if (success)
             {
-                Snackbar.Add($"'{killer.Name}' deleted successfully", Severity.Success);
+                Snackbar.Add(string.Format(L["Common_DeleteSuccess"], killer.Name), Severity.Success);
                 await LoadKillers();
             }
             else
             {
-                Snackbar.Add("Failed to delete killer", Severity.Error);
+                Snackbar.Add(L["Common_DeleteFailed"], Severity.Error);
             }
         }
     }

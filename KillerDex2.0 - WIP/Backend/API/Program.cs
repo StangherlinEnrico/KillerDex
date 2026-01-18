@@ -1,9 +1,11 @@
 using API.Admin.Auth;
 using API.Admin.Components;
 using API.Authentication;
+using API.Localization;
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using Scalar.AspNetCore;
 
@@ -19,6 +21,10 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AdminAuthenticationService>();
+
+// Add Localization (JSON-based)
+builder.Services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+builder.Services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonStringLocalizer<>));
 
 // Add authentication (Cookie for Admin, API Key for REST API)
 builder.Services.AddAuthentication(options =>
@@ -89,15 +95,26 @@ var app = builder.Build();
 // Configure pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi().RequireAuthorization();
     app.MapScalarApiReference(options =>
     {
         options.WithTitle("Dead by Daylight API");
         options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    });
+    }).RequireAuthorization();
 }
 
 app.UseHttpsRedirection();
+
+// Configure Localization middleware
+var supportedCultures = new[] { "en", "it" };
+app.UseRequestLocalization(options =>
+{
+    options.SetDefaultCulture("en");
+    options.AddSupportedCultures(supportedCultures);
+    options.AddSupportedUICultures(supportedCultures);
+    options.ApplyCurrentCultureToResponseHeaders = true;
+});
+
 app.UseStaticFiles();
 app.UseCors("AllowAll");
 app.UseAuthentication();

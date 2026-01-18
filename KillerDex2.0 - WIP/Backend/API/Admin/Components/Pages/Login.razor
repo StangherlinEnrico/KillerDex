@@ -1,34 +1,37 @@
 @page "/admin/login"
 @layout LoginLayout
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Login - KillerDex Admin</PageTitle>
+<PageTitle>@L["Login_PageTitle"]</PageTitle>
 
 <div class="login-container">
     <MudPaper Elevation="4" Class="pa-8 login-card">
         <MudStack Spacing="4">
-            <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">KillerDex Admin</MudText>
-            <MudText Typo="Typo.body2" Align="Align.Center" Class="mud-text-secondary">Sign in to manage game data</MudText>
+            <div style="text-align: center;">
+                <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight: 600; letter-spacing: 1px;">KILLERDEX</MudText>
+                <MudText Typo="Typo.subtitle2" Class="mud-text-secondary" Style="margin-top: -4px;">@L["Login_AdminPanel"]</MudText>
+            </div>
 
-            <form method="post" action="/admin/auth/login" class="mt-4">
+            <form method="post" action="/admin/auth/login" class="mt-4" autocomplete="off">
                 <input type="hidden" name="returnUrl" value="@ReturnUrl" />
 
                 <div class="mb-4">
-                    <label class="mud-input-label" style="color: var(--mud-palette-text-secondary); font-size: 0.75rem; margin-bottom: 4px; display: block;">Username</label>
+                    <label class="mud-input-label" style="color: var(--mud-palette-text-secondary); font-size: 0.75rem; margin-bottom: 4px; display: block;">@L["Login_Username"]</label>
                     <input type="text"
                            name="username"
                            required
-                           autocomplete="username"
+                           autocomplete="off"
                            style="width: 100%; padding: 12px 14px; background: var(--mud-palette-surface); border: 1px solid var(--mud-palette-lines-default); border-radius: 4px; color: var(--mud-palette-text-primary); font-size: 1rem; outline: none;"
                            onfocus="this.style.borderColor='var(--mud-palette-primary)'"
                            onblur="this.style.borderColor='var(--mud-palette-lines-default)'" />
                 </div>
 
                 <div class="mb-4">
-                    <label class="mud-input-label" style="color: var(--mud-palette-text-secondary); font-size: 0.75rem; margin-bottom: 4px; display: block;">Password</label>
+                    <label class="mud-input-label" style="color: var(--mud-palette-text-secondary); font-size: 0.75rem; margin-bottom: 4px; display: block;">@L["Login_Password"]</label>
                     <input type="password"
                            name="password"
                            required
-                           autocomplete="current-password"
+                           autocomplete="off"
                            style="width: 100%; padding: 12px 14px; background: var(--mud-palette-surface); border: 1px solid var(--mud-palette-lines-default); border-radius: 4px; color: var(--mud-palette-text-primary); font-size: 1rem; outline: none;"
                            onfocus="this.style.borderColor='var(--mud-palette-primary)'"
                            onblur="this.style.borderColor='var(--mud-palette-lines-default)'" />
@@ -36,15 +39,15 @@
 
                 @if (HasError)
                 {
-                    <MudAlert Severity="Severity.Error" Class="mb-4">Invalid username or password</MudAlert>
+                    <MudAlert Severity="Severity.Error" Class="mb-4">@L["Login_InvalidCredentials"]</MudAlert>
                 }
 
                 <MudButton ButtonType="ButtonType.Submit"
                            Variant="Variant.Filled"
                            Color="Color.Primary"
                            Size="Size.Large"
-                           FullWidth="true">
-                    Sign In
+                           Class="btn-responsive-width d-block mx-auto">
+                    @L["Login_SignIn"]
                 </MudButton>
             </form>
         </MudStack>
@@ -63,6 +66,14 @@
     .login-card {
         width: 100%;
         max-width: 400px;
+    }
+    .btn-responsive-width {
+        width: 100% !important;
+    }
+    @@media (min-width: 600px) {
+        .btn-responsive-width {
+            width: 75% !important;
+        }
     }
 </style>
 

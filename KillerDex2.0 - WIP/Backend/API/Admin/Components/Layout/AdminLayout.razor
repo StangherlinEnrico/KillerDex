@@ -1,5 +1,6 @@
 @using API.Admin.Themes
 @inherits LayoutComponentBase
+@inject IStringLocalizer<SharedResource> L
 
 <MudThemeProvider Theme="DbdTheme.Theme" IsDarkMode="true" />
 <MudPopoverProvider />
@@ -19,7 +20,7 @@
         <AuthorizeView>
             <Authorized>
                 <MudText Class="mr-4">@context.User.Identity?.Name</MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Inherit" Href="/admin/logout">Logout</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Inherit" Href="/admin/logout">@L["Common_Logout"]</MudButton>
             </Authorized>
         </AuthorizeView>
     </MudAppBar>
