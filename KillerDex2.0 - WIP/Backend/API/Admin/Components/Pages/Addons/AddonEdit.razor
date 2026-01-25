@@ -50,10 +50,10 @@ else
 
                     @if (Type == "Killer")
                     {
-                        <MudSelect @bind-Value="_model.KillerId" Label="Killer" Required="true" RequiredError="Killer is required" Disabled="@(!_isNew)">
+                        <MudSelect T="Guid?" @bind-Value="_model.KillerId" Label="Killer" Required="true" RequiredError="Killer is required" Disabled="@(!_isNew)">
                             @foreach (var killer in _killers)
                             {
-                                <MudSelectItem Value="@killer.Id">@killer.Name</MudSelectItem>
+                                <MudSelectItem T="Guid?" Value="@killer.Id">@killer.Name</MudSelectItem>
                             }
                         </MudSelect>
                     }

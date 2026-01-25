@@ -1,7 +1,7 @@
 @using API.Admin.Themes
 @inherits LayoutComponentBase
 
-<MudThemeProvider Theme="DbdTheme.Theme" IsDarkMode="true" />
+<MudThemeProvider Theme="DbdTheme.Theme" @bind-IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -15,6 +15,37 @@
     }
 </style>
 
-<div style="@DbdTheme.BackgroundGradient min-height: 100vh;">
-    @Body
-</div>
+<CascadingValue Value="this">
+    <div style="@GetBackgroundStyle() min-height: 100vh; transition: background 0.3s ease;">
+        @Body
+    </div>
+</CascadingValue>
+
+@code {
+    private bool _isDarkMode = true;
+
+    public bool IsDarkMode
+    {
+        get => _isDarkMode;
+        set
+        {
+            if (_isDarkMode != value)
+            {
+                _isDarkMode = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+    public void ToggleTheme()
+    {
+        IsDarkMode = !IsDarkMode;
+    }
+
+    private string GetBackgroundStyle()
+    {
+        return _isDarkMode
+            ? DbdTheme.BackgroundGradient
+            : $"background: linear-gradient(135deg, {DbdTheme.LightBackground} 0%, {DbdTheme.LightElevated} 100%);";
+    }
+}

@@ -51,10 +51,10 @@ else
                         <MudImage Src="@_model.ImageUrl" Alt="Preview" Class="mb-4" Style="max-width: 100%; max-height: 200px;" ObjectFit="ObjectFit.Contain" />
                     }
 
-                    <MudSelect @bind-Value="_model.ChapterId" Label="Chapter" Clearable="true" Class="mb-4">
+                    <MudSelect T="Guid?" @bind-Value="_model.ChapterId" Label="Chapter" Clearable="true" Class="mb-4">
                         @foreach (var chapter in _chapters)
                         {
-                            <MudSelectItem Value="@chapter.Id">@chapter.Name</MudSelectItem>
+                            <MudSelectItem T="Guid?" Value="@chapter.Id">@chapter.Name</MudSelectItem>
                         }
                     </MudSelect>
 

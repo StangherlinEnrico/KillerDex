@@ -34,10 +34,10 @@ else
                             <MudTextField @bind-Value="_model.Description" Label="Description" Lines="4" MaxLength="4000" />
                         </MudItem>
                         <MudItem xs="12">
-                            <MudSelect @bind-Value="_model.KillerId" Label="Associated Killer" Clearable="true">
+                            <MudSelect T="Guid?" @bind-Value="_model.KillerId" Label="Associated Killer" Clearable="true">
                                 @foreach (var killer in _killers)
                                 {
-                                    <MudSelectItem Value="@killer.Id">@killer.Name</MudSelectItem>
+                                    <MudSelectItem T="Guid?" Value="@killer.Id">@killer.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>

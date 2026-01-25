@@ -50,19 +50,19 @@ else
 
                     @if (_model.Role == "Killer")
                     {
-                        <MudSelect @bind-Value="_model.KillerId" Label="Killer" Clearable="true">
+                        <MudSelect T="Guid?" @bind-Value="_model.KillerId" Label="Killer" Clearable="true">
                             @foreach (var killer in _killers)
                             {
-                                <MudSelectItem Value="@killer.Id">@killer.Name</MudSelectItem>
+                                <MudSelectItem T="Guid?" Value="@killer.Id">@killer.Name</MudSelectItem>
                             }
                         </MudSelect>
                     }
                     else if (_model.Role == "Survivor")
                     {
-                        <MudSelect @bind-Value="_model.SurvivorId" Label="Survivor" Clearable="true">
+                        <MudSelect T="Guid?" @bind-Value="_model.SurvivorId" Label="Survivor" Clearable="true">
                             @foreach (var survivor in _survivors)
                             {
-                                <MudSelectItem Value="@survivor.Id">@survivor.Name</MudSelectItem>
+                                <MudSelectItem T="Guid?" Value="@survivor.Id">@survivor.Name</MudSelectItem>
                             }
                         </MudSelect>
                     }

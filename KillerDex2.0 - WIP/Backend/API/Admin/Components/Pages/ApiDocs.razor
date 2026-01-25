@@ -1,97 +1,197 @@
 @page "/docs"
 @layout PublicLayout
+@using API.Admin.Components.Layout
+@using System.Text.Json
 
 <PageTitle>API Documentation - KillerDex</PageTitle>
 
 <div class="docs-container">
-    <MudPaper Elevation="4" Class="pa-8 docs-card">
+    <MudPaper Elevation="4" Class="pa-6 pa-md-8 docs-card">
         <MudStack Spacing="4">
-            <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">KillerDex API</MudText>
-            <MudText Typo="Typo.body2" Align="Align.Center" Class="mud-text-secondary">Public API Endpoints Documentation</MudText>
 
-            <MudDivider Class="my-4" />
+            @* Header *@
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="text-align: center; flex: 1;">
+                    <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight: 600; letter-spacing: 1px;">KillerDex API</MudText>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">REST API Documentation for Dead by Daylight Game Data</MudText>
+                </div>
+                <MudStack Row="true" Spacing="1">
+                    @if (_showPrivateApis)
+                    {
+                        <MudTooltip Text="Lock Private APIs">
+                            <MudIconButton Icon="@Icons.Material.Filled.LockOpen"
+                                           Color="Color.Success"
+                                           Size="Size.Medium"
+                                           OnClick="LockPrivateApis" />
+                        </MudTooltip>
+                    }
+                    else
+                    {
+                        <MudTooltip Text="Unlock Private APIs">
+                            <MudIconButton Icon="@Icons.Material.Filled.Lock"
+                                           Color="Color.Warning"
+                                           Size="Size.Medium"
+                                           OnClick="OpenPasswordDialog" />
+                        </MudTooltip>
+                    }
+                    <MudTooltip Text="@(Layout?.IsDarkMode == true ? "Switch to Light Mode" : "Switch to Dark Mode")">
+                        <MudIconButton Icon="@(Layout?.IsDarkMode == true ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                                       Color="Color.Primary"
+                                       Size="Size.Medium"
+                                       OnClick="ToggleTheme" />
+                    </MudTooltip>
+                </MudStack>
+            </div>
 
-            <MudText Typo="Typo.h6" Color="Color.Secondary">Available Endpoints</MudText>
-            <MudText Typo="Typo.body2" Class="mud-text-secondary mb-4">
-                All endpoints are read-only and do not require authentication.
-            </MudText>
+            <MudDivider Class="my-3" />
 
-            <MudAlert Severity="Severity.Info" Class="mb-4">
-                This is a placeholder page. Full API documentation coming soon.
-            </MudAlert>
+            @* Quick Info *@
+            <MudStack Row="true" Spacing="3" Wrap="Wrap.Wrap" Justify="Justify.Center">
+                <MudChip T="string" Icon="@Icons.Material.Filled.Link" Color="Color.Primary" Variant="Variant.Outlined">
+                    Base URL: <code class="ml-1">/api</code>
+                </MudChip>
+                <MudChip T="string" Icon="@Icons.Material.Filled.Code" Color="Color.Info" Variant="Variant.Outlined">
+                    Format: JSON
+                </MudChip>
+                <MudChip T="string" Icon="@Icons.Material.Filled.Public" Color="Color.Success" Variant="Variant.Outlined">
+                    GET: Public
+                </MudChip>
+                @if (_showPrivateApis)
+                {
+                    <MudChip T="string" Icon="@Icons.Material.Filled.Key" Color="Color.Warning" Variant="Variant.Outlined">
+                        Write: X-API-Key header
+                    </MudChip>
+                }
+            </MudStack>
 
-            <MudExpansionPanels MultiExpansion="true">
-                <MudExpansionPanel Text="Killers" Icon="@Icons.Material.Filled.Person">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/killers</code> - Get all killers</MudListItem>
-                        <MudListItem><code>GET /api/killers/{"{id}"}</code> - Get killer by ID</MudListItem>
-                        <MudListItem><code>GET /api/killers/{"{slug}"}</code> - Get killer by slug</MudListItem>
-                        <MudListItem><code>GET /api/killers/{"{id}"}/perks</code> - Get killer's perks</MudListItem>
-                        <MudListItem><code>GET /api/killers/{"{id}"}/addons</code> - Get killer's addons</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+            <MudDivider Class="my-3" />
 
-                <MudExpansionPanel Text="Survivors" Icon="@Icons.Material.Filled.People">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/survivors</code> - Get all survivors</MudListItem>
-                        <MudListItem><code>GET /api/survivors/{"{id}"}</code> - Get survivor by ID</MudListItem>
-                        <MudListItem><code>GET /api/survivors/{"{slug}"}</code> - Get survivor by slug</MudListItem>
-                        <MudListItem><code>GET /api/survivors/{"{id}"}/perks</code> - Get survivor's perks</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+            @* Endpoints *@
+            @foreach (var group in _endpointGroups)
+            {
+                <MudExpansionPanels Class="endpoint-group" Elevation="0">
+                    <MudExpansionPanel Icon="@group.Icon" Text="@group.Name" Style="background: transparent;">
+                        <MudStack Spacing="2">
+                            @foreach (var endpoint in group.Endpoints)
+                            {
+                                @if (endpoint.IsProtected && !_showPrivateApis)
+                                {
+                                    continue;
+                                }
 
-                <MudExpansionPanel Text="Chapters" Icon="@Icons.Material.Filled.Book">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/chapters</code> - Get all chapters</MudListItem>
-                        <MudListItem><code>GET /api/chapters/{"{id}"}</code> - Get chapter by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+                                <MudPaper Class="endpoint-item" Elevation="0" @onclick="() => ToggleEndpoint(endpoint)">
+                                    <div class="endpoint-header">
+                                        <MudChip T="string" Size="Size.Small" Color="@GetMethodColor(endpoint.Method)"
+                                                 Class="method-chip" Variant="Variant.Filled">
+                                            @endpoint.Method
+                                        </MudChip>
+                                        <code class="endpoint-path">@endpoint.Path</code>
+                                        <span class="endpoint-desc">@endpoint.Description</span>
+                                        @if (endpoint.IsProtected)
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Color="Color.Warning" Class="ml-2" />
+                                        }
+                                        <MudIcon Icon="@(_expandedEndpoint == endpoint ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+                                                 Size="Size.Small" Class="ml-auto" />
+                                    </div>
+                                </MudPaper>
 
-                <MudExpansionPanel Text="Perks" Icon="@Icons.Material.Filled.Star">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/perks</code> - Get all perks</MudListItem>
-                        <MudListItem><code>GET /api/perks/{"{id}"}</code> - Get perk by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+                                @if (_expandedEndpoint == endpoint)
+                                {
+                                    <MudPaper Class="response-panel" Elevation="0">
+                                        @* Response Tabs *@
+                                        <div class="response-tabs">
+                                            @foreach (var response in endpoint.Responses)
+                                            {
+                                                <div class="response-tab @(_selectedResponse == response ? "active" : "") @GetStatusClass(response.StatusCode)"
+                                                     @onclick="() => SelectResponse(response)" @onclick:stopPropagation="true">
+                                                    @response.StatusCode
+                                                </div>
+                                            }
+                                            <div class="spacer"></div>
+                                            <MudSwitch T="bool" @bind-Value="_showSchema" Label="Show Schema" Size="Size.Small" Color="Color.Primary" Class="schema-toggle" />
+                                        </div>
 
-                <MudExpansionPanel Text="Addons" Icon="@Icons.Material.Filled.Extension">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/addons</code> - Get all addons</MudListItem>
-                        <MudListItem><code>GET /api/addons/{"{id}"}</code> - Get addon by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+                                        @* Response Body *@
+                                        <div class="response-body">
+                                            @if (_selectedResponse != null)
+                                            {
+                                                <pre class="json-content">@((MarkupString)FormatJson(_showSchema ? _selectedResponse.Schema : _selectedResponse.Example))</pre>
+                                                <div class="response-status">
+                                                    @_selectedResponse.StatusText
+                                                </div>
+                                            }
+                                        </div>
+                                    </MudPaper>
+                                }
+                            }
+                        </MudStack>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            }
 
-                <MudExpansionPanel Text="Items" Icon="@Icons.Material.Filled.Inventory">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/items</code> - Get all items</MudListItem>
-                        <MudListItem><code>GET /api/items/{"{id}"}</code> - Get item by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
+            <MudDivider Class="my-3" />
 
-                <MudExpansionPanel Text="Offerings" Icon="@Icons.Material.Filled.CardGiftcard">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/offerings</code> - Get all offerings</MudListItem>
-                        <MudListItem><code>GET /api/offerings/{"{id}"}</code> - Get offering by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Text="Maps" Icon="@Icons.Material.Filled.Map">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/maps</code> - Get all maps</MudListItem>
-                        <MudListItem><code>GET /api/maps/{"{id}"}</code> - Get map by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Text="Status Effects" Icon="@Icons.Material.Filled.Bolt">
-                    <MudList T="string" Dense="true">
-                        <MudListItem><code>GET /api/statuseffects</code> - Get all status effects</MudListItem>
-                        <MudListItem><code>GET /api/statuseffects/{"{id}"}</code> - Get status effect by ID</MudListItem>
-                    </MudList>
-                </MudExpansionPanel>
-            </MudExpansionPanels>
+            @* Notes *@
+            <MudText Typo="Typo.h6" Color="Color.Secondary">Notes</MudText>
+            <MudSimpleTable Dense="true" Hover="true" Class="notes-table">
+                <tbody>
+                    <tr>
+                        <td><MudIcon Icon="@Icons.Material.Filled.Fingerprint" Size="Size.Small" /></td>
+                        <td><strong>ID vs Slug</strong></td>
+                        <td>Resources can be fetched by GUID or human-readable slug. Auto-detected.</td>
+                    </tr>
+                    <tr>
+                        <td><MudIcon Icon="@Icons.Material.Filled.Speed" Size="Size.Small" /></td>
+                        <td><strong>Rate Limiting</strong></td>
+                        <td>Implement caching on your end. Excessive requests may be throttled.</td>
+                    </tr>
+                    <tr>
+                        <td><MudIcon Icon="@Icons.Material.Filled.Public" Size="Size.Small" /></td>
+                        <td><strong>CORS</strong></td>
+                        <td>Enabled for all origins on GET endpoints.</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
         </MudStack>
     </MudPaper>
 </div>
+
+@* Password Dialog *@
+<MudDialog @bind-Visible="_showPasswordDialog" Options="@(new DialogOptions { NoHeader = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true })">
+    <DialogContent>
+        <MudStack Spacing="4" Class="pa-4">
+            <div style="text-align: center;">
+                <MudAvatar Color="Color.Primary" Size="Size.Large" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" />
+                </MudAvatar>
+                <MudText Typo="Typo.h5" Color="Color.Primary">Admin Access</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Enter password to view protected endpoints</MudText>
+            </div>
+
+            <MudTextField @bind-Value="_password"
+                          Label="Password"
+                          Variant="Variant.Outlined"
+                          InputType="InputType.Password"
+                          Error="@(!string.IsNullOrEmpty(_passwordError))"
+                          ErrorText="@_passwordError"
+                          Immediate="true"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Key"
+                          OnKeyDown="@(async (e) => { if (e.Key == "Enter") SubmitPassword(); })"
+                          AutoFocus="true" />
+
+            <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mt-2">
+                <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="ClosePasswordDialog" StartIcon="@Icons.Material.Filled.Close">
+                    Cancel
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitPassword" StartIcon="@Icons.Material.Filled.LockOpen">
+                    Unlock
+                </MudButton>
+            </MudStack>
+        </MudStack>
+    </DialogContent>
+</MudDialog>
 
 <style>
     .docs-container {
@@ -99,18 +199,977 @@
         align-items: flex-start;
         justify-content: center;
         min-height: 100vh;
-        padding: 40px 20px;
+        padding: 20px;
         box-sizing: border-box;
     }
     .docs-card {
         width: 100%;
-        max-width: 800px;
+        max-width: 1000px;
     }
     code {
-        background: var(--mud-palette-surface);
+        background: var(--mud-palette-background-grey);
         padding: 2px 8px;
         border-radius: 4px;
-        font-family: monospace;
+        font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
         color: var(--mud-palette-primary);
+        font-size: 0.95rem;
+    }
+
+    /* Endpoint Group */
+    .endpoint-group {
+        border: 1px solid var(--mud-palette-divider);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Endpoint Item */
+    .endpoint-item {
+        background: var(--mud-palette-background-grey);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+    }
+    .endpoint-item:hover {
+        border-color: var(--mud-palette-primary);
+        transform: translateX(4px);
+    }
+    .endpoint-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+    .method-chip {
+        min-width: 70px;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .endpoint-path {
+        font-weight: 500;
+        color: var(--mud-palette-text-primary);
+        font-size: 0.95rem;
+    }
+    .endpoint-desc {
+        color: var(--mud-palette-text-secondary);
+        font-size: 0.9rem;
+        flex: 1;
+    }
+
+    /* Response Panel */
+    .response-panel {
+        background: #0d1117;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 4px;
+        border: 1px solid #30363d;
+    }
+    .response-tabs {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+    }
+    .response-tab {
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        color: #8b949e;
+    }
+    .response-tab:hover {
+        background: #21262d;
+    }
+    .response-tab.active {
+        background: #21262d;
+        color: #f0f6fc;
+    }
+    .response-tab.success { border-bottom: 2px solid #3fb950; }
+    .response-tab.success.active { color: #3fb950; }
+    .response-tab.error { border-bottom: 2px solid #f85149; }
+    .response-tab.error.active { color: #f85149; }
+    .response-tab.warning { border-bottom: 2px solid #d29922; }
+    .response-tab.warning.active { color: #d29922; }
+
+    .spacer { flex: 1; }
+
+    .schema-toggle {
+        font-size: 0.85rem;
+    }
+
+    .response-body {
+        padding: 16px;
+        max-height: 400px;
+        overflow: auto;
+    }
+    .json-content {
+        margin: 0;
+        font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #c9d1d9;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .response-status {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #30363d;
+        color: #8b949e;
+        font-size: 0.9rem;
+    }
+
+    /* JSON Syntax Highlighting */
+    .json-key { color: #7ee787; }
+    .json-string { color: #a5d6ff; }
+    .json-number { color: #79c0ff; }
+    .json-boolean { color: #ff7b72; }
+    .json-null { color: #d2a8ff; }
+    .json-bracket { color: #8b949e; }
+
+    /* Notes Table */
+    .notes-table td {
+        padding: 8px 12px !important;
+        font-size: 0.95rem;
+    }
+    .notes-table td:first-child {
+        width: 40px;
+        text-align: center;
+    }
+    .notes-table td:nth-child(2) {
+        width: 140px;
+    }
+
+    @@media (max-width: 600px) {
+        .docs-container {
+            padding: 10px;
+        }
+        .docs-card {
+            padding: 16px !important;
+        }
+        .endpoint-header {
+            flex-wrap: wrap;
+        }
+        .endpoint-desc {
+            width: 100%;
+            margin-top: 4px;
+        }
     }
 </style>
+
+@code {
+    [CascadingParameter]
+    public PublicLayout? Layout { get; set; }
+
+    private bool _showPrivateApis = false;
+    private bool _showPasswordDialog = false;
+    private bool _showSchema = false;
+    private string _password = string.Empty;
+    private string? _passwordError = null;
+    private ApiEndpoint? _expandedEndpoint = null;
+    private ApiResponse? _selectedResponse = null;
+
+    private const string AdminPassword = "admin";
+
+    private void ToggleTheme() => Layout?.ToggleTheme();
+
+    private void OpenPasswordDialog()
+    {
+        _password = string.Empty;
+        _passwordError = null;
+        _showPasswordDialog = true;
+    }
+
+    private void ClosePasswordDialog()
+    {
+        _showPasswordDialog = false;
+        _password = string.Empty;
+        _passwordError = null;
+    }
+
+    private void SubmitPassword()
+    {
+        if (_password == AdminPassword)
+        {
+            _showPrivateApis = true;
+            ClosePasswordDialog();
+        }
+        else
+        {
+            _passwordError = "Incorrect password";
+        }
+    }
+
+    private void LockPrivateApis() => _showPrivateApis = false;
+
+    private void ToggleEndpoint(ApiEndpoint endpoint)
+    {
+        if (_expandedEndpoint == endpoint)
+        {
+            _expandedEndpoint = null;
+            _selectedResponse = null;
+        }
+        else
+        {
+            _expandedEndpoint = endpoint;
+            _selectedResponse = endpoint.Responses.FirstOrDefault();
+        }
+    }
+
+    private void SelectResponse(ApiResponse response)
+    {
+        _selectedResponse = response;
+    }
+
+    private Color GetMethodColor(string method) => method switch
+    {
+        "GET" => Color.Success,
+        "POST" => Color.Info,
+        "PUT" => Color.Warning,
+        "DELETE" => Color.Error,
+        _ => Color.Default
+    };
+
+    private string GetStatusClass(int code) => code switch
+    {
+        >= 200 and < 300 => "success",
+        >= 400 and < 500 => "error",
+        _ => "warning"
+    };
+
+    private string FormatJson(string json)
+    {
+        return json
+            .Replace("&", "&amp;")
+            .Replace("<", "&lt;")
+            .Replace(">", "&gt;")
+            .Replace("\":", "<span class=\"json-key\">\"</span>:")
+            .Replace("\": ", "\": ")
+            .Replace("\"...", "<span class=\"json-string\">\"...</span>")
+            .Replace("\"https://...", "<span class=\"json-string\">\"https://...</span>")
+            .Replace("null", "<span class=\"json-null\">null</span>")
+            .Replace("true", "<span class=\"json-boolean\">true</span>")
+            .Replace("false", "<span class=\"json-boolean\">false</span>")
+            .Replace("[", "<span class=\"json-bracket\">[</span>")
+            .Replace("]", "<span class=\"json-bracket\">]</span>")
+            .Replace("{", "<span class=\"json-bracket\">{</span>")
+            .Replace("}", "<span class=\"json-bracket\">}</span>");
+    }
+
+    // Data Models
+    private record ApiResponse(int StatusCode, string StatusText, string Example, string Schema);
+    private record ApiEndpoint(string Method, string Path, string Description, bool IsProtected, List<ApiResponse> Responses);
+    private record EndpointGroup(string Name, string Icon, List<ApiEndpoint> Endpoints);
+
+    // Common Responses
+    private static ApiResponse NotFound => new(404, "Not Found", @"{
+  ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.4"",
+  ""title"": ""Not Found"",
+  ""status"": 404,
+  ""detail"": ""Resource not found"",
+  ""instance"": ""/api/...""
+}", @"{
+  ""type"": ""string"",
+  ""title"": ""string"",
+  ""status"": ""integer"",
+  ""detail"": ""string"",
+  ""instance"": ""string""
+}");
+
+    private static ApiResponse Unauthorized => new(401, "Unauthorized", @"{
+  ""type"": ""https://tools.ietf.org/html/rfc7235#section-3.1"",
+  ""title"": ""Unauthorized"",
+  ""status"": 401,
+  ""detail"": ""Invalid or missing API Key"",
+  ""instance"": ""/api/...""
+}", @"{
+  ""type"": ""string"",
+  ""title"": ""string"",
+  ""status"": ""integer"",
+  ""detail"": ""string"",
+  ""instance"": ""string""
+}");
+
+    private static ApiResponse NoContent => new(204, "No Content", "", "");
+
+    // Endpoint Groups
+    private readonly List<EndpointGroup> _endpointGroups = new()
+    {
+        new("Killers", Icons.Material.Filled.Person, new()
+        {
+            new("GET", "/api/killers", "Get all killers", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+    ""slug"": ""the-trapper"",
+    ""name"": ""The Trapper"",
+    ""imageUrl"": ""https://..."",
+    ""powerName"": ""Bear Trap""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""imageUrl"": ""string | null"",
+    ""powerName"": ""string""
+  }
+]")
+            }),
+            new("GET", "/api/killers/{idOrSlug}", "Get killer by ID or slug", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+  ""slug"": ""the-trapper"",
+  ""name"": ""The Trapper"",
+  ""realName"": ""Evan MacMillan"",
+  ""overview"": ""A killer who uses bear traps..."",
+  ""backstory"": ""...'',
+  ""imageUrl"": ""https://..."",
+  ""gameVersion"": ""1.0.0"",
+  ""power"": {
+    ""name"": ""Bear Trap"",
+    ""description"": ""...""
+  },
+  ""movementSpeed"": 4.6,
+  ""terrorRadius"": 32,
+  ""height"": ""Tall"",
+  ""chapter"": {
+    ""id"": ""..."",
+    ""name"": ""Base Game""
+  }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""realName"": ""string | null"",
+  ""overview"": ""string | null"",
+  ""backstory"": ""string | null"",
+  ""imageUrl"": ""string | null"",
+  ""gameVersion"": ""string | null"",
+  ""power"": {
+    ""name"": ""string"",
+    ""description"": ""string | null""
+  },
+  ""movementSpeed"": ""number"",
+  ""terrorRadius"": ""integer"",
+  ""height"": ""string"",
+  ""chapter"": {
+    ""id"": ""string (uuid)"",
+    ""name"": ""string""
+  } | null
+}"),
+                NotFound
+            }),
+            new("GET", "/api/killers/{idOrSlug}/perks", "Get killer's perks", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""hex-ruin"",
+    ""name"": ""Hex: Ruin"",
+    ""imageUrl"": ""https://..."",
+    ""teachableLevel"": 40
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""imageUrl"": ""string | null"",
+    ""teachableLevel"": ""integer""
+  }
+]"),
+                NotFound
+            }),
+            new("GET", "/api/killers/{idOrSlug}/addons", "Get killer's addons", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""padded-jaws"",
+    ""name"": ""Padded Jaws"",
+    ""rarity"": ""Common"",
+    ""imageUrl"": ""https://...""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""rarity"": ""string"",
+    ""imageUrl"": ""string | null""
+  }
+]"),
+                NotFound
+            }),
+            new("POST", "/api/killers", "Create a new killer", true, new()
+            {
+                new(201, "Created", @"{
+  ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+  ""slug"": ""the-trapper"",
+  ""name"": ""The Trapper"",
+  ""createdAt"": ""2024-01-15T10:30:00Z""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""createdAt"": ""string (datetime)""
+}"),
+                Unauthorized
+            }),
+            new("PUT", "/api/killers/{id}", "Update a killer", true, new()
+            {
+                NoContent,
+                NotFound,
+                Unauthorized
+            }),
+            new("DELETE", "/api/killers/{id}", "Delete a killer", true, new()
+            {
+                NoContent,
+                NotFound,
+                Unauthorized
+            })
+        }),
+
+        new("Survivors", Icons.Material.Filled.People, new()
+        {
+            new("GET", "/api/survivors", "Get all survivors", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+    ""slug"": ""dwight-fairfield"",
+    ""name"": ""Dwight Fairfield"",
+    ""imageUrl"": ""https://...""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""imageUrl"": ""string | null""
+  }
+]")
+            }),
+            new("GET", "/api/survivors/{idOrSlug}", "Get survivor by ID or slug", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+  ""slug"": ""dwight-fairfield"",
+  ""name"": ""Dwight Fairfield"",
+  ""overview"": ""A nervous leader..."",
+  ""backstory"": ""..."",
+  ""imageUrl"": ""https://..."",
+  ""chapter"": {
+    ""id"": ""..."",
+    ""name"": ""Base Game""
+  }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""overview"": ""string | null"",
+  ""backstory"": ""string | null"",
+  ""imageUrl"": ""string | null"",
+  ""chapter"": {
+    ""id"": ""string (uuid)"",
+    ""name"": ""string""
+  } | null
+}"),
+                NotFound
+            }),
+            new("GET", "/api/survivors/{idOrSlug}/perks", "Get survivor's perks", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""bond"",
+    ""name"": ""Bond"",
+    ""imageUrl"": ""https://..."",
+    ""teachableLevel"": 30
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""imageUrl"": ""string | null"",
+    ""teachableLevel"": ""integer""
+  }
+]"),
+                NotFound
+            }),
+            new("POST", "/api/survivors", "Create a new survivor", true, new()
+            {
+                new(201, "Created", @"{
+  ""id"": ""123e4567-e89b-12d3-a456-426614174000"",
+  ""slug"": ""dwight-fairfield"",
+  ""name"": ""Dwight Fairfield"",
+  ""createdAt"": ""2024-01-15T10:30:00Z""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""createdAt"": ""string (datetime)""
+}"),
+                Unauthorized
+            }),
+            new("PUT", "/api/survivors/{id}", "Update a survivor", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/survivors/{id}", "Delete a survivor", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Chapters", Icons.Material.Filled.Book, new()
+        {
+            new("GET", "/api/chapters", "Get all chapters", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""curtain-call"",
+    ""name"": ""Curtain Call"",
+    ""number"": 8,
+    ""releaseDate"": ""2018-06-12""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""number"": ""integer"",
+    ""releaseDate"": ""string (date)""
+  }
+]")
+            }),
+            new("GET", "/api/chapters/{idOrSlug}", "Get chapter by ID or slug", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""curtain-call"",
+  ""name"": ""Curtain Call"",
+  ""number"": 8,
+  ""releaseDate"": ""2018-06-12"",
+  ""killer"": { ""id"": ""..."", ""name"": ""The Clown"" },
+  ""survivor"": { ""id"": ""..."", ""name"": ""Kate Denson"" }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""number"": ""integer"",
+  ""releaseDate"": ""string (date)"",
+  ""killer"": { ""id"": ""string"", ""name"": ""string"" } | null,
+  ""survivor"": { ""id"": ""string"", ""name"": ""string"" } | null
+}"),
+                NotFound
+            }),
+            new("GET", "/api/chapters/number/{number}", "Get chapter by number", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""name"": ""Curtain Call"",
+  ""number"": 8
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""name"": ""string"",
+  ""number"": ""integer""
+}"),
+                NotFound
+            }),
+            new("POST", "/api/chapters", "Create a new chapter", true, new() { new(201, "Created", @"{ ""id"": ""..."", ""name"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/chapters/{id}", "Update a chapter", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/chapters/{id}", "Delete a chapter", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Perks", Icons.Material.Filled.Star, new()
+        {
+            new("GET", "/api/perks", "Get all perks", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""hex-ruin"",
+    ""name"": ""Hex: Ruin"",
+    ""role"": ""Killer"",
+    ""imageUrl"": ""https://...""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""role"": ""Killer | Survivor"",
+    ""imageUrl"": ""string | null""
+  }
+]")
+            }),
+            new("GET", "/api/perks?role={role}", "Get perks by role", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""name"": ""Hex: Ruin"",
+    ""role"": ""Killer""
+  }
+]", @"[
+  {
+    ""id"": ""string"",
+    ""name"": ""string"",
+    ""role"": ""Killer | Survivor""
+  }
+]")
+            }),
+            new("GET", "/api/perks/{idOrSlug}", "Get perk by ID or slug", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""hex-ruin"",
+  ""name"": ""Hex: Ruin"",
+  ""description"": ""A Hex that affects..."",
+  ""role"": ""Killer"",
+  ""imageUrl"": ""https://..."",
+  ""teachableLevel"": 40,
+  ""owner"": { ""id"": ""..."", ""name"": ""The Hag"" }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""role"": ""Killer | Survivor"",
+  ""imageUrl"": ""string | null"",
+  ""teachableLevel"": ""integer"",
+  ""owner"": { ""id"": ""string"", ""name"": ""string"" } | null
+}"),
+                NotFound
+            }),
+            new("POST", "/api/perks", "Create a new perk", true, new() { new(201, "Created", @"{ ""id"": ""..."", ""name"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/perks/{id}", "Update a perk", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/perks/{id}", "Delete a perk", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Addons", Icons.Material.Filled.Extension, new()
+        {
+            new("GET", "/api/killer-addons", "Get all killer addons", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""padded-jaws"",
+    ""name"": ""Padded Jaws"",
+    ""rarity"": ""Common"",
+    ""killer"": { ""id"": ""..."", ""name"": ""The Trapper"" }
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""rarity"": ""string"",
+    ""killer"": { ""id"": ""string"", ""name"": ""string"" }
+  }
+]")
+            }),
+            new("GET", "/api/killer-addons/{idOrSlug}", "Get killer addon", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""padded-jaws"",
+  ""name"": ""Padded Jaws"",
+  ""description"": ""..."",
+  ""rarity"": ""Common"",
+  ""imageUrl"": ""https://..."",
+  ""killer"": { ""id"": ""..."", ""name"": ""The Trapper"" }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""rarity"": ""string"",
+  ""imageUrl"": ""string | null"",
+  ""killer"": { ""id"": ""string"", ""name"": ""string"" }
+}"),
+                NotFound
+            }),
+            new("GET", "/api/survivor-addons", "Get all survivor addons", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""name"": ""Gel Dressings"",
+    ""rarity"": ""Uncommon"",
+    ""itemType"": ""Medkit""
+  }
+]", @"[
+  {
+    ""id"": ""string"",
+    ""name"": ""string"",
+    ""rarity"": ""string"",
+    ""itemType"": ""string""
+  }
+]")
+            }),
+            new("GET", "/api/survivor-addons/{idOrSlug}", "Get survivor addon", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""name"": ""Gel Dressings"",
+  ""description"": ""..."",
+  ""rarity"": ""Uncommon"",
+  ""itemType"": ""Medkit"",
+  ""imageUrl"": ""https://...""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""rarity"": ""string"",
+  ""itemType"": ""string"",
+  ""imageUrl"": ""string | null""
+}"),
+                NotFound
+            }),
+            new("POST", "/api/killer-addons", "Create killer addon", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("POST", "/api/survivor-addons", "Create survivor addon", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/killer-addons/{id}", "Update killer addon", true, new() { NoContent, NotFound, Unauthorized }),
+            new("PUT", "/api/survivor-addons/{id}", "Update survivor addon", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/killer-addons/{id}", "Delete killer addon", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/survivor-addons/{id}", "Delete survivor addon", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Items", Icons.Material.Filled.Inventory, new()
+        {
+            new("GET", "/api/items", "Get all items", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""emergency-med-kit"",
+    ""name"": ""Emergency Med-Kit"",
+    ""type"": ""Medkit"",
+    ""rarity"": ""Uncommon""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""type"": ""string"",
+    ""rarity"": ""string""
+  }
+]")
+            }),
+            new("GET", "/api/items?type={type}", "Get items by type", false, new()
+            {
+                new(200, "OK", @"[
+  { ""id"": ""..."", ""name"": ""..."", ""type"": ""Medkit"" }
+]", "")
+            }),
+            new("GET", "/api/items/{idOrSlug}", "Get item by ID or slug", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""emergency-med-kit"",
+  ""name"": ""Emergency Med-Kit"",
+  ""description"": ""..."",
+  ""type"": ""Medkit"",
+  ""rarity"": ""Uncommon"",
+  ""imageUrl"": ""https://...""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""type"": ""string"",
+  ""rarity"": ""string"",
+  ""imageUrl"": ""string | null""
+}"),
+                NotFound
+            }),
+            new("POST", "/api/items", "Create item", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/items/{id}", "Update item", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/items/{id}", "Delete item", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Offerings", Icons.Material.Filled.CardGiftcard, new()
+        {
+            new("GET", "/api/offerings", "Get all offerings", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""bloody-party-streamers"",
+    ""name"": ""Bloody Party Streamers"",
+    ""rarity"": ""Rare"",
+    ""role"": ""All""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""rarity"": ""string"",
+    ""role"": ""Killer | Survivor | All""
+  }
+]")
+            }),
+            new("GET", "/api/offerings/{idOrSlug}", "Get offering", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""name"": ""Bloody Party Streamers"",
+  ""description"": ""..."",
+  ""rarity"": ""Rare"",
+  ""role"": ""All"",
+  ""imageUrl"": ""https://...""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""rarity"": ""string"",
+  ""role"": ""string"",
+  ""imageUrl"": ""string | null""
+}"),
+                NotFound
+            }),
+            new("POST", "/api/offerings", "Create offering", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/offerings/{id}", "Update offering", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/offerings/{id}", "Delete offering", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Realms & Maps", Icons.Material.Filled.Map, new()
+        {
+            new("GET", "/api/realms", "Get all realms", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""macmillan-estate"",
+    ""name"": ""Macmillan Estate"",
+    ""mapCount"": 5
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""mapCount"": ""integer""
+  }
+]")
+            }),
+            new("GET", "/api/realms/{idOrSlug}", "Get realm", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""macmillan-estate"",
+  ""name"": ""Macmillan Estate"",
+  ""description"": ""..."",
+  ""imageUrl"": ""https://..."",
+  ""maps"": [
+    { ""id"": ""..."", ""name"": ""Coal Tower"" },
+    { ""id"": ""..."", ""name"": ""Shelter Woods"" }
+  ]
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string | null"",
+  ""imageUrl"": ""string | null"",
+  ""maps"": [{ ""id"": ""string"", ""name"": ""string"" }]
+}"),
+                NotFound
+            }),
+            new("GET", "/api/maps", "Get all maps", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""coal-tower"",
+    ""name"": ""Coal Tower"",
+    ""realm"": { ""id"": ""..."", ""name"": ""Macmillan Estate"" }
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""realm"": { ""id"": ""string"", ""name"": ""string"" }
+  }
+]")
+            }),
+            new("GET", "/api/maps/{idOrSlug}", "Get map", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""coal-tower"",
+  ""name"": ""Coal Tower"",
+  ""description"": ""..."",
+  ""imageUrl"": ""https://..."",
+  ""realm"": { ""id"": ""..."", ""name"": ""Macmillan Estate"" }
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string | null"",
+  ""imageUrl"": ""string | null"",
+  ""realm"": { ""id"": ""string"", ""name"": ""string"" }
+}"),
+                NotFound
+            }),
+            new("POST", "/api/realms", "Create realm", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("POST", "/api/maps", "Create map", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/realms/{id}", "Update realm", true, new() { NoContent, NotFound, Unauthorized }),
+            new("PUT", "/api/maps/{id}", "Update map", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/realms/{id}", "Delete realm", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/maps/{id}", "Delete map", true, new() { NoContent, NotFound, Unauthorized })
+        }),
+
+        new("Status Effects", Icons.Material.Filled.Bolt, new()
+        {
+            new("GET", "/api/status-effects", "Get all status effects", false, new()
+            {
+                new(200, "OK", @"[
+  {
+    ""id"": ""..."",
+    ""slug"": ""exhausted"",
+    ""name"": ""Exhausted"",
+    ""type"": ""Debuff""
+  }
+]", @"[
+  {
+    ""id"": ""string (uuid)"",
+    ""slug"": ""string"",
+    ""name"": ""string"",
+    ""type"": ""Buff | Debuff""
+  }
+]")
+            }),
+            new("GET", "/api/status-effects/{idOrSlug}", "Get status effect", false, new()
+            {
+                new(200, "OK", @"{
+  ""id"": ""..."",
+  ""slug"": ""exhausted"",
+  ""name"": ""Exhausted"",
+  ""description"": ""Prevents using exhaustion perks..."",
+  ""type"": ""Debuff"",
+  ""imageUrl"": ""https://...""
+}", @"{
+  ""id"": ""string (uuid)"",
+  ""slug"": ""string"",
+  ""name"": ""string"",
+  ""description"": ""string"",
+  ""type"": ""Buff | Debuff"",
+  ""imageUrl"": ""string | null""
+}"),
+                NotFound
+            }),
+            new("POST", "/api/status-effects", "Create status effect", true, new() { new(201, "Created", @"{ ""id"": ""..."" }", ""), Unauthorized }),
+            new("PUT", "/api/status-effects/{id}", "Update status effect", true, new() { NoContent, NotFound, Unauthorized }),
+            new("DELETE", "/api/status-effects/{id}", "Delete status effect", true, new() { NoContent, NotFound, Unauthorized })
+        })
+    };
+}

@@ -38,7 +38,7 @@ public static class DbdTheme
     /// <summary>Hook rust - Warning states</summary>
     public const string HookRust = "#f59e0b";
 
-    // Background colors (darkest to lighter)
+    // Background colors (darkest to lighter) - DARK MODE
     /// <summary>Void black - Deepest background</summary>
     public const string VoidBlack = "#0a0a0a";
 
@@ -54,7 +54,23 @@ public static class DbdTheme
     /// <summary>Ash gray - Drawer/sidebar background</summary>
     public const string AshGray = "#1e1e1e";
 
-    // Text colors
+    // Background colors - LIGHT MODE
+    /// <summary>Light background - Main background for light mode</summary>
+    public const string LightBackground = "#f5f5f5";
+
+    /// <summary>Light surface - Surface/cards background for light mode</summary>
+    public const string LightSurface = "#ffffff";
+
+    /// <summary>Light elevated - Elevated surfaces for light mode</summary>
+    public const string LightElevated = "#fafafa";
+
+    /// <summary>Light drawer - Drawer background for light mode</summary>
+    public const string LightDrawer = "#f0f0f0";
+
+    /// <summary>Light border - Border color for light mode</summary>
+    public const string LightBorder = "#e0e0e0";
+
+    // Text colors - DARK MODE
     /// <summary>Bone white - Primary text</summary>
     public const string BoneWhite = "#f5f5f5";
 
@@ -63,6 +79,16 @@ public static class DbdTheme
 
     /// <summary>Dim gray - Disabled text</summary>
     public const string DimGray = "#666666";
+
+    // Text colors - LIGHT MODE
+    /// <summary>Dark text - Primary text for light mode</summary>
+    public const string DarkText = "#1a1a1a";
+
+    /// <summary>Medium text - Secondary text for light mode</summary>
+    public const string MediumText = "#666666";
+
+    /// <summary>Light disabled - Disabled text for light mode</summary>
+    public const string LightDisabled = "#9e9e9e";
 
     // Rarity colors (matching DBD item rarities)
     /// <summary>Common rarity - Brown</summary>
@@ -104,24 +130,24 @@ public static class DbdTheme
             Warning = HookRust,
             Error = BloodRedLight,
             Dark = VoidBlack,
-            AppbarBackground = FogGray,
-            AppbarText = BoneWhite,
-            Background = ShadowBlack,
-            Surface = FogGray,
-            DrawerBackground = AshGray,
-            DrawerText = BoneWhite,
-            TextPrimary = BoneWhite,
-            TextSecondary = PaleGray,
-            TextDisabled = DimGray,
-            ActionDefault = PaleGray,
-            ActionDisabled = DimGray,
-            Divider = MistGray,
-            DividerLight = "#333333",
-            TableLines = MistGray,
-            TableStriped = "#1f1f1f",
-            TableHover = "#2a2a2a",
-            LinesDefault = MistGray,
-            LinesInputs = PaleGray
+            AppbarBackground = LightSurface,
+            AppbarText = DarkText,
+            Background = LightBackground,
+            Surface = LightSurface,
+            DrawerBackground = LightDrawer,
+            DrawerText = DarkText,
+            TextPrimary = DarkText,
+            TextSecondary = MediumText,
+            TextDisabled = LightDisabled,
+            ActionDefault = MediumText,
+            ActionDisabled = LightDisabled,
+            Divider = LightBorder,
+            DividerLight = "#eeeeee",
+            TableLines = LightBorder,
+            TableStriped = "#fafafa",
+            TableHover = "#f0f0f0",
+            LinesDefault = LightBorder,
+            LinesInputs = MediumText
         },
         PaletteDark = new PaletteDark
         {
